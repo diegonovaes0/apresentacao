@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ansible Host Runner</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/core_ansible/style.css">
+    <link rel="stylesheet" href="/static/css/core_ansible/banner.css">
+    <link rel="stylesheet" href="/static/css/core_ansible/host-info.css">
+    <link rel="stylesheet" href="/static/css/core_ansible/playbooks.css">
+    <link rel="stylesheet" href="/static/css/core_ansible/tasks.css">
+    <link rel="stylesheet" href="/static/css/core_ansible/output.css">
+    <link rel="stylesheet" href="/static/css/core_ansible/seletor.css">
+
+</head>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ansible Host Runner</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    </head>
+<body>
+    <div class="container">
+        <div id="ansible-host-banner" class="banner">
+            <div class="banner-content">
+                <div class="banner-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="info-section">
+                    <div class="status-text">
+                        <div class="validating-state">Validar Host</div>
+                        <div class="success-state">Host validado com sucesso</div>
+                    </div>
+                    <div class="loading-bar">
+                        <div id="ansible_progress_bar" class="loading-bar-progress"></div>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-server"></i>Hostname
+                            </div>
+                            <div id="ansible_hostname" class="info-value">Carregando...</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-network-wired"></i>IP Privado
+                            </div>
+                            <div id="ansible_private_ip" class="info-value">Carregando...</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-globe"></i>IP Público
+                            </div>
+                            <div id="ansible_public_ip" class="info-value">Carregando...</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-microchip"></i>Sistema
+                            </div>
+                            <div id="ansible_system" class="info-value">Carregando...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-section">
+                    <button id="ansible_confirm_host" class="btn-confirm" disabled>
+                        <i class="fas fa-check-circle"></i> Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="ansible_playbook_section" class="playbook-section hidden">
+            <div class="section-header">
+                <div class="playbook-list-header">
+                    <h2>Playbooks</h2>
+                </div>
+
+                <!-- Seletores adicionados aqui -->
+                <div class="filter-section">
+                    <div class="selector-group">
+                        <select id="os-selector" class="filter-select">
+                            <option value="">Selecione o Sistema Operacional</option>
+                            <option value="windows">Windows</option>
+                            <option value="linux">Linux</option>
+                        </select>
+
+                        <select id="category-selector" class="filter-select">
+                            <option value="">Todas as Categorias</option>
+                            <option value="agents">Agentes</option>
+                            <option value="config">Configurações</option>
+                            <option value="security">Segurança</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="action-buttons">
+                    <button id="ansible_select_all" class="btn-secondary">
+                        <i class="fas fa-check-double"></i> Selecionar Todos
+                    </button>
+                    <button id="ansible_execute" class="btn-primary" disabled>
+                        <i class="fas fa-play"></i> Executar
+                    </button>
+                    <button id="ansible_cancel_all" class="btn-danger" disabled>
+                        <i class="fas fa-stop-circle"></i> Cancelar Todos
+                    </button>
+                    <button id="ansible_refresh" class="btn-secondary">
+                        <i class="fas fa-sync-alt"></i> Atualizar
+                    </button>
+                </div>
+            </div>
+            <div class="content-container">
+                <div id="ansible_playbook_list" class="playbook-list"></div>
+                <div class="separator"></div>
+                <div id="ansible_task_cards" class="task-cards"></div>
+            </div>
+        </div>
+        <template id="ansible_task_card_template">
+            <div class="task-card">
+                <div class="task-header">
+                    <h3 class="task-title">
+                        <i class="fas fa-terminal task-icon"></i>
+                        <span class="playbook-name"></span>
+                    </h3>
+                    <div class="task-status-group">
+                        <div class="task-status status-running">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Em execução</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-item">
+                        <i class="fas fa-server"></i>
+                        <span class="info-label">Hostname:</span>
+                        <span class="info-value hostname"></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-network-wired"></i>
+                        <span class="info-label">IP Privado:</span>
+                        <span class="info-value private-ip"></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-globe"></i>
+                        <span class="info-label">IP Público:</span>
+                        <span class="info-value public-ip"></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-microchip"></i>
+                        <span class="info-label">Sistema:</span>
+                        <span class="info-value system"></span>
+                    </div>
+                </div>
+
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span class="progress-label">Progresso da Execução</span>
+                        <span class="progress-value">0%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <div class="output-header">
+                        <button class="toggle-output">
+                            <span>Ver Saída</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="output-content">
+                        <pre class="output-text"></pre>
+                    </div>
+                </div>
+            </div>
+        </template>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.task-card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const normX = x / rect.width;
+                const normY = y / rect.height;
+                const lightIntensity = 0.15;
+                const gradient = `radial-gradient(circle at ${normX * 100}% ${normY * 100}%, rgba(255, 255, 255, ${lightIntensity}), rgba(255, 255, 255, 0) 50%)`;
+                card.style.setProperty('--card-gradient', gradient);
+                card.style.backgroundImage = `var(--card-gradient), linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(0,0,0,0) 50%, rgba(0,0,0,0.1))`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.setProperty('--card-gradient', 'none');
+                card.style.backgroundImage = `linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(0,0,0,0) 50%, rgba(0,0,0,0.1))`;
+            });
+        });
+    });
+
+    </script>
+
+<script type="module" src="/static/js/core_ansible/ansible-runner-playbooks.js"></script>
+<script type="module" src="/static/js/core_ansible/app-state.js"></script>
+<script type="module" src="/static/js/core_ansible/banner-animation.js"></script>
+<script type="module" src="/static/js/core_ansible/execution-manager.js"></script>
+
+
+
+
+<script type="module" src="/static/js/core_ansible/output-manager.js"></script>
+<script type="module" src="/static/js/core_ansible/host-manager.js"></script>
+<script type="module" src="/static/js/core_ansible/playbook-manager.js"></script>
+<script type="module" src="/static/js/core_ansible/main.js"></script>
+</body>
+</html>

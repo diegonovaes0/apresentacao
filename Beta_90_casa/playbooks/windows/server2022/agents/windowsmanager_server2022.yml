@@ -1,0 +1,44 @@
+---
+- name: Instalação do Windows Manager no Windows Server
+  hosts: windows
+  vars:
+    windowsmanager_file: "{{ lookup('env', 'WINDOWSMANAGER_FILE') | default('windowsmanager.exe', true) }}"
+    caminho_remoto_windows_manager: C:\Users\_admin-skyone\Desktop\Agents_Skyone\windowsmanager\{{ windowsmanager_file }}
+    arquivos_dir: "./arquivos/windows"
+
+  tasks:
+    - name: Criar diretório para Windows Manager⚪️🖥️
+      win_file:
+        path: C:\Users\_admin-skyone\Desktop\Agents_Skyone\windowsmanager
+        state: directory
+      ignore_errors: yes
+
+    - name: Copiar arquivo bin para o servidor⚪️🖥️
+      win_copy:
+        src: "{{ arquivos_dir }}/{{ windowsmanager_file }}"
+        dest: "{{ caminho_remoto_windows_manager }}"
+      ignore_errors: yes
+
+    - name: Iniciar instalação do Windows Manager⚪️🖥️
+      win_shell: |
+        Start-Process -FilePath "{{ caminho_remoto_windows_manager }}" -ArgumentList "/silent" -Wait
+      ignore_errors: yes
+
+    - name: Verificar se a instalação do Windows Manager foi concluída com sucesso⚪️🖥️
+      win_shell: |
+        if (Test-Path 'C:\Program Files (x86)\SkyOne Cloud Solutions\SkyOne Windows Manager\Agent\SkyOne.WindowsManager.Client.exe') { 
+          Write-Output "Instalação concluída com sucesso" 
+        }
+      register: install_check
+      ignore_errors: yes
+
+    - name: Mostrar resultado da verificação da instalação do Windows Manager⚪️🖥️
+      debug:
+        var: install_check.stdout_lines
+      ignore_errors: yes
+
+    - name: Limpar arquivos temporários do Windows Manager⚪️🖥️
+      win_file:
+        path: "{{ caminho_remoto_windows_manager }}"
+        state: absent
+      ignore_errors: yes

@@ -1,0 +1,69 @@
+/* Animações e efeitos visuais para o módulo Ansible */
+
+/* animations.css */
+.spinner {
+
+  animation-name: spinner-rotation;
+  animation-duration: 1.2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  box-sizing: border-box;
+  vertical-align: middle;
+  isolation: isolate;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Loading Banner */
+.loading-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  border: 1px solid var(--black-elegant);
+  position: relative;
+}
+
+.loading-banner.success {
+  background: rgba(76, 175, 80, 0.1);
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.loading-banner.error {
+  background: rgba(244, 67, 54, 0.1);
+  border-color: rgba(244, 67, 54, 0.3);
+}
+
+.loading-banner .progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  border-radius: 0 0 6px 6px;
+}
+
+/* Animação de shimmer */
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* Animação de pulsação */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+  70% { box-shadow: 0 0 0 4px rgba(76, 175, 80, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+}
+
+.host-banner.valid.active::before {
+  animation: pulse 2s infinite;
+}

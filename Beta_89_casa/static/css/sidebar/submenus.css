@@ -1,0 +1,224 @@
+/* submenu.css */
+:root {
+    --black-absolute: #000000;
+    --black-rich: #030303;
+    --black-elegant: #0A0A0A;
+    --black-pearl: #121212;
+    --black-smoke: #1A1A1A;
+    --gray-dark: #2A2A2A;
+    --accent-gold: #FFD600;
+    --accent-gold-hover: #FFE033;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --submenu-hover: rgba(255, 214, 0, 0.05);
+    --menu-hover: rgba(255, 214, 0, 0.1);
+    --submenu-level-1: #2A2A2A;
+    --submenu-level-2: #242424;
+    --submenu-level-3: #1E1E1E;
+}
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    background: var(--submenu-level-1);
+    width: 100%;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    opacity: 1;
+}
+
+.submenu.expanded {
+    max-height: 400px; /* Ajustado para transição suave */
+    opacity: 1;
+}
+
+.submenu.closing {
+    max-height: 0;
+    opacity: 0;
+}
+
+.sidebar.collapsed .submenu {
+    opacity: 0;
+    max-height: 0;
+}
+
+.submenu .menu-item a {
+    height: 32px;
+    padding: 0.5rem 1.2rem 0.5rem 2.4rem;
+    font-size: 0.8rem;
+}
+
+.submenu .submenu {
+    background: var(--submenu-level-2);
+}
+
+.submenu .submenu .menu-item a {
+    padding-left: 3.2rem;
+    height: 30px;
+    font-size: 0.75rem;
+}
+
+.submenu .submenu .submenu {
+    background: var(--submenu-level-3);
+}
+
+.submenu .submenu .submenu .menu-item a {
+    padding-left: 4rem;
+    height: 28px;
+    font-size: 0.75rem;
+}
+
+.submenu .menu-item.selected > a {
+    color: var(--accent-gold);
+    background: var(--submenu-hover);
+}
+
+.menu-arrow {
+    font-size: 0.9rem;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.menu-item.open > a .menu-arrow {
+    transform: rotate(90deg);
+}
+
+.sidebar.collapsed .menu-arrow {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+
+/* header.css (ajustado) */
+.ansible-header {
+    width: 100%;
+    padding: 16px;
+    background: var(--gradient-header);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg), inset 0 1px 2px rgba(255, 214, 0, 0.05);
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    border: 1px solid var(--black-elegant);
+    position: sticky; /* Alterado para sticky */
+    top: 0; /* Fixa no topo do contêiner pai */
+    z-index: 200; /* Aumentado para ficar acima de outros elementos */
+    overflow: hidden;
+    min-height: 70px;
+  }
+  
+  /* Garante que o contêiner pai do header não interfira */
+  .ansible-container {
+    width: 100%;
+    padding: 15px;
+    font-family: 'Inter', 'Arial', sans-serif;
+    color: var(--text-primary);
+    box-sizing: border-box;
+    background: var(--black-pearl);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    min-height: calc(100vh - 56px);
+    position: relative; /* Define um contexto de posicionamento */
+    overflow: hidden; /* Evita overflow indesejado */
+  }
+  
+  /* Ajuste na sidebar para consistência */
+  .sidebar {
+    width: 260px;
+    height: 100vh;
+    background: var(--black-rich);
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: width 0.3s ease;
+    z-index: 100;
+    overflow-y: auto;
+    border-right: none;
+  }
+  
+  .sidebar.collapsed {
+    width: 80px;
+  }
+  
+  /* Ajuste no conteúdo principal */
+  .content-area {
+    flex: 1;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .sidebar.collapsed + .content-area {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+  }
+  
+  /* Estilo para submenus (adicionado, assumindo estrutura) */
+  .ansible-button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--accent-gold);
+    color: var(--black-absolute);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    height: 32px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative; /* Contexto para submenu */
+  }
+  
+  .ansible-button:hover {
+    background: #FFD54F;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+  }
+  
+  .ansible-button .submenu {
+    display: none; /* Escondido por padrão */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--black-smoke);
+    border: 1px solid var(--gray-dark);
+    border-radius: 4px;
+    padding: 8px;
+    min-width: 150px;
+    z-index: 250; /* Acima do header e outros elementos */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .ansible-button:hover .submenu,
+  .ansible-button.active .submenu {
+    display: block; /* Exibe ao passar o mouse ou ativar */
+  }
+  
+  .ansible-button .submenu-item {
+    padding: 6px 10px;
+    color: var(--text-primary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .ansible-button .submenu-item:hover {
+    background: var(--gray-dark);
+  }

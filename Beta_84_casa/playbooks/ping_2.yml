@@ -1,0 +1,11 @@
+- name: Testar conectividade (ping)
+  hosts: all
+  tasks:
+    - name: Testar conectividade com o localhost
+      command: ping -c 4 127.0.0.1
+      register: result
+
+    - name: Mostrar o resultado de forma mais legível
+      debug:
+        msg: "{{ result.stdout_lines }}"
+

@@ -1,0 +1,218 @@
+/* sidebar.css */
+/* Estilos principais da barra lateral */
+
+:root {
+    --transition-duration: 0.3s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+    --menu-transition: all var(--transition-duration) var(--transition-timing);
+    --height-transition: max-height var(--transition-duration) var(--transition-timing);
+    --opacity-transition: opacity var(--transition-duration) var(--transition-timing);
+}
+
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: var(--black-rich);
+    position: fixed;
+    transition: width var(--transition-duration) var(--transition-timing);
+    z-index: 1;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+    background-color: var(--black-rich);
+    display: none;
+}
+
+.sidebar-header {
+    position: sticky;
+    top: 0;
+    height: 56px;
+    padding: 0 1.2rem;
+    display: flex;
+    align-items: center;
+    background: var(--black-rich);
+    border-bottom: 1px solid var(--gray-dark);
+    z-index: 1;
+}
+
+.sidebar-header button {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--black-rich);
+    border: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
+    transition: transform 0.3s var(--transition-timing),
+                box-shadow 0.3s ease;
+}
+
+.sidebar-header button:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 214, 0, 0.5);
+}
+
+.sidebar-header button i {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s var(--transition-timing);
+    transform-origin: center;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar.collapsed .sidebar-header button i {
+    transform: rotate(180deg);
+}
+
+.menu {
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.menu::-webkit-scrollbar {
+    display: none;
+}
+
+/* Estado colapsado */
+.sidebar.collapsed .menu-text, 
+.sidebar.collapsed .logo-text, 
+.sidebar.collapsed .menu-arrow {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Transições suaves para elementos de texto e ícones */
+.menu-text, 
+.logo-text, 
+.menu-arrow,
+.social-links a,
+.docs-toggle .menu-text,
+.docs-toggle .menu-arrow {
+    transition: opacity 0.25s ease-out, 
+                visibility 0.25s ease-out, 
+                color 0.25s ease;
+}
+
+/* Logo container */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-grow: 1;
+    transition: var(--menu-transition);
+}
+
+.automation-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    fill: var(--accent-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s var(--transition-timing),
+                fill 0.25s ease;
+}
+
+.automation-icon:hover {
+    fill: var(--accent-gold-hover);
+    transform: scale(1.05);
+}
+
+.logo-text {
+    font-family: 'Geek', sans-serif;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+    transition: opacity 0.25s ease-out, 
+                visibility 0.25s ease-out;
+}
+
+/* Social links */
+.social-links {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    transition: padding 0.3s ease,
+                flex-direction 0.3s ease;
+    background: var(--black-rich);
+    border-top: 1px solid var(--gray-dark);
+}
+
+.social-links a {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    transition: transform 0.3s ease,
+                background-color 0.3s ease,
+                color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    color: var(--accent-gold);
+    background: var(--menu-hover);
+    transform: scale(1.1);
+}
+
+.sidebar.collapsed .social-links {
+    padding: 0.75rem;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar.collapsed .social-links a {
+    width: 30px;
+    height: 30px;
+    margin: 0.25rem 0;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    
+    .content-area {
+        margin-left: 80px;
+    }
+}

@@ -1,0 +1,136 @@
+---
+# site24x7_shell_script_install.yml
+# Cria um script .sh localmente, transfere para o servidor e executa
+
+- name: Instalação do Site24x7 via script shell
+  hosts: all
+  become: yes
+  vars:
+    site24x7_api_key: "us_6499e42d6685af5f41ae1d82a68b4cc6"
+    script_dir: "/arquivos"
+    script_name: "instalar_site24x7.sh"
+
+  tasks:
+    # Fase 1: Detecção e verificação do serviço
+    - name: Verificar se o serviço Site24x7 existe (systemd)
+      command: systemctl list-unit-files site24x7monagent.service
+      register: systemd_check
+      ignore_errors: yes
+      changed_when: false
+
+    - name: Verificar se o serviço Site24x7 existe (init.d)
+      stat:
+        path: /etc/init.d/site24x7monagent
+      register: initd_check
+
+    # Fase 2: Parar serviços
+    - name: Parar serviço Site24x7 (systemd)
+      systemd:
+        name: site24x7monagent
+        state: stopped
+        enabled: no
+      when: systemd_check.rc == 0
+      ignore_errors: yes
+
+    - name: Parar serviço Site24x7 (init.d)
+      command: /etc/init.d/site24x7monagent stop
+      when: initd_check.stat.exists
+      ignore_errors: yes
+
+    # Fase 3: Desinstalação oficial
+    - name: Verificar se o binário de desinstalação existe
+      stat:
+        path: /opt/site24x7/monagent/bin/uninstall
+      register: uninstaller_exists
+
+    - name: Executar desinstalação oficial (se existir)
+      command: /opt/site24x7/monagent/bin/uninstall
+      when: uninstaller_exists.stat.exists
+      register: uninstall_result
+      ignore_errors: yes
+
+    # Fase 4: Limpeza forçada em caso de desinstalação problemática
+    - name: Remover diretórios do Site24x7 (limpeza forçada)
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /opt/site24x7
+        - /var/log/site24x7
+        - /etc/init.d/site24x7*
+        - /etc/systemd/system/site24x7*.service
+      ignore_errors: yes
+
+    # Fase 1: Criar o script localmente
+    - name: Criar diretório temporário local
+      delegate_to: localhost
+      file:
+        path: "/tmp/site24x7"
+        state: directory
+        mode: "0755"
+      become: no
+
+    - name: Criar script de instalação localmente
+      delegate_to: localhost
+      copy:
+        dest: "/tmp/site24x7/{{ script_name }}"
+        content: |
+          #!/bin/bash
+          # Script de instalação do Site24x7
+          echo "Iniciando instalação do Site24x7..."
+          echo "Chave API: {{ site24x7_api_key }}"
+          echo "Data e hora: $(date)"
+
+          # Parar o serviço se existir
+          if [ -f /etc/init.d/site24x7monagent ]; then
+            echo "Parando serviço existente..."
+            /etc/init.d/site24x7monagent stop
+          fi
+
+          # Executar a instalação
+          echo "Executando instalação..."
+          bash -c "$(curl -sL https://staticdownloads.site24x7.com/server/Site24x7InstallScript.sh)" readlink -i -key={{ site24x7_api_key }} -automation=true
+
+          # Verificar o status
+          if [ -f /etc/init.d/site24x7monagent ]; then
+            echo "Verificando status do serviço..."
+            /etc/init.d/site24x7monagent status
+          fi
+
+          echo "Instalação concluída!"
+        mode: "0755"
+      become: no
+
+    # Fase 2: Criar diretório no servidor remoto
+    - name: Criar diretório para o script no servidor
+      file:
+        path: "{{ script_dir }}"
+        state: directory
+        mode: "0777"
+
+    # Fase 3: Transferir o script para o servidor
+    - name: Transferir script para o servidor
+      copy:
+        src: "/tmp/site24x7/{{ script_name }}"
+        dest: "{{ script_dir }}/{{ script_name }}"
+        mode: "0777"
+
+    # Fase 4: Executar o script no servidor
+    - name: Executar script de instalação
+      shell: "cd {{ script_dir }} && ./{{ script_name }}"
+      register: install_output
+
+    # Fase 5: Mostrar resultado
+    - name: Exibir saída da instalação
+      debug:
+        var: install_output.stdout_lines
+
+    # Fase 6: Verificar status do serviço
+    - name: Verificar status do serviço
+      shell: "/etc/init.d/site24x7monagent status || echo 'Serviço não encontrado'"
+      register: service_status
+      ignore_errors: yes
+
+    - name: Exibir status do serviço
+      debug:
+        var: service_status.stdout_lines

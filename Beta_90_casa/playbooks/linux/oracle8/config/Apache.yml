@@ -1,0 +1,25 @@
+---
+- name: Playbook para instalar e iniciar o Apache
+  hosts: all
+  become: no
+
+  tasks:
+    - name: Instala o Apache
+      ansible.builtin.package:
+        name: apache2
+        state: present
+
+    - name: Garante que o Apache está rodando
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: yes  # Inicia automaticamente no boot
+
+    - name: Verifica o status do Apache
+      ansible.builtin.command: "systemctl status apache2 --no-pager"
+      register: apache_status
+      changed_when: false
+
+    - name: Exibe o status do Apache
+      ansible.builtin.debug:
+        msg: "Status do Apache: {{ apache_status.stdout }}"

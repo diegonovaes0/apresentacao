@@ -1,0 +1,89 @@
+/* Estilos para botões e controles interativos do módulo Ansible */
+/* buttons.css */
+
+/* Botões padrão */
+.ansible-button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--accent-gold);
+  color: var(--black-absolute);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  height: 32px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ansible-button:hover {
+  background: #FFD54F;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.ansible-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.ansible-button.ansible-secondary {
+  background: var(--error-red);
+  color: white;
+}
+
+.ansible-button.ansible-secondary:hover {
+  background: #EF5350;
+}
+
+.ansible-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.ansible-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Estilos para mensagens de status */
+#execution-status {
+  font-size: 11px;
+  margin-top: 6px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#execution-status.success {
+  color: var(--success-green);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+#execution-status.error {
+  color: var(--error-red);
+  font-weight: 500;
+}
+
+#execution-status svg {
+  width: 12px;
+  height: 12px;
+}
+
+
+
+
+
+
+
+
+
+

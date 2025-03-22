@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Automato Platform</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css">
+    <style>
+        :root {
+            /* Cores base */
+            --black-absolute: #000000;
+            --black-rich: #030303;
+            --black-elegant: #0A0A0A;
+            --black-pearl: #121212;
+            --black-smoke: #1A1A1A;
+            --gray-dark: #2A2A2A;
+            
+            /* Cores de acento */
+            --accent-gold: #FFD600;
+            --accent-gold-hover: #FFE033;
+            --accent-gold-dim: rgba(255, 214, 0, 0.1);
+            --accent-gold-transparent: rgba(255, 214, 0, 0.05);
+            
+            /* Cores de texto */
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --text-tertiary: #808080;
+            
+            /* Cores de feedback */
+            --success-green: #2E7D32;
+            --success-green-dim: rgba(46, 125, 50, 0.2);
+            --error-red: #C62828;
+            --error-red-dim: rgba(198, 40, 40, 0.2);
+            
+            /* Sombras */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 6px 16px rgba(0, 0, 0, 0.5), 0 3px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--black-rich) 0%, var(--black-elegant) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Padrão geométrico sutil de fundo */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 214, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 214, 0, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--black-smoke);
+            border-radius: 10px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            animation: fadeIn 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+            border: 1px solid var(--gray-dark);
+            position: relative;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--black-rich) 0%, var(--black-elegant) 100%);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid var(--gray-dark);
+        }
+        
+        .login-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+        
+        .login-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .login-logo svg {
+            width: 70px;
+            height: 70px;
+            stroke: var(--accent-gold);
+            fill: none;
+            stroke-width: 1.5;
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        
+        .login-title {
+            color: var(--text-primary);
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 10px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .login-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .form-group:focus-within .form-label {
+            color: var(--accent-gold);
+        }
+        
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--black-rich);
+            border: 1px solid var(--gray-dark);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .input-group:focus-within {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px var(--accent-gold-dim);
+        }
+        
+        .input-group:hover:not(:focus-within) {
+            border-color: var(--gray-dark);
+            background: var(--black-elegant);
+        }
+        
+        .input-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            color: var(--accent-gold);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group:focus-within .input-icon {
+            transform: scale(1.1);
+        }
+        
+        .form-control {
+            background: transparent;
+            border: none;
+            padding: 15px 15px 15px 0;
+            width: 100%;
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-tertiary);
+            opacity: 0.7;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .remember-checkbox {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkbox-custom {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: var(--black-rich);
+            border: 1px solid var(--gray-dark);
+            border-radius: 3px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .remember-checkbox:checked ~ .checkbox-custom {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+        
+        .checkbox-custom::after {
+            content: '';
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid var(--black-absolute);
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .remember-checkbox:checked ~ .checkbox-custom::after {
+            display: block;
+        }
+        
+        .remember-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .login-btn {
+            background: var(--accent-gold);
+            color: var(--black-absolute);
+            border: none;
+            border-radius: 6px;
+            padding: 14px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .login-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.1), transparent);
+            pointer-events: none;
+        }
+        
+        .login-btn:hover {
+            background: var(--accent-gold-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .login-btn:active {
+            transform: translateY(1px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .login-btn i {
+            transition: transform 0.3s ease;
+        }
+        
+        .login-btn:hover i {
+            transform: translateX(4px);
+        }
+        
+        .login-footer {
+            padding: 0 30px 25px;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 13px;
+        }
+        
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        
+        .flash-message {
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            animation: slideInDown 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+            position: relative;
+            border-left: 4px solid transparent;
+        }
+        
+        .flash-message.success {
+            background: var(--success-green-dim);
+            color: var(--text-primary);
+            border-left-color: var(--success-green);
+        }
+        
+        .flash-message.error {
+            background: var(--error-red-dim);
+            color: var(--text-primary);
+            border-left-color: var(--error-red);
+        }
+        
+        .flash-message i {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .flash-message.success i {
+            color: var(--success-green);
+        }
+        
+        .flash-message.error i {
+            color: var(--error-red);
+        }
+        
+        .dismiss-flash {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-tertiary);
+            transition: color 0.2s ease;
+            font-size: 14px;
+        }
+        
+        .dismiss-flash:hover {
+            color: var(--text-primary);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255, 214, 0, 0.3)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 5px rgba(255, 214, 0, 0.5)); }
+        }
+        
+        .platform-version {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-tertiary);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .platform-version:hover {
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
+        }
+        
+        /* Easter egg - revelado ao clicar na versão */
+        .platform-version-details {
+            position: absolute;
+            right: 20px;
+            bottom: 60px;
+            background: var(--black-pearl);
+            border: 1px solid var(--gray-dark);
+            border-radius: 6px;
+            padding: 10px 15px;
+            width: 200px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            box-shadow: var(--shadow-lg);
+            font-size: 12px;
+            color: var(--text-secondary);
+            z-index: -1;
+        }
+        
+        .platform-version-details.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+            z-index: 10;
+        }
+        
+        .version-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .version-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .version-item span:first-child {
+            color: var(--text-tertiary);
+        }
+        
+        .version-item span:last-child {
+            color: var(--accent-gold);
+        }
+        
+        /* Animação de fundo para o botão de login */
+        @keyframes buttonGlow {
+            0%, 100% { box-shadow: 0 0 5px var(--accent-gold-dim); }
+            50% { box-shadow: 0 0 15px var(--accent-gold-dim); }
+        }
+        
+        /* Responsividade para dispositivos menores */
+        @media (max-width: 480px) {
+            .login-container {
+                max-width: 90%;
+                margin: 0 15px;
+            }
+            
+            .login-header {
+                padding: 20px 15px;
+            }
+            
+            .login-form {
+                padding: 20px;
+            }
+            
+            .platform-version {
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-logo">
+                <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M256 32l192 96v256l-192 96-192-96V128l192-96zM96 161.6v188.8L256 432l160-81.6V161.6L256 80 96 161.6z"/>
+                    <path d="M256 432V80M96 161.6l160 81.6 160-81.6M416 350.4L256 268.8 96 350.4"/>
+                    <circle cx="256" cy="80" r="16"/>
+                    <circle cx="256" cy="432" r="16"/>
+                    <circle cx="96" cy="161.6" r="16"/>
+                    <circle cx="416" cy="161.6" r="16"/>
+                    <circle cx="96" cy="350.4" r="16"/>
+                    <circle cx="416" cy="350.4" r="16"/>
+                    <circle cx="256" cy="256" r="32"/>
+                </svg>
+            </div>
+            <h1 class="login-title">Automato Platform</h1>
+            <p class="login-subtitle">Sistema de Automação e Gerenciamento</p>
+        </div>
+        
+        <div class="login-form">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message {{ 'success' if category == 'success' else 'error' }}" id="flash-{{ loop.index }}">
+                                {% if category == 'success' %}
+                                    <i class="ri-checkbox-circle-line"></i>
+                                {% else %}
+                                    <i class="ri-error-warning-line"></i>
+                                {% endif %}
+                                {{ message }}
+                                <span class="dismiss-flash" onclick="dismissFlash('flash-{{ loop.index }}')">
+                                    <i class="ri-close-line"></i>
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <form action="{{ url_for('login') }}" method="post" id="loginForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">Nome de Usuário</label>
+                    <div class="input-group">
+                        <div class="input-icon">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <input type="text" id="username" name="username" class="form-control" required autofocus placeholder="Digite seu nome de usuário">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Senha</label>
+                    <div class="input-group">
+                        <div class="input-icon">
+                            <i class="ri-lock-line"></i>
+                        </div>
+                        <input type="password" id="password" name="password" class="form-control" required placeholder="Digite sua senha">
+                    </div>
+                </div>
+                
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember" class="remember-checkbox">
+                    <span class="checkbox-custom"></span>
+                    <label for="remember" class="remember-label">Lembrar acesso</label>
+                </div>
+                
+                <button type="submit" class="login-btn" id="loginButton">
+                    <i class="ri-login-box-line"></i>
+                    Entrar
+                </button>
+            </form>
+        </div>
+        
+        <div class="login-footer">
+            &copy; 2025 Automato Platform. Todos os direitos reservados.
+        </div>
+    </div>
+    
+    <div class="platform-version" id="versionTag">v1.0.0</div>
+    <div class="platform-version-details" id="versionDetails">
+        <div class="version-item">
+            <span>Versão:</span>
+            <span>1.0.0</span>
+        </div>
+        <div class="version-item">
+            <span>Lançamento:</span>
+            <span>10/03/2025</span>
+        </div>
+        <div class="version-item">
+            <span>Framework:</span>
+            <span>Flask 2.3</span>
+        </div>
+        <div class="version-item">
+            <span>Ambiente:</span>
+            <span>Produção</span>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Referências aos elementos
+            const loginForm = document.getElementById('loginForm');
+            const loginButton = document.getElementById('loginButton');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const versionTag = document.getElementById('versionTag');
+            const versionDetails = document.getElementById('versionDetails');
+            
+            // Auto-dismiss para mensagens flash após 6 segundos
+            setTimeout(function() {
+                const flashMessages = document.querySelectorAll('.flash-message');
+                flashMessages.forEach(function(message, index) {
+                    setTimeout(function() {
+                        dismissFlashWithAnimation(message.id);
+                    }, index * 200); // Pequeno delay entre cada mensagem
+                });
+            }, 6000);
+            
+            // Animação ao submeter o formulário
+            loginForm.addEventListener('submit', function(e) {
+                // Validação básica do formulário
+                if (!validateForm()) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Animação no botão
+                loginButton.innerHTML = '<i class="ri-loader-4-line"></i> Autenticando...';
+                loginButton.style.pointerEvents = 'none';
+                loginButton.style.opacity = '0.8';
+                
+                // Adicionar classe para animação de pulso no logo
+                document.querySelector('.login-logo svg').style.animation = 'logoPulse 0.6s ease-in-out infinite';
+                
+                // Permitir que o formulário seja enviado normalmente
+                return true;
+            });
+            
+            // Validação de formulário
+            function validateForm() {
+                let isValid = true;
+                
+                if (usernameInput.value.trim() === '') {
+                    highlightInvalidField(usernameInput);
+                    isValid = false;
+                } else {
+                    resetFieldHighlight(usernameInput);
+                }
+                
+                if (passwordInput.value.trim() === '') {
+                    highlightInvalidField(passwordInput);
+                    isValid = false;
+                } else {
+                    resetFieldHighlight(passwordInput);
+                }
+                
+                return isValid;
+            }
+            
+            // Funções para destacar campos inválidos
+            function highlightInvalidField(field) {
+                field.parentElement.style.borderColor = 'var(--error-red)';
+                field.parentElement.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97)';
+                setTimeout(() => {
+                    field.parentElement.style.animation = '';
+                }, 500);
+            }
+            
+            function resetFieldHighlight(field) {
+                field.parentElement.style.borderColor = '';
+            }
+            
+            // Easter egg - mostrar detalhes da versão
+            versionTag.addEventListener('click', function() {
+                versionDetails.classList.toggle('show');
+            });
+            
+            // Fechar detalhes da versão ao clicar fora
+            document.addEventListener('click', function(e) {
+                if (!versionTag.contains(e.target) && !versionDetails.contains(e.target)) {
+                    versionDetails.classList.remove('show');
+                }
+            });
+            
+            // Animação para campos de entrada
+            const inputFields = document.querySelectorAll('.form-control');
+            inputFields.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.parentElement.classList.add('focused');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.parentElement.classList.remove('focused');
+                });
+            });
+        });
+        
+        // Função para dispensar mensagens flash
+        function dismissFlash(id) {
+            dismissFlashWithAnimation(id);
+        }
+        
+        function dismissFlashWithAnimation(id) {
+            const flashMessage = document.getElementById(id);
+            if (flashMessage) {
+                flashMessage.style.opacity = '0';
+                flashMessage.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    flashMessage.style.height = '0';
+                    flashMessage.style.margin = '0';
+                    flashMessage.style.padding = '0';
+                    setTimeout(() => {
+                        if (flashMessage.parentNode) {
+                            flashMessage.parentNode.removeChild(flashMessage);
+                        }
+                    }, 300);
+                }, 300);
+            }
+        }
+        
+        // Animação de "shake" para campos inválidos
+        document.styleSheets[0].insertRule(`
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                20%, 60% { transform: translateX(-5px); }
+                40%, 80% { transform: translateX(5px); }
+            }
+        `, document.styleSheets[0].cssRules.length);
+    </script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+/* playbooks.css */
+
+/* Usando suas cores definidas */
+:root {
+  /* Cores base do inventário */
+  --black-absolute: #000000;
+  --black-rich: #030303;
+  --black-elegant: #0A0A0A;
+  --black-pearl: #121212;
+  --black-smoke: #1A1A1A;
+  --gray-dark: #2A2A2A;
+  
+  /* Cores de acento */
+  --accent-gold: #FFD600;
+  --accent-gold-hover: #FFE033;
+  
+  /* Texto */
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+  --text-tertiary: #808080;
+  
+  /* Estados e mensagens */
+  --success-green: #2E7D32;
+  --error-red: #C62828;
+  --warning-orange: #FF9800;
+  
+  /* Sombras */
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-dark: rgba(0, 0, 0, 0.8);
+  --shadow-subtle: rgba(0, 0, 0, 0.4);
+}
+
+/* Container principal */
+.ansible-container {
+padding: 20px;
+background: var(--black-pearl);
+border-radius: 12px;
+box-shadow: var(--shadow-md);
+}
+
+/* Layout principal */
+.ansible-layout {
+display: flex;
+gap: 24px;
+flex-wrap: wrap;
+}
+
+/* Seção de playbooks - Sem barra de rolagem */
+.ansible-playbooks {
+flex: 0 0 30%;
+min-width: 300px;
+background: var(--black-rich);
+padding: 16px;
+border-radius: 8px;
+border: 1px solid var(--black-elegant);
+position: relative;
+box-shadow: var(--shadow-md);
+/* Removido overflow-y e max-height para garantir que não haja rolagem */
+}
+
+/* Filtros */
+.ansible-filters {
+display: flex;
+gap: 10px;
+margin-bottom: 16px;
+background: var(--black-elegant);
+padding: 10px;
+border-radius: 4px;
+border: 1px solid var(--black-elegant);
+}
+
+.ansible-filter-group {
+flex: 1;
+}
+
+.ansible-filter-group label {
+display: block;
+margin-bottom: 4px;
+font-size: 10px;
+color: var(--text-secondary);
+}
+
+.ansible-select {
+width: 100%;
+padding: 6px 24px 6px 8px;
+background: var(--black-smoke);
+border: 1px solid var(--gray-dark);
+border-radius: 4px;
+color: var(--text-primary);
+font-size: 12px;
+appearance: none;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23FFD600' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 8px center;
+transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.ansible-select:hover,
+.ansible-select:focus {
+border-color: var(--accent-gold);
+background: var(--black-rich);
+outline: none;
+box-shadow: 0 0 0 2px rgba(255, 214, 0, 0.2);
+}
+
+/* Ações */
+.ansible-actions {
+display: flex;
+gap: 8px;
+margin: 12px 0;
+}
+
+.ansible-button {
+padding: 8px 16px;
+background: var(--gray-dark);
+color: var(--text-primary);
+border: none;
+border-radius: 6px;
+cursor: pointer;
+transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.ansible-button.ansible-primary {
+background: var(--accent-gold);
+color: var(--black-absolute);
+}
+
+.ansible-button.ansible-primary:hover {
+background: var(--accent-gold-hover);
+transform: translateY(-1px);
+}
+
+.ansible-button.ansible-secondary:hover {
+background: var(--black-pearl);
+}
+
+/* Item de playbook */
+/* Item de playbook */
+.playbook-item {
+  padding: 12px;
+  background: var(--black-smoke);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.2s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--black-elegant);
+  position: relative;
+  min-height: 60px;
+}
+
+/* Ajuste específico para o primeiro playbook-item */
+.playbook-item:first-child {
+  margin-top: 20px; /* Adiciona um espaçamento extra no topo do primeiro card */
+}
+
+.playbook-item:hover {
+background: var(--gray-dark);
+transform: scale(1.02);
+box-shadow: 0 4px 10px var(--shadow-subtle);
+}
+
+.playbook-item.selected {
+  background: var(--gray-dark);
+  transform: translateY(-10px); /* Card sobe ao ser selecionado */
+  box-shadow: 0 12px 24px var(--shadow-dark), 0 4px 8px var(--shadow-subtle);
+  border: none;
+  z-index: 10;
+}
+/* Estilizando a "mão" que pega o playbook */
+.playbook-item .hook {
+width: 20px;
+height: 20px;
+position: relative;
+display: inline-block;
+}
+
+.playbook-item .hook::before {
+content: '';
+position: absolute;
+width: 12px;
+height: 12px;
+border: 2px solid var(--accent-gold);
+border-top: none;
+border-right: none;
+transform: rotate(-45deg);
+top: 4px;
+left: 4px;
+transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.playbook-item.selected .hook::before {
+transform: rotate(-45deg) translateY(-12px) translateX(-4px); /* Mão sobe e se move */
+border-color: var(--accent-gold-hover);
+}
+
+/* Conteúdo do playbook */
+.playbook-item h4 {
+font-size: 12px;
+color: var(--text-primary);
+margin: 0;
+font-weight: 500;
+letter-spacing: 0.2px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+flex: 1;
+}
+
+.playbook-item small {
+font-size: 9px;
+color: var(--text-tertiary);
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+/* Contador */
+.playbook-counter {
+position: absolute;
+top: 10px;
+right: 12px;
+background: var(--black-elegant);
+color: var(--accent-gold);
+padding: 4px 10px;
+border-radius: 12px;
+font-size: 12px;
+font-weight: 600;
+border: 1px solid var(--black-elegant);
+box-shadow: 0 2px 4px var(--shadow-subtle);
+}
+
+/* No playbooks message */
+.no-playbooks {
+text-align: center;
+padding: 20px;
+color: var(--text-secondary);
+font-size: 14px;
+background: var(--black-elegant);
+border-radius: 6px;
+border: 1px dashed var(--gray-dark);
+}
+
+/* Loading playbooks */
+.loading-playbooks {
+text-align: center;
+padding: 20px;
+color: var(--accent-gold);
+font-size: 14px;
+background: var(--black-elegant);
+border-radius: 6px;
+border: 1px dashed var(--gray-dark);
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+}
+
+.loading-playbooks::before {
+content: '';
+width: 16px;
+height: 16px;
+border: 2px solid rgba(255, 214, 0, 0.3);
+border-top: 2px solid var(--accent-gold);
+border-radius: 50%;
+animation: spin 1.2s linear infinite;
+}
+
+/* Animação de rotação */
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+.ansible-layout {
+  flex-direction: column;
+}
+
+.ansible-playbooks {
+  flex: 1 1 100%;
+  width: 100%;
+  margin-bottom: 12px;
+}
+}
+
+@media (max-width: 768px) {
+.ansible-container {
+  padding: 10px;
+}
+}

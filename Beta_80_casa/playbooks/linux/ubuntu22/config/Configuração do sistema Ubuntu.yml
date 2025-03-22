@@ -1,0 +1,93 @@
+---
+- name: Teste estendido de várias saídas para baseline
+  hosts: all
+  become: yes
+  vars_prompt:
+    - name: new_hostname
+      prompt: "Hostname da máquina"
+      private: no
+      default: "SKY-SDL-IMP-01"
+    - name: parceiro_password
+      prompt: "Senha para o usuário parceiro"
+      private: yes
+    - name: root_password
+      prompt: "Senha para o usuário root"
+      private: yes
+  vars:
+    log_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}"
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Configuração inicial simples
+      command: echo "Configuração OK"
+      register: simple_config
+      changed_when: true
+
+    - name: Alteração com resultado múltiplo
+      shell: |
+        echo "Alteração 1"
+        echo "Alteração 2"
+      register: multi_change
+      changed_when: true
+
+    - name: Falha com erro detalhado
+      command: ls /nonexistent/path
+      register: detailed_error
+      ignore_errors: yes
+
+    - name: Tarefa skipped condicional
+      command: echo "Skipped"
+      when: false
+
+    - name: Outra tarefa skipped
+      command: echo "Também Skipped"
+      when: false
+
+    - name: Verificar conectividade da rede
+      command: ping -c 1 nonexistentdomain.xyz
+      register: network_check
+      ignore_errors: yes
+      failed_when: network_check.rc != 0
+
+    - name: Tarefa com warning e sucesso
+      shell: |
+        echo "WARNING: Este é um aviso" >&2
+        curl -s http://api.ipify.org || echo "192.168.1.100"
+      register: warn_success
+      ignore_errors: yes
+
+    - name: Tarefa com JSON de sucesso
+      debug:
+        msg: "{{ {'status': 'ok', 'data': {'id': 1, 'desc': 'Success'}} | to_json }}"
+
+    - name: Tarefa com JSON de falha
+      debug:
+        msg: "{{ {'status': 'failed', 'error': 'Simulated failure'} | to_json }}"
+      failed_when: true
+      ignore_errors: yes
+
+    - name: Tarefa com saída longa
+      shell: for i in {1..5}; do echo "Linha $i"; sleep 0.1; done
+      register: long_output
+
+    - name: Criação de usuário
+      debug:
+        msg: "Usuário parceiro criado com sucesso"
+      changed_when: true
+
+    - name: Configuração de timezone
+      debug:
+        msg: "Timezone configurado para America/Sao_Paulo"
+      changed_when: true
+
+    - name: Exibir resumo final
+      debug:
+        msg: |
+          =========== RESUMO DA CONFIGURAÇÃO ===========
+          Hostname: {{ new_hostname }}
+          Sistema: {{ ansible_distribution | default('Linux') }} {{ ansible_distribution_version | default('') }}
+          IP: {{ ansible_facts['default_ipv4'].address | default('192.168.1.100') }}
+          IP Público: {{ warn_success.stdout | default('203.0.113.10') }}
+          Usuário parceiro: parceiro
+          Senha parceiro: {{ parceiro_password }}
+          Senha root: {{ root_password }}
+          ===============================================

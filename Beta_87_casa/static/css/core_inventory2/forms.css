@@ -1,0 +1,184 @@
+/* 
+FORMS.CSS
+Este arquivo contém os estilos para formulários, campos de entrada,
+seletores e outros controles de formulário da aplicação.
+*/
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .form-group {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  
+  .form-label-container {
+    background: var(--black-absolute);
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  
+  .form-label {
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 0;
+    display: block;
+    letter-spacing: 0.5px;
+  }
+  
+  .form-card .card-body {
+    padding: 16px;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: stretch;
+    background: var(--black-elegant);
+    border: 1px solid var(--gray-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+  }
+  
+  .input-group:hover {
+    border-color: rgba(255, 214, 0, 0.2);
+  }
+  
+  .input-group:focus-within {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 1px rgba(255, 214, 0, 0.1), inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-group-text {
+    background: linear-gradient(135deg, var(--black-rich) 0%, var(--black-elegant) 100%);
+    color: var(--accent-gold);
+    padding: 8px 12px;
+    border-right: 1px solid var(--gray-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+  }
+  
+  .form-control, .form-select {
+    background: var(--black-elegant);
+    color: var(--text-primary);
+    border: 1px solid var(--gray-dark);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+    width: 100%;
+    outline: none;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .input-group .form-control {
+    border-radius: 0 4px 4px 0;
+    border-left: none;
+  }
+  
+  .form-control:hover, .form-select:hover {
+    border-color: var(--accent-gold);
+  }
+  
+  .form-control:focus, .form-select:focus {
+    outline: none;
+    background: var(--black-elegant) !important;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 5px rgba(255, 214, 0, 0.3);
+    color: var(--text-primary) !important;
+  }
+  
+  .form-control::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+  }
+  
+  textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+  
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23FFD600' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 30px;
+  }
+  
+  .form-text {
+    color: var(--text-secondary);
+    font-size: 11px;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  
+  /* Validação */
+  .is-valid .form-control,
+  .is-valid .form-select {
+    border-color: var(--success-green);
+  }
+  
+  .is-invalid .form-control,
+  .is-invalid .form-select {
+    border-color: var(--error-red);
+  }
+  
+  .invalid-feedback {
+    color: var(--error-red);
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  /* Adicionar ao final do arquivo forms.css */
+
+/* Input de arquivo oculto */
+input[type="file"].hidden,
+#inventory-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Campo de textarea específico para chave SSH */
+#chave {
+  min-height: 120px;
+  font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 12px;
+}
+/* Adicionar ao final do arquivo forms.css */
+
+/* Input de arquivo oculto */
+input[type="file"].hidden,
+#inventory-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Campo de textarea específico para chave SSH */
+#chave {
+  min-height: 120px;
+  font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 12px;
+}

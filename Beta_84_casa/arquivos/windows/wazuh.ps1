@@ -1,0 +1,2 @@
+Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.8.2-1.msi -OutFile ${env.tmp}\wazuh-agent; msiexec.exe /i ${env.tmp}\wazuh-agent /q WAZUH_MANAGER='opensiem-server.skyinone.net' WAZUH_REGISTRATION_PASSWORD='1ff5a>3154020f#ddc8a3983b62e02283@60bcfb314' WAZUH_AGENT_GROUP='Skyone-Oper'
+NET START WazuhSvc

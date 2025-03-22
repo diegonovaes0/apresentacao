@@ -1,0 +1,169 @@
+/* Estilos para tabelas e listagens */
+/* tables.css*/
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    border: 1px solid var(--black-elegant);
+    background: linear-gradient(135deg, var(--black-rich) 0%, var(--black-elegant) 100%);
+    box-shadow: var(--shadow-md);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-primary);
+}
+
+.table th {
+    background: linear-gradient(135deg, var(--black-rich) 0%, var(--black-elegant) 100%);
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-gold);
+    border-bottom: 1px solid rgba(255, 214, 0, 0.2);
+    text-align: left;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    box-shadow: 0 1px 0 rgba(255, 214, 0, 0.1);
+}
+
+/* Estilos para tabelas e listagens */
+.table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-top: 1px solid var(--black-elegant);
+    vertical-align: middle;
+    color: var(--accent-gold); /* Mantém o texto amarelo */
+    background: var(--black-elegant); /* Fundo preto */
+}
+
+/* Linhas alternadas com tons diferentes */
+.table tr {
+    background: var(--black-elegant);
+}
+
+.table tr:nth-child(odd) {
+    background: rgba(25, 25, 25, 0.95);
+}
+
+.table tr:hover {
+    background: var(--black-smoke);
+}
+
+/* Aprimorando os ícones de ação */
+.inventory-action-buttons {
+    white-space: nowrap;
+}
+
+.inventory-btn-icon {
+    background: transparent;
+    color: var(--text-secondary);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin: 0 3px;
+}
+
+.btn-edit {
+    color: var(--accent-gold);
+    border: 1px solid rgba(255, 214, 0, 0.3);
+}
+
+.btn-edit:hover {
+    background: rgba(255, 214, 0, 0.1);
+}
+
+.btn-delete {
+    color: var(--error-red);
+    border: 1px solid rgba(198, 40, 40, 0.3);
+}
+
+.btn-delete:hover {
+    background: rgba(198, 40, 40, 0.1);
+}
+
+.inventory-btn-icon i {
+    font-size: 14px;
+}
+
+/* Badge para indicar o sistema operacional */
+.inventory-badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.inventory-badge .fa-linux {
+    color: #4CAF50;
+}
+
+.inventory-badge .fa-windows {
+    color: #2196F3;
+}
+
+.inventory-badge i {
+    font-size: 14px;
+}
+
+/* Estilos para o tipo de autenticação */
+td .fa-key, td .fa-lock {
+    margin-right: 6px;
+}
+
+td .fa-key {
+    color: #9C27B0;
+}
+
+td .fa-lock {
+    color: #FFC107;
+}
+
+/* Paginação */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.page-item {
+    display: inline-block;
+}
+
+.page-link {
+    padding: 6px 10px;
+    background: var(--black-elegant);
+    color: var(--text-secondary);
+    border: 1px solid var(--gray-dark);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.page-link:hover {
+    background: var(--menu-hover);
+    color: var(--accent-gold);
+}
+
+.page-item.active .page-link {
+    background: var(--accent-gold);
+    color: var(--black-absolute);
+    border-color: var(--accent-gold);
+}

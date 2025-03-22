@@ -1,0 +1,55 @@
+- name: Coletar Informações do Host
+  hosts: all
+  gather_facts: no  # Desativa gather_facts automático para controle manual
+
+  tasks:
+    # Tarefas para Linux
+    - name: Coletar informações básicas do sistema (Linux)
+      ansible.builtin.setup:
+      when: ansible_os_family != "Windows"
+      register: ansible_facts
+
+    - name: Formatar informações do sistema (Linux)
+      ansible.builtin.set_fact:
+        system_info: "{{ ansible_distribution }} {{ ansible_distribution_version }} ({{ ansible_os_family }})"
+      when: ansible_os_family != "Windows"
+
+    # Tarefas para Windows
+    - name: Coletar informações básicas do sistema (Windows)
+      ansible.windows.win_gather_facts:
+      when: ansible_os_family == "Windows"
+      register: win_facts
+
+    - name: Formatar informações do sistema (Windows)
+      ansible.builtin.set_fact:
+        system_info: "{{ win_facts.ansible_facts.ansible_distribution }} {{ win_facts.ansible_facts.ansible_distribution_version }}"
+      when: ansible_os_family == "Windows"
+
+    - name: Obter IP Público
+      ansible.builtin.uri:
+        url: https://api.ipify.org
+        return_content: yes
+      register: public_ip
+      ignore_errors: yes
+
+    - name: Criar JSON com informações (Linux)
+      ansible.builtin.set_fact:
+        host_details:
+          hostname: "{{ ansible_hostname }}"
+          private_ip: "{{ ansible_default_ipv4.address | default('N/A') }}"
+          public_ip: "{{ public_ip.content | default('N/A') }}"
+          system: "{{ system_info }}"
+      when: ansible_os_family != "Windows"
+
+    - name: Criar JSON com informações (Windows)
+      ansible.builtin.set_fact:
+        host_details:
+          hostname: "{{ win_facts.ansible_facts.ansible_computer_name }}"
+          private_ip: "{{ win_facts.ansible_facts.ansible_ip_addresses[0] | default('N/A') }}"
+          public_ip: "{{ public_ip.content | default('N/A') }}"
+          system: "{{ system_info }}"
+      when: ansible_os_family == "Windows"
+
+    - name: Debug informações coletadas
+      ansible.builtin.debug:
+        var: host_details

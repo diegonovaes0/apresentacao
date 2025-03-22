@@ -1,0 +1,46 @@
+---
+    - name: Coletar Informações do Host Windows
+    hosts: all
+    gather_facts: yes
+    vars:
+        ansible_connection: winrm
+        ansible_winrm_transport: ntlm
+        ansible_winrm_server_cert_validation: ignore
+    
+    tasks:
+        - name: Coletar informações básicas do sistema Windows
+        set_fact:
+            system_info: "{{ ansible_distribution }} {{ ansible_distribution_version | default('') }}"
+
+        - name: Formatar informações do sistema Windows
+        set_fact:
+            formatted_info:
+            hostname: "{{ ansible_hostname }}"
+            private_ip: "{{ ansible_ip_addresses[0] | default('N/A') }}"
+            system: "{{ system_info }}"
+
+        - name: Obter IP Público Windows
+        win_uri:
+            url: https://api.ipify.org?format=json
+            return_content: yes
+        register: public_ip_response
+        ignore_errors: yes
+
+        - name: Definir IP público alternativo
+        set_fact:
+            public_ip_alt: "{{ inventory_hostname }}"
+        when: not public_ip_response.status_code is defined or public_ip_response.status_code != 200
+        
+        - name: Criar JSON com informações Windows
+        set_fact:
+            host_details:
+            hostname: "{{ formatted_info.hostname }}"
+            private_ip: "{{ formatted_info.private_ip | default(inventory_hostname) }}"
+            public_ip: "{{ public_ip_response.json.ip | default(public_ip_alt) | default(inventory_hostname) }}"
+            system: "{{ formatted_info.system | default('Windows Server') }}"
+
+        - name: Debug informações coletadas Windows
+        debug:
+            var: host_details
+            verbosity: 0
+    

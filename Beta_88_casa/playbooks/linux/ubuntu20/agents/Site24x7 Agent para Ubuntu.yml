@@ -1,0 +1,76 @@
+---
+# Playbook: Site24x7 Agent para Oracle Linux 8
+# Descrição: Instala e configura o agente Site24x7 em servidores Oracle Linux 8
+# Versão: 1.0.0
+# Data: 2025-03-13
+
+- name: Instalação do Site24x7 Agent para Oracle Linux 8
+  hosts: all
+  become: yes
+  vars:
+    site24x7_key: "us_dbbaa0d164ea2cf1caddc8ba13a4dd43"
+    download_url: "https://staticdownloads.site24x7.com/server/Site24x7InstallScript.sh"
+    install_dir: "/opt/site24x7"
+    temp_dir: "/tmp/site24x7-install"
+    
+  tasks:
+    - name: Verificar se o Site24x7 Agent já está instalado
+      stat:
+        path: /opt/site24x7/monagent/bin/monagent
+      register: agent_installed
+      
+    - name: Criar diretório de instalação do Site24x7
+      file:
+        path: "{{ temp_dir }}"
+        state: directory
+        mode: '0755'
+      when: not agent_installed.stat.exists
+      
+    - name: Download do script de instalação do Site24x7
+      get_url:
+        url: "{{ download_url }}"
+        dest: "{{ temp_dir }}/install.sh"
+        mode: '0755'
+      when: not agent_installed.stat.exists
+      
+    - name: Instalar Site24x7 Agent
+      shell: "{{ temp_dir }}/install.sh -i -key={{ site24x7_key }}"
+      args:
+        chdir: "{{ temp_dir }}"
+      when: not agent_installed.stat.exists
+      register: install_result
+      async: 600
+      poll: 0
+      
+    - name: Aguardar instalação do Site24x7 Agent
+      async_status:
+        jid: "{{ install_result.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 30
+      delay: 10
+      when: not agent_installed.stat.exists
+      
+    - name: Verificar status do serviço Site24x7 Agent
+      systemd:
+        name: site24x7monagent
+        state: started
+        enabled: yes
+      when: not agent_installed.stat.exists
+      ignore_errors: yes
+      
+    - name: Limpar arquivos temporários do Site24x7
+      file:
+        path: "{{ temp_dir }}"
+        state: absent
+      when: not agent_installed.stat.exists
+      
+    - name: Exibir status da instalação do Site24x7
+      debug:
+        msg: "Site24x7 Agent já está instalado em {{ ansible_hostname }}"
+      when: agent_installed.stat.exists
+
+    - name: Exibir status da instalação do Site24x7
+      debug:
+        msg: "Site24x7 Agent foi instalado com sucesso em {{ ansible_hostname }}"
+      when: not agent_installed.stat.exists and job_result.finished is defined and job_result.finished

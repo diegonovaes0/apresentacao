@@ -1,0 +1,58 @@
+<header class="content-header">
+    <div class="breadcrumbs">
+        {% if module and submodule %}
+            <a href="{{ url_for('index') }}" class="breadcrumb-item">Dashboard</a>
+            <i class="ri-arrow-right-s-line separator"></i>
+            <a href="{{ url_for('module_page', module=module, submodule='dashboard') }}" class="breadcrumb-item">{{ module | title }}</a>
+            {% if submodule != 'dashboard' %}
+                <i class="ri-arrow-right-s-line separator"></i>
+                <span class="breadcrumb-item active">{{ submodule | title }}</span>
+            {% endif %}
+            {% if page %}
+                <i class="ri-arrow-right-s-line separator"></i>
+                <span class="breadcrumb-item active">{{ page }}</span>
+            {% endif %}
+        {% else %}
+            <span class="breadcrumb-item">Dashboard</span>
+            <i class="ri-arrow-right-s-line separator"></i>
+            <span class="breadcrumb-item">Principal</span>
+        {% endif %}
+    </div>
+
+    <div class="user-info">
+        {% if session.logged_in %}
+            <span class="username">{{ session.username }}</span>
+            <div class="dropdown">
+                <button class="settings-button" id="settingsDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Configurações" aria-label="Configurações">
+                    <i class="ri-settings-4-line"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settingsDropdown">
+                    <li><a class="dropdown-item" href="#"><i class="ri-user-settings-line me-2"></i>Perfil</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="ri-lock-password-line me-2"></i>Alterar senha</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#"><i class="ri-settings-5-line me-2"></i>Configurações</a></li>
+                </ul>
+            </div>
+            <a href="{{ url_for('logout') }}" class="logout-button" id="logoutButton" title="Sair" aria-label="Sair">
+                <i class="ri-logout-box-r-line"></i>
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Adiciona evento de clique no botão de logout
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Redireciona para a página de logout imediatamente
+                window.location.href = "{{ url_for('logout') }}";
+            });
+        }
+    });
+</script>

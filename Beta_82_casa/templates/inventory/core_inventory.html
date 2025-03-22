@@ -1,0 +1,582 @@
+{% extends "base.html" %}
+{% block title %}Inventário Ansible{% endblock %}
+
+{% block styles %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+
+<div class="main-inventory">
+    <div class="inventory-container">
+        <!-- Banner -->
+        <div class="header">
+            <div class="header-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 0-7.35 16.83l7.35-12.66 7.35 12.66A10 10 0 0 0 12 2z"/>
+                    <path d="M12 8v6"/>
+                    <circle cx="12" cy="18" r="1"/>
+                </svg>
+                Gerenciador de Inventário
+            </div>
+            <div class="header-subtitle">Gerencie seus servidores com eficiência</div>
+        </div>
+
+        <!-- Card Principal -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    <span id="form-title">Adicionar Novo Servidor</span>
+                </span>
+            </div>
+            <div class="card-body">
+                <!-- Formulário -->
+                <div class="card form-card">
+                    <div class="inner-container">
+                        <form id="server-form">
+                            <div class="form-grid">
+                                <!-- Campo para IP do servidor -->
+                                <div class="form-group">
+                                    <label for="host" class="form-label">IP do Servidor <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                                                <line x1="6" y1="6" x2="6" y2="6"></line>
+                                                <line x1="6" y1="18" x2="6" y2="18"></line>
+                                            </svg>
+                                        </span>
+                                        <input type="text" id="host" class="form-control" placeholder="192.168.1.1" required>
+                                    </div>
+                                </div>
+
+                                <!-- Seleção de sistema operacional -->
+                                <div class="form-group">
+                                    <label for="os" class="form-label">Sistema Operacional <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                                            </svg>
+                                        </span>
+                                        <select id="os" class="form-select" required>
+                                            <optgroup label="Linux">
+                                                <option value="linux-ubuntu-20.04">Ubuntu 20.04 LTS</option>
+                                                <option value="linux-ubuntu-22.04">Ubuntu 22.04 LTS</option>
+                                                <option value="linux-ubuntu-24.04">Ubuntu 24.04 LTS</option>
+                                                <option value="linux-oracle-8">Oracle Linux 8</option>
+                                                <option value="linux-oracle-9">Oracle Linux 9</option>
+                                                <option value="linux-rhel-8">Red Hat Enterprise Linux 8</option>
+                                                <option value="linux-rhel-9">Red Hat Enterprise Linux 9</option>
+                                            </optgroup>
+                                            <optgroup label="Windows">
+                                                <option value="windows-server-2019" selected>Windows Server 2019</option>
+                                                <option value="windows-server-2022">Windows Server 2022</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Seleção de distribuição Linux -->
+                                <div class="form-group linux-options" style="display: none;">
+                                    <label for="os_distribution" class="form-label">Distribuição Linux</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"></path>
+                                                <path d="M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"></path>
+                                            </svg>
+                                        </span>
+                                        <select id="os_distribution" class="form-select">
+                                            <option value="oracle">Oracle Linux</option>
+                                            <option value="ubuntu" selected>Ubuntu</option>
+                                            <option value="rhel">Red Hat Enterprise Linux</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Seleção de versão da distribuição Linux -->
+                                <div class="form-group linux-options" style="display: none;">
+                                    <label for="os_version" class="form-label">Versão da Distribuição</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="16 18 22 12 16 6"></polyline>
+                                                <polyline points="8 6 2 12 8 18"></polyline>
+                                            </svg>
+                                        </span>
+                                        <select id="os_version" class="form-select">
+                                            <!-- Preenchido dinamicamente via JavaScript -->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Campo para nome de usuário -->
+                                <div class="form-group">
+                                    <label for="usuario" class="form-label">Usuário <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="12" cy="7" r="4"></circle>
+                                            </svg>
+                                        </span>
+                                        <input type="text" id="usuario" class="form-control" placeholder="Nome do usuário" required>
+                                    </div>
+                                </div>
+
+                                <!-- Campo para senha -->
+                                <div class="form-group">
+                                    <label for="senha" class="form-label">Senha</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                            </svg>
+                                        </span>
+                                        <input type="password" id="senha" class="form-control" placeholder="Senha do servidor">
+                                    </div>
+                                    <small class="form-text">Opcional para chave SSH</small>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="chave" class="form-label">Chave SSH 
+                                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" title="Cole o conteúdo da chave PEM">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                                        <line x1="12" y1="8" x2="12" y2="8"></line>
+                                    </svg>
+                                </label>
+                                <textarea id="chave" class="form-control" placeholder="Cole sua chave SSH aqui (opcional)"></textarea>
+                            </div>
+
+                            <div class="button-group">
+                                <button type="button" id="cancel-btn" class="btn secondary" style="display: none;">
+                                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                    Cancelar
+                                </button>
+                                <button type="submit" id="submit-btn" class="btn">
+                                  
+                                    </svg>
+                                    <span id="submit-text">Adicionar Servidor</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+               <!-- Ações de Inventário -->
+                <div class="inventory-controls">                  
+                    
+                    <button id="import-inventory-btn" class="inventory-btn">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Importar Inventário
+                    </button>
+                    <button id="export-template-btn" class="inventory-btn">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Exportar Template
+                    </button>
+                    <button id="refresh-inventory-btn" class="inventory-btn">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 4v6h-6"></path>
+                            <path d="M1 20v-6h6"></path>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+                            <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+                        </svg>
+                        Atualizar Inventário
+                    </button>
+                    <button id="show-inventory-btn" class="inventory-btn">
+                        
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        Mostrar Inventário YAML
+                    </button>
+                        <!-- Este input deve estar aqui e configurado corretamente -->
+                    <!-- Este input deve estar aqui e configurado corretamente -->
+                <input type="file" id="inventory-file-input" style="display: none;" accept=".json,.txt">
+            </div> 
+
+
+
+
+
+                  <!-- Modal para exibir inventário -->
+<div id="inventory-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Inventário YAML
+            </span>
+            <button id="close-modal-btn" class="btn-close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <pre id="full-inventory" class="inventory-code"></pre>
+        </div>
+        <div class="modal-footer">
+            <button id="copy-inventory-btn" class="modal-btn modal-btn-primary">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copiar
+            </button>
+            <button id="close-modal-btn-alt" class="modal-btn modal-btn-secondary">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>
+
+                <!-- Container para mensagens de feedback -->
+                <div id="feedback-container" class="feedback-container"></div>
+            </div>
+        </div>
+
+        <!-- Tabela de Servidores -->
+        <div class="card table-card">
+            <div class="card-header">
+                <span class="card-title">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                    Servidores Cadastrados
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Host/IP</th>
+                                <th>Usuário</th>
+                                <th>Autenticação</th>
+                                <th>Sistema</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="servers-list">
+                            <!-- Preenchido via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Template para linha da tabela -->
+        <template id="server-row-template">
+            <tr>
+                <td class="host-cell"></td>
+                <td class="user-cell"></td>
+                <td class="auth-cell"></td>
+                <td class="os-cell"></td>
+                <td class="status-cell">
+                    <span class="inventory-badge pending">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Pendente
+                    </span>
+                </td>
+                <td class="action-buttons">
+                    <button class="btn-icon btn-update" title="Atualizar">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 4v6h-6"></path>
+                            <path d="M1 20v-6h6"></path>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+                            <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+                        </svg>
+                    </button>
+                    <button class="btn-icon btn-edit" title="Editar">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                    </button>
+                    <button class="btn-icon btn-delete" title="Excluir">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+        </template>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+   <script>
+    // Elementos
+    const importBtn = document.getElementById('import-inventory-btn');
+    const exportBtn = document.getElementById('export-template-btn');
+    const fileInput = document.getElementById('inventory-file-input');
+    const refreshBtn = document.getElementById('refresh-inventory-btn');
+    const showInventoryBtn = document.getElementById('show-inventory-btn');
+    
+    // Exportação do template
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function() {
+            // Feedback visual para o usuário
+            showMessage('Preparando template para download...', 'warning');
+            exportBtn.disabled = true;
+            exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Exportando...';
+            
+            // Faz a requisição para o endpoint de exportação
+            fetch('/inventory/export-inventory-template')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao gerar template');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    // Cria um link para download e o ativa
+                    const date = new Date().toISOString().slice(0, 10);
+                    const fileName = `inventory_template_${date}.txt`;
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    
+                    // Limpa recursos
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    showMessage('Template baixado com sucesso!', 'success');
+                })
+                .catch(error => {
+                    console.error('Erro durante exportação:', error);
+                    showMessage('Erro ao exportar template: ' + error.message, 'error');
+                })
+                .finally(() => {
+                    exportBtn.disabled = false;
+                    exportBtn.innerHTML = '<i class="fas fa-file-download"></i> Exportar Template';
+                });
+        });
+    }
+    
+    // Importação do inventário
+if (importBtn && fileInput) {
+    importBtn.addEventListener('click', function() {
+        fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+            const file = this.files[0];
+            
+            // Feedback visual
+            showMessage(`Importando arquivo ${file.name}, aguarde...`, 'warning');
+            importBtn.disabled = true;
+            importBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importando...';
+            
+            // Prepara FormData para o upload
+            const formData = new FormData();
+            formData.append('inventory_file', file);
+            
+            // Faz a requisição para o endpoint de importação
+            fetch('/inventory/import-inventory', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    // Recarrega a página após breve delay
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    throw new Error(data.message || 'Erro na importação');
+                }
+            })
+            .catch(error => {
+                console.error('Erro durante importação:', error);
+                showMessage(`Erro ao importar: ${error.message}`, 'error');
+            })
+            .finally(() => {
+                // Restaura o botão e limpa o input
+                importBtn.disabled = false;
+                importBtn.innerHTML = '<i class="fas fa-upload"></i> Importar Inventário';
+                fileInput.value = '';
+            });
+        }
+    });
+}
+    
+    // Atualização do inventário
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', function() {
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
+            
+            fetch('/inventory/refresh-inventory', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showMessage(data.message || 'Erro ao atualizar inventário', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao atualizar inventário:', error);
+                showMessage('Erro ao atualizar inventário: ' + error.message, 'error');
+            })
+            .finally(() => {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i class="fas fa-sync"></i> Atualizar Inventário';
+            });
+        });
+    }
+    
+    // Visualizar inventário YAML
+    if (showInventoryBtn) {
+        showInventoryBtn.addEventListener('click', function() {
+            const modal = document.getElementById('inventory-modal');
+            const fullInventory = document.getElementById('full-inventory');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const closeModalBtnAlt = document.getElementById('close-modal-btn-alt');
+            const copyInventoryBtn = document.getElementById('copy-inventory-btn');
+            
+            // Busca o conteúdo do inventário
+            fetch('/show-inventory')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.inventory) {
+                        fullInventory.textContent = data.inventory;
+                        modal.style.display = 'block';
+                    } else if (data.error) {
+                        showMessage('Erro ao buscar inventário: ' + data.error, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar inventário:', error);
+                    showMessage('Erro ao buscar inventário: ' + error.message, 'error');
+                });
+            
+            // Configurar botões do modal
+            if (closeModalBtn) {
+                closeModalBtn.onclick = function() {
+                    modal.style.display = 'none';
+                };
+            }
+            
+            if (closeModalBtnAlt) {
+                closeModalBtnAlt.onclick = function() {
+                    modal.style.display = 'none';
+                };
+            }
+            
+            if (copyInventoryBtn) {
+                copyInventoryBtn.onclick = function() {
+                    if (fullInventory.textContent) {
+                        navigator.clipboard.writeText(fullInventory.textContent)
+                            .then(() => {
+                                showMessage('Inventário copiado para a área de transferência!', 'success');
+                            })
+                            .catch(err => {
+                                showMessage('Erro ao copiar: ' + err.message, 'error');
+                            });
+                    }
+                };
+            }
+            
+            // Fechar o modal clicando fora
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        });
+    }
+    
+    // Função para mostrar mensagens de feedback
+    window.showMessage = function(message, type = 'success', duration = 4000) {
+        const container = document.getElementById('feedback-container');
+        if (!container) return;
+        
+        // Remove mensagens anteriores
+        const existingMessages = container.querySelectorAll('.message-feedback');
+        existingMessages.forEach(el => el.remove());
+        
+        // Cria o elemento de mensagem
+        const messageElement = document.createElement('div');
+        messageElement.className = `message-feedback message-${type}`;
+        messageElement.textContent = message;
+        
+        // Adiciona ao container
+        container.appendChild(messageElement);
+        
+        // Remove após a duração especificada
+        setTimeout(() => {
+            if (messageElement.parentNode) {
+                messageElement.remove();
+            }
+        }, duration);
+    };
+});
+</script>
+
+<!-- Script para carregar o manipulador de template -->
+{% endblock %}

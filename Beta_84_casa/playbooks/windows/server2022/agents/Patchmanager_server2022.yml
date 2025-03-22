@@ -1,0 +1,47 @@
+---
+- name: Instalação do Patchmanager no Windows Server
+  hosts: windows
+  vars:
+    installation_code: us_dbbaa0d164ea2cf1caddc8ba13a4dd43
+    patchmanager_file: "{{ lookup('env', 'PATCHMANAGER_FILE') | default('PM_OPERIMPLANTAO_Agent.exe', true) }}"
+    caminho_remoto_patchmanager: C:\Users\_admin-skyone\Desktop\Agents_Skyone\patchmanager\{{ patchmanager_file }}
+    arquivos_dir: "./arquivos/windows"
+
+  tasks:
+    - name: Criar diretório para patchmanager🔴🛠️
+      win_file:
+        path: C:\Users\_admin-skyone\Desktop\Agents_Skyone\patchmanager
+        state: directory
+      ignore_errors: yes
+
+    - name: Copiar arquivo bin para o servidor🔴🛠️
+      win_copy:
+        src: "{{ arquivos_dir }}/{{ patchmanager_file }}"
+        dest: "{{ caminho_remoto_patchmanager }}"
+      ignore_errors: yes
+
+    - name: Iniciar instalação do PatchManager🔴🛠️
+      win_shell: |
+        Start-Process -FilePath "{{ caminho_remoto_patchmanager }}" -ArgumentList "/silent" -Wait
+      ignore_errors: yes
+
+    - name: Verificar se a instalação do PatchManager foi concluída com sucesso🔴🛠️
+      win_shell: |
+        if (Test-Path 'C:\Program Files\PatchManager') { 
+          Write-Output "Instalação concluída com sucesso" 
+        } else { 
+          Write-Output "Falha na instalação" 
+        }
+      register: install_check
+      ignore_errors: yes
+
+    - name: Mostrar resultado da verificação da instalação do PatchManager🔴🛠️
+      debug:
+        var: install_check.stdout_lines
+      ignore_errors: yes
+
+    - name: Limpar arquivos temporários do PatchManager🔴🛠️
+      win_file:
+        path: "{{ caminho_remoto_patchmanager }}"
+        state: absent
+      ignore_errors: yes

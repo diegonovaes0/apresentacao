@@ -1,0 +1,55 @@
+/* 
+RESET.CSS
+Este arquivo contém os resets de estilos e configurações base
+para garantir consistência entre navegadores.
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  html, body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: var(--black-pearl);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+  
+  body {
+    height: 100vh;
+    width: 100vw;
+    background: var(--black-pearl);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Barra de rolagem personalizada */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--black-elegant);
+    border-radius: 3px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--gray-dark);
+    border-radius: 3px;
+    border: 1px solid var(--black-elegant);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #505050;
+  }
+  
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-dark) var(--black-elegant);
+  }

@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Gerenciador de Playbooks Ansible - Automato Platform
+{% endblock %}
+
+{% block content %}
+    <!-- Container principal do módulo Ansible -->
+    <div class="ansible-container">
+        <!-- Cabeçalho do módulo -->
+        <div class="ansible-header">
+            <div class="ansible-header-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 0-7.35 16.83l7.35-12.66 7.35 12.66A10 10 0 0 0 12 2z"/>
+                    <path d="M12 8v6"/>
+                    <circle cx="12" cy="18" r="1"/>
+                </svg>
+                Gerenciador de Playbooks Ansible
+            </div>
+            <div class="ansible-header-subtitle">Controle e Automação Simplificados</div>
+            <div class="ansible-progress-container"></div>
+        </div>
+
+        <!-- Botão para selecionar todos os hosts -->
+        <button id="select-all-hosts-btn" class="ansible-button ansible-primary">Selecionar Todos os Hosts</button>
+        
+        <!-- Container para a lista de hosts -->
+        <div class="ansible-hosts-container" id="hosts-list"></div>
+
+        <!-- Layout principal com duas colunas -->
+        <div class="ansible-layout">
+            <!-- Seção de playbooks -->
+            <div class="ansible-playbooks">
+                <!-- Filtros para os playbooks -->
+                <div class="ansible-filters">
+                    <div class="ansible-filter-group">
+                        <select id="os-filter" class="ansible-select">
+                            <option value="linux" selected>Linux</option>
+                            <option value="windows">Windows</option>
+                        </select>
+                    </div>
+                    <div class="ansible-filter-group">
+                        <select id="category-filter" class="ansible-select">
+                            <option value="configuracoes">Configurações</option>
+                            <option value="baseline">Baseline</option>
+                            <option value="agentes">Agentes</option>
+                            <option value="seguranca">Segurança</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Título da seção de playbooks -->
+                <h3 class="ansible-heading">Playbooks Disponíveis</h3>
+                
+                <!-- Botões de ação - Layout "Black Piano" -->
+                <div class="ansible-piano-keys">
+                    <!-- Teclas pretas (ações secundárias) -->
+                    <div class="piano-black-keys">
+                        <button id="refresh" class="piano-key black-key" title="Atualizar" onclick="refreshPlaybooks()">
+                            <i class="ri-loop-right-line"></i>
+                        </button>
+                        <button id="select-all-playbooks" class="piano-key black-key" title="Selecionar Todos" onclick="selectAllPlaybooks()">
+                            <i class="ri-play-list-add-line"></i>
+                        </button>
+                        <button id="cancel-all" class="piano-key black-key" title="Cancelar Tudo" onclick="cancelAll()">
+                            <i class="ri-eject-line"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Tecla branca (Executar) -->
+                    <div class="piano-white-key">
+                        <button id="execute-selected" class="piano-key white-key" onclick="executePlaybooks()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 3l14 9-14 9V3z"/>
+                            </svg>
+                            Executar
+                        </button>
+                        <div id="execution-status" class="piano-status">1 host(s) e 2 playbook(s) selecionados</div>
+                    </div>
+                </div>
+                
+                <!-- Lista de playbooks -->
+                <div id="playbooks" class="ansible-playbooks-list"></div>
+            </div>
+
+            <!-- Seção de execução de playbooks -->
+            <div class="ansible-execution">
+                <h3 class="ansible-heading">Execução de Playbooks</h3>
+                <div id="running-playbooks" class="ansible-executions-list"></div>
+            </div>
+        </div>
+        
+        <!-- Área de debug -->
+        <div id="debug-info" class="ansible-debug">
+            <div id="debug-toggle" class="ansible-debug-toggle">
+                Mostrar Debug
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </div>
+            <div id="baseline-configurator-container"></div>
+            <pre id="debug-output" class="ansible-debug-output"></pre>
+        </div>
+    </div>
+
+    <!-- CSS incorporado -->
+    <style>
+        /* Container das ações - Tema Black Piano */
+        .ansible-piano-keys {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(to bottom, #1a1a1a, #333); /* Preto brilhante */
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Fundo com efeito de automação */
+        .ansible-piano-keys::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 215, 0, 0.1), transparent 70%);
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        /* Teclas pretas (ações secundárias) */
+        .piano-black-keys {
+            display: flex;
+            gap: 8px;
+            z-index: 1;
+        }
+
+        .piano-key.black-key {
+            width: 50px;
+            height: 80px;
+            background: #111; /* Preto profundo */
+            border: 1px solid #444;
+            border-radius: 0 0 6px 6px;
+            padding: 10px;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 -4px 8px rgba(255, 255, 255, 0.1), 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .piano-key.black-key:hover {
+            background: #333;
+            transform: translateY(-4px);
+            box-shadow: inset 0 -4px 8px rgba(255, 255, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .piano-key.black-key:active {
+            transform: translateY(2px);
+            box-shadow: inset 0 -2px 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .piano-key.black-key i {
+            font-size: 20px;
+        }
+
+        /* Tecla branca (Executar) */
+        .piano-white-key {
+            position: relative;
+            z-index: 0;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .piano-key.white-key {
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to bottom, #fff, #e0e0e0); /* Branco brilhante */
+            border: 1px solid #999;
+            border-radius: 6px;
+            padding: 15px;
+            color: #000;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .piano-key.white-key::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .piano-key.white-key:hover::after {
+            left: 100%;
+        }
+
+        .piano-key.white-key:hover {
+            background: linear-gradient(to bottom, #fff, #f0f0f0);
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 2px 6px rgba(255, 255, 255, 0.6);
+        }
+
+        .piano-key.white-key:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .piano-key.white-key svg {
+            width: 20px;
+            height: 20px;
+            stroke: #000;
+            stroke-width: 2;
+        }
+
+        /* Status abaixo da tecla branca */
+        .piano-status {
+            font-size: 14px;
+            color: #ffd700; /* Ouro para remeter ao Ansible */
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .piano-status.success {
+            color: var(--success-green);
+            background: rgba(40, 167, 69, 0.2);
+        }
+
+        .piano-status.error {
+            color: var(--error-red);
+            background: rgba(220, 53, 69, 0.2);
+        }
+
+        /* Botão Selecionar Todos os Hosts */
+        .ansible-button.ansible-primary {
+            padding: 8px 16px;
+            border-radius: 4px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            margin-bottom: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .ansible-button.ansible-primary:hover {
+            background: #444;
+            border-color: #ffd700;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .ansible-piano-keys {
+                padding: 15px;
+            }
+            .piano-black-keys {
+                gap: 5px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .piano-key.black-key {
+                width: 40px;
+                height: 60px;
+            }
+            .piano-key.white-key {
+                height: 50px;
+            }
+            .piano-status {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <!-- JavaScript incorporado -->
+    <script>
+        function executePlaybooks() {
+            const status = document.getElementById('execution-status');
+            status.textContent = 'Executando playbooks...';
+            status.classList.add('success');
+            setTimeout(() => {
+                status.textContent = 'Execução concluída!';
+            }, 2000);
+        }
+
+        function refreshPlaybooks() {
+            alert('Atualizando lista de playbooks...');
+        }
+
+        function selectAllPlaybooks() {
+            const status = document.getElementById('execution-status');
+            status.textContent = 'Todos os playbooks selecionados!';
+            status.classList.remove('error');
+            status.classList.add('success');
+        }
+
+        function cancelAll() {
+            const status = document.getElementById('execution-status');
+            status.textContent = 'Todas as execuções canceladas.';
+            status.classList.remove('success');
+            status.classList.add('error');
+        }
+    </script>
+{% endblock %}

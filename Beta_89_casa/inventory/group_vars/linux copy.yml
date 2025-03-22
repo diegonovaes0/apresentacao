@@ -1,0 +1,70 @@
+---
+all:
+  vars:
+    # Variáveis de conexão
+    ansible_connection: ssh                  # Tipo de conexão (ssh, local, winrm, etc.)
+    ansible_host: "{{ inventory_hostname }}" # Define o IP ou hostname (padrão: nome do host no inventário)
+    ansible_port: 22                         # Porta SSH
+    ansible_user: ubuntu                     # Usuário padrão para conexão
+    ansible_ssh_private_key_file: /home/opc/chave_ssh/ssh_key  # Caminho da chave SSH
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'     # Argumentos extras para o SSH
+    ansible_ssh_retries: 3                   # Número de tentativas de reconexão SSH
+    ansible_timeout: 10                      # Tempo limite de conexão (segundos)
+
+    # Variáveis de elevação de privilégios
+    ansible_become: true                     # Ativar elevação de privilégios (sudo)
+    ansible_become_method: sudo              # Método de elevação (sudo, su, etc.)
+    ansible_become_user: root                # Usuário alvo ao usar become (padrão: root)
+    ansible_become_pass: ''                  # Senha para become (deixe vazio se não usar)
+
+    # Variáveis de interpretadores
+    python_interpreters:
+      py27: /usr/bin/python2.7
+      py36: /usr/bin/python3.6
+      py37: /usr/bin/python3.7
+      py38: /usr/bin/python3.8
+      py39: /usr/bin/python3.9
+      py310: /usr/bin/python3.10
+      py311: /usr/bin/python3.11
+      py312: /usr/bin/python3.12
+    ansible_python_interpreter: "{{ python_interpreters.py310 }}"  # Interpretador Python padrão
+
+    # Variáveis de execução
+    ansible_forks: 5                         # Número de processos paralelos
+    ansible_gather_facts: true               # Coletar fatos automaticamente
+    ansible_command_timeout: 30              # Tempo limite para comandos (segundos)
+    ansible_pipelining: true                 # Habilitar pipelining para SSH (melhora desempenho)
+
+    # Variáveis de ambiente
+    ansible_env:
+      PATH: "/usr/local/bin:/usr/bin:/bin"   # Variável de ambiente PATH
+      LANG: "en_US.UTF-8"                    # Configuração de locale
+
+    # Variáveis personalizadas
+    app_environment: production              # Exemplo: ambiente da aplicação
+    log_level: info                          # Exemplo: nível de log
+    backup_dir: /var/backups                 # Exemplo: diretório de backups
+
+  hosts:
+    10.120.165.223:
+      # Variáveis específicas do host (sobrescrevem as do grupo, se definidas)
+      # ansible_host: 10.120.165.223         # Opcional, já definido como chave
+
+
+
+
+
+      1. Oracle Linux 8 e 9
+Oracle Linux 8: O Python 3 é a versão padrão (Python 3.6.x, mas com o tempo pode ser atualizado para versões mais recentes dentro da série 3.x).
+Oracle Linux 9: O Python 3 também é a versão padrão, com Python 3.9.x sendo a versão geralmente instalada por padrão.
+2. Ubuntu 20.04 LTS (Focal Fossa)
+Ubuntu 20.04: O Python 3 é a versão padrão, e o Python 3.8.x é a versão instalada por padrão.
+3. Ubuntu 22.04 LTS (Jammy Jellies)
+Ubuntu 22.04: O Python 3 continua sendo a versão padrão, e a versão mais comum é o Python 3.10.x.
+4. Ubuntu 24.04 LTS (Noble Numbat)
+Ubuntu 24.04: Embora seja uma versão futura, espera-se que a versão do Python 3 seja a padrão, possivelmente com uma versão mais recente, como Python 3.11.x (dependendo de quando a versão final for lançada).
+Resumo:
+Oracle Linux 8 e 9: Python 3.x (3.6.x no OL 8, 3.9.x no OL 9)
+Ubuntu 20.04: Python 3.8.x
+Ubuntu 22.04: Python 3.10.x
+Ubuntu 24.04: Python 3.11.x (provavelmente)

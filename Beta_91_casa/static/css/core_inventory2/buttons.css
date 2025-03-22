@@ -1,0 +1,363 @@
+/* 
+BUTTONS.CSS
+Este arquivo contém os estilos para todos os tipos de botões
+e controles interativos usados na aplicação.
+*/
+
+.btn,
+.inventory-btn,
+#submit-btn,
+#refresh-inventory-btn,
+#update-inventory-btn,
+#import-inventory-btn,
+#export-inventory-btn,
+#export-template-btn,
+#show-inventory-btn,
+#cancel-btn {
+  position: relative;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--accent-gold);
+  color: var(--black-absolute);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  min-height: 36px;
+  line-height: 1;
+  text-align: center;
+}
+
+.btn::after,
+.inventory-btn::after,
+#submit-btn::after,
+#refresh-inventory-btn::after,
+#update-inventory-btn::after,
+#import-inventory-btn::after,
+#export-inventory-btn::after,
+#export-template-btn::after,
+#show-inventory-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+  pointer-events: none;
+}
+
+/* Estado de Hover para botões */
+.btn:hover,
+.inventory-btn:hover,
+#submit-btn:hover,
+#refresh-inventory-btn:hover,
+#update-inventory-btn:hover,
+#import-inventory-btn:hover,
+#export-inventory-btn:hover,
+#export-template-btn:hover,
+#show-inventory-btn:hover,
+#cancel-btn:hover {
+  background: var(--accent-gold-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Estado Ativo para botões */
+.btn:active,
+.inventory-btn:active,
+#submit-btn:active,
+#refresh-inventory-btn:active,
+#update-inventory-btn:active,
+#import-inventory-btn:active,
+#export-inventory-btn:active,
+#export-template-btn:active,
+#show-inventory-btn:active,
+#cancel-btn:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Estado de Desativado para botões */
+.btn:disabled,
+.inventory-btn:disabled,
+#submit-btn:disabled,
+#refresh-inventory-btn:disabled,
+#update-inventory-btn:disabled,
+#import-inventory-btn:disabled,
+#export-inventory-btn:disabled,
+#export-template-btn:disabled,
+#show-inventory-btn:disabled,
+#cancel-btn:disabled,
+.btn.disabled,
+.inventory-btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Ícones nos botões */
+.btn i,
+.inventory-btn i,
+#submit-btn i,
+#refresh-inventory-btn i,
+#update-inventory-btn i,
+#import-inventory-btn i,
+#export-inventory-btn i,
+#export-template-btn i,
+#show-inventory-btn i,
+#cancel-btn i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 14px !important;
+  height: 14px !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  margin: 0 !important;
+}
+
+.fa-spin {
+  animation: spin 1s linear infinite !important;
+}
+
+button:disabled .fa-spin,
+button.disabled .fa-spin,
+.btn:disabled .fa-spin,
+.btn.disabled .fa-spin {
+  opacity: 1 !important;
+}
+
+/* Variações de botões */
+.btn.secondary,
+.inventory-btn.secondary,
+#cancel-btn {
+  background: linear-gradient(135deg, var(--gray-dark) 0%, var(--black-elegant) 100%);
+  color: var(--text-primary);
+  border: 1px solid var(--black-elegant);
+}
+
+.btn.secondary:hover,
+.inventory-btn.secondary:hover,
+#cancel-btn:hover {
+  background: linear-gradient(135deg, #3A3A3A 0%, var(--gray-dark) 100%);
+}
+
+.btn.danger {
+  background: var(--error-red);
+  color: var(--text-primary);
+}
+
+.btn.danger:hover {
+  background: #d32f2f;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.btn.outline:hover {
+  background: rgba(255, 214, 0, 0.1);
+}
+
+.btn.sm {
+  padding: 4px 8px;
+  font-size: 11px;
+  min-height: 28px;
+}
+
+.btn.lg {
+  padding: 10px 18px;
+  font-size: 14px;
+  min-height: 42px;
+}
+
+/* Grupos de botões */
+.button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+/* Botões de inventário */
+.inventory-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.inventory-actions {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  justify-content: flex-end;
+}
+
+.inventory-actions .btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.inventory-actions .btn i {
+  font-size: 1rem;
+}
+
+/* Botão Submit com ícone */
+#submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+
+#submit-btn::before {
+  content: "\f067";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 14px;
+  display: inline-block;
+}
+
+#submit-btn i.fas.fa-plus {
+  font-size: 18px;
+  margin-right: 4px;
+}
+
+/* Fix para botão duplicado */
+.card-header #submit-btn {
+  display: none;
+}
+
+/* Botões com ícones (menores) */
+.btn-icon {
+  background: transparent;
+  color: var(--accent-gold);
+  border: 1px solid rgba(255, 214, 0, 0.3);
+  border-radius: 4px;
+  padding: 6px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: rgba(255, 214, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-icon:active {
+  transform: translateY(1px);
+}
+
+.btn-icon i {
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+/* Botões de fechamento */
+.btn-close {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close:hover {
+  color: var(--accent-gold);
+}
+
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.btn-close-modal:hover {
+  color: var(--accent-gold);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-close-modal:focus, 
+.modal-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 214, 0, 0.3);
+}
+
+/* Botões de ação em linha */
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+/* Adicionar ao final do arquivo buttons.css */
+
+/* Action buttons para tabela de servidores */
+.action-buttons .btn-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .btn-icon.btn-update i {
+    color: var(--accent-gold);
+  }
+  
+  .btn-icon.btn-edit i {
+    color: #2196F3;
+  }
+  
+  .btn-icon.btn-delete i {
+    color: var(--error-red);
+  }
+  
+  .btn-icon.btn-update:hover {
+    background: rgba(255, 214, 0, 0.1);
+  }
+  
+  .btn-icon.btn-edit:hover {
+    background: rgba(33, 150, 243, 0.1);
+  }
+  
+  .btn-icon.btn-delete:hover {
+    background: rgba(198, 40, 40, 0.1);
+  }
+
+
+
+
+
+  

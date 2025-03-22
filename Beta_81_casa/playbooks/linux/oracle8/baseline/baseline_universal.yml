@@ -1,0 +1,389 @@
+---
+- name: Configuração de Baseline Universal para Linux
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  vars_prompt:
+    - name: new_hostname
+      prompt: "Digite o hostname da máquina"
+      private: no
+      default: "servidor-{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+
+    - name: root_password
+      prompt: "Digite a senha para o usuário root"
+      private: yes
+      default: "R00t@Skyone!2025"
+      
+    - name: parceiro_password
+      prompt: "Digite a senha para o usuário parceiro"
+      private: yes
+      default: "P@rc31r0!2025"
+
+  vars:
+    log_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}"
+    ansible_python_interpreter: "auto_silent"
+    # Flag para detectar o tipo de distribuição
+    is_rhel_family: "{{ ansible_os_family == 'RedHat' }}"
+    is_debian_family: "{{ ansible_os_family == 'Debian' }}"
+    # Caminhos específicos para logs
+    log_dir_remote: "/tmp/logs"
+    log_dir_controller_rhel: "/home/opc/logs"
+    log_dir_controller_debian: "/home/ubuntu/logs"
+    log_dir_controller: "{{ is_rhel_family | ternary('/home/opc/logs', '/home/ubuntu/logs') }}"
+
+  tasks:
+    # =====================================================
+    # TAREFAS COMUNS A TODAS AS DISTRIBUIÇÕES
+    # =====================================================
+    - name: Definir fuso horário para America/Sao_Paulo
+      file:
+        src: /usr/share/zoneinfo/America/Sao_Paulo
+        dest: /etc/localtime
+        state: link
+        force: yes
+      tags: timezone
+      ignore_errors: yes
+
+    - name: Alterar o hostname da máquina
+      ansible.builtin.hostname:
+        name: "{{ new_hostname }}"
+      tags: hostname
+      ignore_errors: yes
+
+    - name: Atualizar /etc/hosts com o novo hostname
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.0\.1\s'
+        line: "127.0.0.1   {{ new_hostname }} localhost"
+        state: present
+      tags: hostname
+      ignore_errors: yes
+
+    - name: Garantir que o hostname seja atualizado no reboot
+      ansible.builtin.command:
+        cmd: hostnamectl set-hostname "{{ new_hostname }}"
+      tags: hostname
+      ignore_errors: yes
+
+    # =====================================================
+    # TAREFAS ESPECÍFICAS PARA RHEL/ORACLE LINUX
+    # =====================================================
+    - name: RHEL/Oracle Linux - Verificar e instalar Python se necessário
+      raw: |
+        if ! command -v python3 &>/dev/null; then
+          if command -v dnf &>/dev/null; then
+            dnf install -y python3
+          elif command -v yum &>/dev/null; then
+            yum install -y python3
+          fi
+        fi
+      changed_when: false
+      ignore_errors: yes
+      when: is_rhel_family
+
+    - name: RHEL/Oracle Linux - Desativar firewalld
+      systemd:
+        name: firewalld
+        state: stopped
+        enabled: no
+      tags: firewall
+      ignore_errors: yes
+      when: is_rhel_family
+
+    - name: RHEL/Oracle Linux - Parar o serviço nftables
+      service:
+        name: nftables
+        state: stopped
+        enabled: no
+      tags: firewall
+      ignore_errors: yes
+      when: is_rhel_family
+
+    - name: RHEL/Oracle Linux - Limpar regras do nftables
+      command: "{{ item }}"
+      with_items:
+        - "which nft && nft flush ruleset || echo 'nft not installed'"
+        - "which iptables && iptables -F || echo 'iptables not installed'"
+      tags: firewall
+      ignore_errors: yes
+      when: is_rhel_family
+
+    - name: RHEL/Oracle Linux - Atualizar o sistema
+      yum:
+        name: '*'
+        state: latest
+      tags: update
+      ignore_errors: yes
+      when: is_rhel_family
+
+    - name: RHEL/Oracle Linux - Instalar pacotes essenciais
+      yum:
+        name:
+          - epel-release
+          - wget
+          - lzop
+          - vim
+          - gdisk
+        state: present
+      tags: install
+      ignore_errors: yes
+      when: is_rhel_family
+
+    - name: RHEL/Oracle Linux - Alterar configuração do arquivo /etc/oci-hostname.conf
+      lineinfile:
+        path: /etc/oci-hostname.conf
+        regexp: '^PRESERVE_HOSTINFO=.*$'
+        line: 'PRESERVE_HOSTINFO=2'
+      tags: oci_hostname
+      ignore_errors: yes
+      when: is_rhel_family
+
+    - name: RHEL/Oracle Linux - Desativar SELinux
+      lineinfile:
+        path: /etc/selinux/config
+        regexp: '^SELINUX='
+        line: 'SELINUX=disabled'
+      tags: selinux
+      ignore_errors: yes
+      when: is_rhel_family
+
+    # =====================================================
+    # TAREFAS ESPECÍFICAS PARA DEBIAN/UBUNTU
+    # =====================================================
+    - name: Debian/Ubuntu - Desativar UFW (firewall)
+      service:
+        name: ufw
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+      when: is_debian_family
+
+    - name: Debian/Ubuntu - Parar e desativar iptables e ip6tables
+      service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: no
+      loop:
+        - iptables
+        - ip6tables
+      ignore_errors: yes
+      when: is_debian_family
+
+    - name: Debian/Ubuntu - Limpar todas as regras de iptables
+      command: "iptables -F"
+      ignore_errors: yes
+      when: is_debian_family
+
+    - name: Debian/Ubuntu - Salvar as regras do iptables
+      command: "netfilter-persistent save"
+      ignore_errors: yes
+      when: is_debian_family
+
+    - name: Debian/Ubuntu - Atualizar o sistema
+      apt:
+        upgrade: dist
+        update_cache: yes
+        force_apt_get: yes
+        dpkg_options: 'force-confold,force-confdef'
+      environment:
+        DEBIAN_FRONTEND: noninteractive
+      tags: update
+      ignore_errors: yes
+      register: apt_result
+      failed_when: "apt_result.failed and 'E:' in apt_result.msg"
+
+    - name: Debian/Ubuntu - Instalar pacotes essenciais
+      apt:
+        name:
+          - wget
+          - vim
+          - gdisk
+        state: present
+        update_cache: yes
+      tags: install
+      ignore_errors: yes
+      when: is_debian_family
+
+    # =====================================================
+    # CONFIGURAÇÕES DE SSH (APLICÁVEIS A TODAS DISTRIBUIÇÕES)
+    # =====================================================
+    - name: Habilitar login root via SSH
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin\s+.*'
+        line: 'PermitRootLogin yes'
+      tags: ssh_config
+      ignore_errors: yes
+
+    - name: Habilitar autenticação por senha no arquivo principal
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication\s+.*'
+        line: 'PasswordAuthentication yes'
+      tags: ssh_config
+      ignore_errors: yes
+
+    - name: Verificar existência do diretório /etc/ssh/sshd_config.d/
+      stat:
+        path: /etc/ssh/sshd_config.d/
+      register: sshd_config_d
+      ignore_errors: yes
+
+    - name: Habilitar autenticação por senha no arquivo cloud-init
+      lineinfile:
+        path: /etc/ssh/sshd_config.d/50-cloud-init.conf
+        regexp: '^PasswordAuthentication\s+.*'
+        line: 'PasswordAuthentication yes'
+        create: yes
+      tags: ssh_config
+      ignore_errors: yes
+      when: sshd_config_d.stat.exists and sshd_config_d.stat.isdir is defined and sshd_config_d.stat.isdir
+
+    - name: Reiniciar serviço SSH com diferentes métodos
+      block:
+        - name: Reiniciar SSH (método 1 - sshd)
+          service:
+            name: sshd
+            state: restarted
+          ignore_errors: yes
+          
+        - name: Reiniciar SSH (método 2 - ssh)
+          service:
+            name: ssh
+            state: restarted
+          ignore_errors: yes
+          
+        - name: Reiniciar SSH (método 3 - comando shell)
+          shell: |
+            systemctl restart ssh || systemctl restart sshd || service ssh restart || service sshd restart
+          ignore_errors: yes
+      tags: ssh_restart
+
+    # =====================================================
+    # GERENCIAMENTO DE USUÁRIOS
+    # =====================================================
+    - name: Criar usuário parceiro
+      user:
+        name: parceiro
+        state: present
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Adicionar linha no arquivo /etc/sudoers para o usuário parceiro
+      lineinfile:
+        path: /etc/sudoers
+        line: 'parceiro    ALL=(ALL)       ALL'
+        state: present
+        create: yes
+        validate: 'visudo -cf %s'
+      tags: visudo_line
+      ignore_errors: yes
+
+    - name: Definir senha para o usuário parceiro (método shell)
+      shell: echo "parceiro:{{ parceiro_password }}" | chpasswd
+      no_log: true
+      ignore_errors: yes
+
+    - name: Definir senha para o usuário root (método shell)
+      shell: echo "root:{{ root_password }}" | chpasswd
+      no_log: true
+      ignore_errors: yes
+
+    # =====================================================
+    # COLETA E EXPORTAÇÃO DE INFORMAÇÕES
+    # =====================================================
+    - name: Garantir que o diretório temporário de logs exista no nó remoto
+      file:
+        path: "{{ log_dir_remote }}"
+        state: directory
+        mode: '0777'
+        owner: root
+        group: root
+      ignore_errors: yes
+
+    - name: Obter IP público da máquina alvo (método 1)
+      shell: curl -s ipinfo.io/ip || curl -s http://api.ipify.org || echo "N/A"
+      register: target_public_ip
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Exportar informações para um arquivo de log no nó remoto
+      copy:
+        content: |
+          Timestamp: {{ log_timestamp }}
+          Sistema: {{ ansible_distribution }} {{ ansible_distribution_version }}
+          Hostname: {{ ansible_facts.hostname | default('Hostname not found') }}
+          IP Público: {{ target_public_ip.stdout | default('IP público não encontrado') }}
+          IP Address: {{ ansible_facts['default_ipv4'].address | default('IP not found') }}
+          Parceiro User: parceiro
+          Parceiro Password: {{ parceiro_password }}
+          Root Password: {{ root_password }}
+        dest: "{{ log_dir_remote }}/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+
+    - name: Verificar se o arquivo de log foi criado no nó remoto
+      stat:
+        path: "{{ log_dir_remote }}/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+      register: log_file
+
+    - name: Garantir que o diretório de logs exista no nó controlador (RHEL)
+      file:
+        path: "{{ log_dir_controller_rhel }}"
+        state: directory
+        mode: '0777'
+      ignore_errors: yes
+      when: is_rhel_family
+
+    - name: Garantir que o diretório de logs exista no nó controlador (Debian)
+      file:
+        path: "{{ log_dir_controller_debian }}"
+        state: directory
+        mode: '0777'
+      ignore_errors: yes
+      when: is_debian_family
+
+    - name: Trazer o arquivo de log para o nó controlador (RHEL)
+      fetch:
+        src: "{{ log_dir_remote }}/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+        dest: "{{ log_dir_controller_rhel }}/"
+        flat: yes
+      when: log_file.stat.exists and is_rhel_family
+
+    - name: Trazer o arquivo de log para o nó controlador (Debian)
+      fetch:
+        src: "{{ log_dir_remote }}/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+        dest: "{{ log_dir_controller_debian }}/"
+        flat: yes
+      when: log_file.stat.exists and is_debian_family
+
+    - name: Remover o arquivo de log do nó remoto
+      file:
+        path: "{{ log_dir_remote }}/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+        state: absent
+      when: log_file.stat.exists
+
+    - name: Exibir senha do usuário parceiro
+      debug:
+        msg: "A senha do usuário parceiro é: [{{ parceiro_password }}]"    
+
+    - name: Exibir senha do usuário root
+      debug:
+        msg: "A senha do usuário root é: [{{ root_password }}]"
+
+    - name: Exibir resumo da configuração
+  debug:
+    msg:
+      - "╔════════════════════════════════════════════════════════════════════════════════╗"
+      - "║                    RESUMO DA CONFIGURAÇÃO                                      ║"
+      - "╠════════════════════════════════════════════════════════════════════════════════╣"
+      - "║ HOSTNAME       → {{ new_hostname }}                                            ║"
+      - "║ SISTEMA        → {{ ansible_distribution }} {{ ansible_distribution_version }} ║"
+      - "║ IP PRIVADO     → {{ ansible_facts['default_ipv4'].address | default('N/A') }}  ║"
+      - "║ IP PÚBLICO     → {{ target_public_ip.stdout | default('N/A') }}                ║"
+      - "║ USUÁRIO PARCEIRO → parceiro                                                    ║"
+      - "║ SENHA PARCEIRO → {{ parceiro_password }}                                       ║"
+      - "║ SENHA ROOT     → {{ root_password }}                                           ║"
+      - "╚════════════════════════════════════════════════════════════════════════════════╝"
+
+
+          

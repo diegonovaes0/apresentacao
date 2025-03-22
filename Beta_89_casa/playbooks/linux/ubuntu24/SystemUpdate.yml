@@ -1,0 +1,19 @@
+---
+- name: Ubuntu 24.04 System Update
+  hosts: all
+  become: yes
+  vars:
+    os: linux                        # Informação para compatibilidade com filtros legados
+    category: configuracoes          # Categoria para filtro na interface
+    description: "Atualização de pacotes para Ubuntu 24.04"  # Descrição amigável
+  
+  tasks:
+    - name: Atualizar apt cache
+      apt:
+        update_cache: yes
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('24.04', '>=')
+    
+    - name: Atualizar todos os pacotes
+      apt:
+        upgrade: dist
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('24.04', '>=')

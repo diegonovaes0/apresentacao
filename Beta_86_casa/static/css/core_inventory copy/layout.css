@@ -1,0 +1,120 @@
+/* Layout principal e estrutura */
+/* layout.css*/
+
+
+/* Sidebar estilizada */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: var(--black-rich);
+    position: fixed;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding-bottom: 80px; /* Altura dos links sociais */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    border-right: 1px solid var(--black-elegant);
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+/* Área de conteúdo principal */
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    background: var(--black-pearl);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    overflow-x: hidden;
+}
+
+.sidebar.collapsed + .content-area {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+/* Header do conteúdo */
+.content-header {
+    height: 56px;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--black-rich);
+    border-bottom: 1px solid var(--gray-dark);
+    position: relative;
+    z-index: 5;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer */
+.footer {
+    height: 56px;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--black-absolute);
+    border-top: 1px solid var(--gray-dark);
+    margin-top: auto;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    position: relative;
+    z-index: 5;
+}
+
+/* Conteúdo principal */
+.main-content {
+    width: 100%;
+    padding: 15px;
+    overflow-y: auto;
+    flex: 1;
+    height: calc(100vh - 112px); /* Altura calculada sem sobrepor o footer */
+    position: relative;
+}
+
+/* Container para elementos centralizados */
+.centered-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        z-index: 1000;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .content-area {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    
+    .main-content {
+        height: calc(100vh - 112px);
+        padding: 10px;
+    }
+}
+
+@media (min-width: 769px) {
+    .sidebar ~ .content-area .inventory-container,
+    .sidebar ~ .content-area .centered-container {
+        max-width: calc(100% - 30px);
+        margin: 0 auto;
+    }
+}

@@ -1,0 +1,112 @@
+# Estrutura de pastas organizada por módulos
+
+project/
+├── arquivos/
+    ├── linux
+    │   └── antivirus
+    │       ├── antivirus.sh
+    │       ├── personalizado.sh
+    │       ├── cta_antivirus.sh
+    │       └── praxio_antivirus.sh
+    │   ├── 24x7.sh
+    │   ├── OPERIMPLANTAÇÃO_UEMSLinuxAgent
+    │   │   ├── DMRootCA.crt
+    │   │   ├── LINUX_README.txt
+    │   │   ├── UEMS_LinuxAgent1.bin
+    │   │   └── serverinfo.json
+    │   ├── README.md
+    │   └── patchmanager
+    │       ├── DMRootCA.crt
+    │       ├── LINUX_README.txt
+    │       ├── UEMS_LinuxAgent.bin
+    │       └── serverinfo.json
+    └── windows
+        ├── 24x7.sh
+        ├── PM_OPERIMPLANTAO_Agent.exe
+        ├── README.md
+        ├── Site24x7Agent.msi
+        ├── antivirus.ps1        
+        ├── antivirus_cta.ps1
+        ├── antivirus_implantacao.ps1
+        ├── antivirus_praxio.ps1
+        ├── setup.exe        
+        ├── wazuh.ps1
+        └── windowsmanager.exe
+        ├── antivirus
+        │   └── antivirus
+        │       ├── antivirus.ps1
+        │       ├── personalizado.ps1
+        │       ├── cta_antivirus.ps1
+        │       └── praxio_antivirus.ps1        
+
+├── app.py               # Arquivo principal
+├── inventory/
+│   ├── group_vars/
+│   └── inventory.ini
+├── playbooks/
+│   ├── windows/                        
+│   │   ├── baseline/                
+│   │   │   └── baseline_windows2019.yml
+│   │   ├── agentes/                 
+│   │   │   └── 24x7.yml
+│   │   │   └── antivirus.yml
+│   │   ├── segurança/                 
+│   │   │   └── (segunraca).yml
+│   │   ├── configurações/                 
+│   │   │   └── instsaladorVeeam.yml
+│   ├── linux/                        
+│   │   ├── baseline/                
+│   │   │   └── baseline_oraclelinux9.yml
+│   │   ├── agentes/                 
+│   │   │   └── 24x7.yml
+│   │   │   └── antivirus.yml
+│   │   ├── segurança/                 
+│   │   │   └── (invente algo).yml
+│   │   ├── configurações/                 
+│   │   │   └── instaladorVeeam.yml
+│   ├── gatherfact.yml
+│   └── ping.yml
+├── static/                          # Pasta para arquivos estáticos
+│   ├── css/                         # CSS global
+│   │   ├── style.css                # CSS principal/global
+│   │   ├── ansible/                 # CSS específico para o módulo Ansible
+│   │   │   └── ansible.css
+│   │   ├── inventory/               # CSS específico para o módulo Inventory
+│   │   │   └── inventory.css
+│   │   └── sidebar/                 # CSS específico para a sidebar
+│   │       └── sidebar.css
+│   ├── js/                          # JavaScript global
+│   │   ├── main.js                  # JavaScript principal/global
+│   │   ├── ansible/                 # JS específico para o módulo Ansible
+│   │   │   └── ansible.js
+│   │   ├── inventory/               # JS específico para o módulo Inventory
+│   │   │   └── inventory.js
+│   │   └── sidebar/                 # JS específico para a sidebar
+│   │       └── sidebar.js
+│   └── img/                         # Imagens
+│       ├── ansible/                 # Imagens específicas para Ansible
+│       ├── inventory/               # Imagens específicas para Inventory
+│       └── logos/                   # Logos e ícones
+├── templates/                       # Templates HTML
+│   ├── base.html                    # Template base
+│   ├── errors/                      # Templates de erro
+│   │   ├── 404.html
+│   │   └── 500.html
+│   ├── ansible/                     # Templates específicos para Ansible
+│   │   ├── core_oci.html
+│   │   ├── inventory.html
+│   │   └── playbooks.html
+│   ├── inventory/                   # Templates específicos para Inventory
+│   ├── python/                      # Templates específicos para Python
+│   ├── terraform/                   # Templates específicos para Terraform
+│   └── maintenance.html             # Página de manutenção
+└── ansible_manager.log              # Arquivo de log
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,103 @@
+/* Estilos para cards e contêineres */
+/* cards.css*/
+.card {
+    background: var(--gradient-card);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    border: 1px solid var(--black-elegant);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+}
+
+.card-header {
+    background: var(--gradient-card-header);
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 214, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.card-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+}
+
+.card-title {
+    font-size: 14px;
+    color: var(--accent-gold);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.3px;
+}
+
+.card-title svg {
+    stroke: var(--accent-gold);
+    width: 16px;
+    height: 16px;
+}
+
+.card-body {
+    padding: 16px;
+    background: var(--black-smoke);
+}
+
+.card-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--black-elegant);
+    background: linear-gradient(180deg, var(--black-smoke) 0%, var(--black-elegant) 100%);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Cards específicos */
+.form-card, .table-card {
+    width: 100%;
+    display: block;
+}
+
+/* Tipos de card especiais */
+.card.elevated {
+    box-shadow: var(--shadow-lg);
+}
+
+.card.bordered {
+    border: 1px solid rgba(255, 214, 0, 0.1);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 12px;
+    }
+    
+    .card-header {
+        padding: 10px 12px;
+    }
+    
+    .card-body {
+        padding: 12px;
+    }
+    
+    .card-footer {
+        padding: 10px 12px;
+    }
+}

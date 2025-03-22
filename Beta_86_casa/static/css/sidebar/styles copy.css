@@ -1,0 +1,2468 @@
+:root {
+    --black-absolute: #000000;
+    --black-rich: #030303;
+    --black-elegant: #0A0A0A;
+    --black-pearl: #121212;
+    --black-smoke: #1A1A1A;
+    --gray-dark: #2A2A2A;
+    --accent-gold: #FFD600;
+    --accent-gold-hover: #FFE033;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --submenu-hover: rgba(255, 214, 0, 0.05);
+    --menu-hover: rgba(255, 214, 0, 0.1);
+    --submenu-level-1: #2A2A2A; /* Primeiro nível - mais claro */
+    --submenu-level-2: #242424; /* Segundo nível */
+    --submenu-level-3: #1E1E1E; /* Terceiro nível - mais escuro */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: var(--black-pearl);
+    overflow-x: hidden; /* Previne rolagem horizontal */
+    overflow-y: auto; /* Permite rolagem vertical global */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  background: var(--black-pearl);
+}
+
+.main-container {
+    display: flex;
+    width: 100vw;
+    min-height: 100vh; /* Garante altura mínima total */
+    background: var(--black-pearl);
+    overflow-x: hidden; /* Previne rolagem horizontal */
+    overflow-y: visible; /* Permite que o conteúdo cresça */
+}
+
+/* Área de conteúdo */
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh; /* Altura mínima para ocupar a tela */
+    background: var(--black-pearl);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto; /* Ativa a barra de rolagem vertical */
+}
+
+.sidebar.collapsed + .content-area {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+
+
+.construction-content {
+flex: 1;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 2rem;
+width: 100%;
+max-width: 1200px;
+margin: 0 auto; /* Centraliza horizontalmente */
+}
+
+
+.construction-header {
+text-align: center;
+width: 100%;
+max-width: 800px;
+margin: 0 auto 2rem auto;
+}
+
+
+
+.construction-icon {
+    font-size: 4rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    animation: pulse 2s infinite;
+}
+
+.construction-title {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.construction-text {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.progress-loader {
+    width: 100%;
+    height: 4px;
+    background: var(--gray-dark);
+    position: relative;
+    margin: 1.5rem 0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    position: absolute;
+    height: 100%;
+    background: var(--accent-gold);
+    width: 0;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.stat {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.stat strong {
+    color: var(--accent-gold);
+}
+.construction-grid {
+width: 100%;
+max-width: 800px;
+margin: 2rem auto;
+}
+
+
+
+.info-card {
+    background: var(--black-smoke);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--gray-dark);
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-gold);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.info-card i {
+    font-size: 2.5rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+}
+
+.info-card h3 {
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+}
+
+.info-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .content-area {
+        margin-left: 80px;
+    }
+    .main-content {
+        padding: 1rem;
+    }
+    .footer {
+        padding: 0.5rem 1rem;
+    }
+}
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+    .construction-content {
+        min-height: calc(100vh - 1rem);
+        padding: 1.5rem;
+    }
+
+
+    .construction-icon {
+        font-size: 3rem;
+    }
+
+    .construction-title {
+        font-size: 1.8rem;
+    }
+
+    .construction-text {
+        font-size: 1rem;
+    }
+
+    .info-card {
+        padding: 1.2rem;
+    }
+
+    .info-card i {
+        font-size: 2rem;
+    }
+
+    .info-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .info-card p {
+        font-size: 0.9rem;
+    }
+
+
+/* Scrollbar personalizada */
+.construction-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.construction-content::-webkit-scrollbar-track {
+    background: var(--black-pearl);
+    border-radius: 3px;
+}
+
+.construction-content::-webkit-scrollbar-thumb {
+    background: var(--gray-dark);
+    border-radius: 3px;
+}
+
+.construction-content::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: var(--black-rich);
+    position: fixed;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    padding-bottom: 80px; /* Espaço para links sociais */
+    overflow-y: auto; /* Rolagem interna na sidebar, se necessário */
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: var(--black-rich);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--gray-dark);
+    border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
+
+.menu-text, 
+.logo-text, 
+.menu-arrow,
+.social-links a,
+.docs-toggle .menu-text,
+.docs-toggle .menu-arrow {
+transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
+}
+@media (max-width: 768px) {
+    .content-area {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+    .main-content {
+        padding: 1rem;
+    }
+    ::-webkit-scrollbar {
+        width: 6px; /* Scrollbar mais fina em dispositivos móveis */
+    }
+}
+
+/* Ajuste da posição do botão para overlay */
+.sidebar::after {
+content: '';
+position: absolute;
+right: 0;
+top: 0;
+height: 100%;
+width: 12px; /* Largura da área de sobreposição */
+background: transparent;
+z-index: -1;
+}
+
+/* ... (todo o seu CSS anterior) ... */
+
+.sidebar-header {
+position: sticky;
+top: 0;
+height: 56px;
+padding: 0 1.2rem;
+display: flex;
+align-items: center;
+background: var(--black-rich);
+border-bottom: 1px solid var(--gray-dark);
+z-index: 1;
+}
+
+
+
+/* Ajuste das transições */
+.sidebar .logo-text, 
+.sidebar .automation-icon {
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estado expandido */
+.sidebar:not(.collapsed) .logo-container {
+transform: translateX(0);
+}
+
+
+.sidebar:not(.collapsed) .logo-text {
+opacity: 1;
+transform: translateX(0);
+width: auto;
+}
+
+.sidebar:not(.collapsed) .automation-icon {
+transform: translateX(0);
+}
+
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+    background-color: var(--black-rich);
+    display: none;  /* Chrome, Safari and Opera */
+
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--gray-dark);
+    border-radius: 4px;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+.sidebar-header {
+position: relative;
+background: var(--black-rich);
+border-bottom: 1px solid var(--gray-dark);
+}
+
+.sidebar-header button {
+position: absolute;
+right: -10px;
+top: 50%;
+transform: translateY(-50%);
+background-color: var(--black-rich);
+border: 2px solid var(--accent-gold);
+border-radius: 50%;
+width: 20px;
+height: 20px;
+padding: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--accent-gold);
+cursor: pointer;
+z-index: 9999;
+box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
+transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s ease;
+}
+
+
+.sidebar-header button:hover {
+transform: translateY(-50%) scale(1.1);
+box-shadow: 0 0 15px rgba(255, 214, 0, 0.5);
+}
+
+.sidebar-header button:not(:hover) {
+transform: translateY(-50%) scale(1);
+}
+@keyframes pulseClick {
+0% { transform: translateY(-50%) scale(1.1); }
+50% { transform: translateY(-50%) scale(0.95); }
+100% { transform: translateY(-50%) scale(1.1); }
+}
+
+.sidebar-header button.pulsing {
+animation: pulseClick 0.3s ease;
+}
+
+/* Rotação do ícone */
+.sidebar-header button i {
+font-size: 1rem;
+width: 1rem;
+height: 1rem;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+transform-origin: center;
+}
+
+.sidebar.collapsed .sidebar-header button i {
+transform: rotate(180deg);
+}
+
+
+.sidebar.collapsed .sidebar-header button i {
+transform: rotate(180deg);
+}
+
+.sidebar.collapsed .sidebar-header button i {
+transform: rotate(180deg);
+}
+.sidebar.collapsed .menu-header {
+opacity: 0;
+height: 0;
+padding: 0;
+transition: all 0.3s ease;
+}
+
+/* Ajuste para manter os links sociais sempre visíveis */
+.social-links {
+padding: 1rem;
+display: flex;
+gap: 1rem;
+justify-content: center;
+flex-wrap: wrap;
+transition: padding 0.3s ease,
+        flex-direction 0.3s ease;
+background: var(--black-rich);
+border-top: none; /* Remove a linha superior */
+}
+
+.social-links a {
+color: var(--text-secondary);
+font-size: 1rem;
+transition: transform 0.3s ease,
+        background-color 0.3s ease,
+        color 0.3s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 50%;
+text-decoration: none; /* Remove o sublinhado dos links */
+}
+
+.social-links a:hover {
+color: var(--accent-gold);
+background: var(--menu-hover);
+transform: scale(1.1);
+}
+
+.sidebar.collapsed .social-links {
+padding: 0.75rem;
+flex-direction: column;
+align-items: center; /* Importante para centralizar na vertical */
+}
+
+
+.sidebar.collapsed .social-links a {
+width: 30px; /* Ajuste se necessário */
+height: 30px; /* Ajuste se necessário */
+margin: 0.25rem 0;
+
+}
+
+
+.sidebar.collapsed .social-links {
+padding: 0.75rem;
+flex-direction: column;
+align-items: center;
+}
+
+.social-links a {
+color: var(--text-secondary);
+font-size: 1.2rem;
+transition: all 0.3s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 35px;
+height: 35px;
+border-radius: 50%;
+}
+
+.social-links a:hover {
+color: var(--accent-gold);
+background: var(--menu-hover);
+transform: scale(1.1);
+}
+
+.sidebar.collapsed .social-links a {
+width: 30px;
+height: 30px;
+margin: 0.25rem 0;
+}
+
+.logo-container {
+display: flex;
+align-items: center; /* Alinhamento vertical dentro do container */
+gap: 0.8rem;      /* Espaço entre o ícone e o texto */
+flex-grow: 1;     /* Importante: Permite que o logo-container ocupe o espaço disponível */
+              /*  Isso empurra o botão para a direita. */
+}
+
+
+.logo-icon {
+width: 32px;
+height: 32px;
+}
+/* Ícone atualizado da Automation Platform */
+/* Ícone Automato */
+.automation-icon {
+width: 24px;
+height: 24px;
+min-width: 24px;
+fill: var(--accent-gold);
+display: flex;
+align-items: center;
+justify-content: center;
+transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+
+
+
+
+.automation-icon:hover {
+fill: var(--accent-gold-hover);
+}
+
+
+.logo-container i {
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+}
+
+.logo-text {
+font-family: 'Geek', sans-serif;
+font-size: 1.2rem;
+color: var(--text-primary);
+white-space: nowrap;
+transition: opacity 0.2s ease-out;
+}
+
+.sidebar.collapsed .logo-container {
+padding: 0;
+justify-content: center;
+}
+
+
+
+.sidebar.collapsed .logo-text {
+opacity: 0;
+width: 0;
+margin: 0;
+
+}
+
+
+.sidebar.collapsed .automation-icon {
+width: 20px;
+height: 20px;
+min-width: 20px;
+}
+
+
+
+/* Hover effects */
+.automation-icon:hover {
+fill: var(--accent-gold-hover);
+transform: scale(1.05);
+}
+
+.collapsed .logo-text {
+    opacity: 0;
+    width: 0;
+}
+
+.menu {
+scroll-behavior: smooth;
+}
+
+
+.menu::-webkit-scrollbar {
+display: none; /* Chrome/Safari/Opera */
+}
+
+
+/* Ajuste na altura máxima do submenu para garantir visibilidade */
+.submenu.expanded {
+max-height: 400px; /* Reduzido de 500px */
+}
+
+
+.menu-header {
+    padding: 0.5rem 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+}
+
+.menu-item {
+width: 100%;
+}
+
+
+.menu-item a {
+padding: 0.6rem 1.2rem;
+width: 100%;
+display: flex;
+align-items: center;
+height: 40px;
+font-size: 0.875rem;
+
+
+
+gap: 0.8rem;
+color: var(--text-secondary);
+text-decoration: none;
+transition: all 0.3s ease;
+position: relative;
+}
+
+
+
+
+/* Linha lateral dos itens */
+.menu-item a::before {
+content: '';
+position: absolute;
+left: 0;
+height: 100%;
+width: 1px; /* Deixa a linha mais fina */
+background: var(--accent-gold);
+opacity: 0;
+transition: opacity 0.3s;
+}
+
+
+/* Hover dos itens */
+.menu-item a:hover {
+background: var(--menu-hover);
+color: var(--accent-gold);
+}
+
+.menu-item a:hover::before {
+opacity: 1;
+}
+
+/* Estados de hover e seleção */
+/* Estados de hover e seleção */
+.menu-item a:hover,
+.menu-item.selected > a,
+.menu-item.open > a {
+color: var(--accent-gold);
+background: var(--menu-hover);
+}
+
+.menu-item.selected > a::before,
+.menu-item.open > a::before {
+opacity: 1;
+}
+
+
+
+
+.submenu .menu-item.selected > a {
+color: var(--accent-gold);
+background: var(--submenu-hover);
+}
+.menu-item a,
+.docs-toggle,
+.docs-button {
+padding: 0.6rem 1.2rem;
+height: 36px;
+display: flex;
+align-items: center;
+width: 100%;
+}
+
+/* Ajuste nos ícones do menu */
+.menu-icon {
+width: 20px;
+height: 20px;
+min-width: 18px;
+font-size: 1rem;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+
+.menu-text {
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+.collapsed .menu-text {
+    opacity: 0;
+    width: 0;
+}
+
+/* Padronização dos fundos de submenu */
+.submenu {
+background: var(--gray-dark) !important;
+width: 100%;
+overflow: hidden;
+transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+            opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+opacity: 1;
+
+}
+
+.collapsed .submenu {
+opacity: 0;
+max-height: 0 !important;
+}
+
+
+.submenu.closing {
+opacity: 0;
+max-height: 0 !important;
+}
+.submenu .submenu {
+background: var(--gray-dark) !important;
+}
+
+
+.submenu .menu-item > a.has-submenu {
+position: relative;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+
+.submenu .menu-item.open > .submenu {
+max-height: none !important;
+height: auto;
+}
+
+/* Ajuste para o menu arrow */
+.menu-item > a.has-submenu .menu-arrow {
+transition: transform 0.3s ease;
+}
+
+
+.menu-item.open > a.has-submenu .menu-arrow {
+transform: rotate(90deg);
+}
+
+/* Ajuste para padding e margins dos subitens */
+.submenu .menu-item a {
+height: 32px;
+
+padding: 0.5rem 1.2rem 0.5rem 2.4rem;
+font-size: 0.8rem; /* Fonte ainda menor para submenus */
+}
+
+
+
+/* Submenu segundo nível */
+.submenu .submenu .menu-item a {
+padding-left: 3.2rem;
+height: 30px;
+font-size: 0.75rem;
+}
+
+
+.submenu .submenu .submenu .menu-item a {
+padding-left: 5.9rem; /* Mais indentado para mostrar hierarquia */
+height: 28px;
+font-size: 0.75rem;
+}
+
+
+
+
+.submenu.expanded {
+    max-height: 500px;
+}
+
+.submenu .menu-item a {
+    padding-left: 3.5rem;
+}
+
+.submenu .submenu .menu-item a {
+padding-left: 4.5rem;
+}
+
+
+.menu-arrow {
+font-size: 0.9rem;
+margin-left: auto;
+transition: transform 0.3s;
+}
+
+
+.menu-item.open > a .menu-arrow {
+    transform: rotate(90deg);
+}
+
+.social-links {
+    padding: 1.5rem;
+    border-top: 1px solid var(--gray-dark);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    justify-content: center;
+    transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            flex-direction 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.social-links a {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: var(--accent-gold);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+}
+
+.clicked {
+    animation: clickEffect 0.3s ease-out;
+}
+
+@keyframes clickEffect {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+.menu-item.selected > a {
+color: var(--accent-gold);
+background: var(--menu-hover);
+}
+
+.menu-item.selected > a::before {
+content: '';
+position: absolute;
+left: 0;
+top: 0;
+height: 100%;
+width: 3px;
+background: var(--accent-gold);
+}
+
+
+.menu-item a:hover {
+color: var(--accent-gold);
+}
+
+
+/* Ajuste para as setas quando a sidebar está colapsada */
+.sidebar.collapsed .menu-arrow {
+opacity: 0;
+width: 0;
+overflow: hidden;
+}
+
+/* Estilo para os ícones de tecnologia */
+/* Ajuste específico para tech icons */
+.tech-icon {
+width: 20px;
+height: 20px;
+min-width: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+
+
+
+
+
+
+
+/* Hover e seleção */
+.menu-item:hover .tech-icon svg {
+fill: var(--accent-gold);
+}
+
+.menu-item.selected .tech-icon svg,
+.menu-item.open .tech-icon svg {
+fill: var(--accent-gold);
+}
+
+/* Ajuste para manter os submenus funcionando */
+.menu-item > a.has-submenu {
+position: relative;
+transition: all 0.3s ease;
+}
+
+.menu-item > a.has-submenu::before {
+content: '';
+position: absolute;
+left: 0;
+height: 100%;
+width: 1px;
+background: var(--accent-gold);
+opacity: 0;
+transition: opacity 0.3s;
+}
+
+.menu-item > a.has-submenu.selected {
+color: var(--accent-gold);
+background: var(--menu-hover);
+}
+
+.menu-item > a.has-submenu.selected::before {
+opacity: 1;
+}
+
+.menu-item > a.has-submenu.selected .menu-icon,
+.menu-item > a.has-submenu.selected .tech-icon svg {
+color: var(--accent-gold);
+fill: var(--accent-gold);
+}
+
+.menu-item > a.has-submenu.icon-only {
+color: var(--text-secondary);
+}
+
+.menu-item > a.has-submenu.icon-only .menu-icon,
+.menu-item > a.has-submenu.icon-only .tech-icon svg {
+color: var(--accent-gold);
+fill: var(--accent-gold);
+}
+
+.menu-item > a.has-submenu.icon-only .menu-text {
+color: var(--text-secondary);
+}
+
+.submenu {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s ease-out;
+background: rgba(0, 0, 0, 0.2);
+}
+
+.submenu.expanded {
+max-height: fit-content;
+}
+
+
+.ansible-icon {
+width: 24px;
+height: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.ansible-icon svg {
+width: 20px;
+height: 20px;
+fill: var(--text-secondary);
+}
+
+.menu-item:hover .ansible-icon svg {
+fill: var(--accent-gold);
+}
+
+.menu-item.selected .ansible-icon svg,
+.menu-item.open .ansible-icon svg {
+fill: var(--accent-gold);
+}
+
+.tech-icon {
+width: 24px;
+height: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.tech-icon svg {
+width: 22px; /* Aumentado de 20px */
+height: 22px; /* Aumentado de 20px */
+fill: currentColor;
+}
+
+/* Ajuste específico para o Terraform que precisa ser um pouco maior */
+.terraform-icon svg {
+width: 24px;
+height: 24px;
+}
+/* Estilos base para documentação */
+.docs-toggle,
+.docs-button {
+height: 36px;
+padding: 0.6rem 1.2rem;
+display: flex;
+align-items: center;
+gap: 1rem;
+color: var(--text-secondary);
+cursor: pointer;
+text-decoration: none;
+transition: all 0.3s ease;
+position: relative;
+background: none;
+border: none;
+font-family: 'Poppins', sans-serif;
+font-size: 0.875rem;
+font-weight: 400;
+text-transform: capitalize;
+}
+
+.docs-toggle .menu-text,
+.docs-button .menu-text {
+font-family: 'Poppins', sans-serif;
+font-size: 0.875rem;
+font-weight: 400;
+text-transform: capitalize;
+}
+
+/* Estilos para o toggle principal e botões internos */
+.docs-toggle.selected .menu-icon,
+.docs-button.selected .menu-icon {
+color: var(--accent-gold);
+}
+
+.docs-toggle.full-selected,
+.docs-button.full-selected {
+color: var(--accent-gold);
+}
+
+.docs-toggle.selected,
+.docs-toggle.full-selected,
+.docs-button.selected,
+.docs-button.full-selected {
+background: var(--menu-hover);
+}
+
+/* Hover effects */
+.docs-toggle:hover,
+.docs-button:hover,
+.docs-content .menu-item > a:hover {
+background: var(--menu-hover);
+}
+/* Garantindo tamanho consistente para todos os ícones */
+.menu-icon,
+.tech-icon,
+.docs-toggle .menu-icon,
+.docs-button .menu-icon {
+width: 18px;
+height: 18px;
+min-width: 18px;
+font-size: 1rem;
+}
+
+.docs-toggle:hover .menu-icon,
+.docs-toggle:hover .menu-text,
+.docs-button:hover .menu-icon,
+.docs-button:hover .menu-text {
+color: var(--accent-gold);
+}
+
+/* Estilos importantes para o alinhamento dos ícones quando a sidebar está colapsada */
+.sidebar.collapsed .menu-item a,
+.sidebar.collapsed .docs-toggle,
+.sidebar.collapsed .docs-button,
+.sidebar.collapsed .social-links a {
+padding: 0.6rem;  /* Ajuste o padding conforme necessário */
+justify-content: center; /* Centraliza o conteúdo horizontalmente */
+width: 100%; /* Ocupa toda a largura da sidebar */
+}
+.sidebar.collapsed .menu-icon,
+.sidebar.collapsed .tech-icon,
+.sidebar.collapsed .docs-toggle .menu-icon,
+.sidebar.collapsed .docs-button .menu-icon{
+margin: 0; /* Remove margens */
+width: auto;  /* Permite que o ícone ocupe seu tamanho natural */
+height: auto; /* Permite que o ícone ocupe seu tamanho natural */
+/* Garante alinhamento central, se outros estilos não estiverem interferindo */
+display: flex;
+align-items: center;
+justify-content: center;
+
+}
+.sidebar.collapsed .docs-toggle .menu-text,
+.sidebar.collapsed .docs-toggle .menu-arrow,
+.sidebar.collapsed .docs-button .menu-text,
+.sidebar.collapsed .docs-button .menu-arrow {
+padding: 0.6rem;
+justify-content: center;}
+
+/* Estilos para ícones */
+.docs-toggle .menu-icon,
+.docs-button .menu-icon {
+font-size: 1.2rem;
+min-width: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+color: inherit;
+transition: color 0.3s ease;
+}
+
+/* Estados de hover */
+.docs-toggle:hover,
+.docs-button:hover {
+color: var(--accent-gold);
+background: var(--menu-hover);
+}
+
+/* Estados de seleção */
+/* Ajuste para estados selecionados */
+.docs-toggle.selected,
+.docs-button.selected,
+.docs-content .menu-item.selected > a {
+color: var(--accent-gold);
+background: var(--menu-hover);
+}
+
+/* Estado icon-only */
+.docs-toggle.icon-only,
+.docs-button.icon-only {
+color: var(--text-secondary);
+}
+
+.docs-toggle.icon-only .menu-icon,
+.docs-button.icon-only .menu-icon {
+color: var(--accent-gold);
+}
+
+/* Barra lateral quando selecionado */
+.docs-toggle.selected::before,
+.docs-button.selected::before {
+content: '';
+position: absolute;
+left: 0;
+height: 100%;
+width: 3px;
+background: var(--accent-gold);
+opacity: 1;
+}
+
+/* Wrapper e conteúdo */
+.docs-wrapper {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s ease-out;
+background: rgba(0, 0, 0, 0.2);
+}
+
+.docs-wrapper.expanded {
+max-height: calc(100vh - 280px);
+overflow-y: auto;
+}
+
+/* Conteúdo interno */
+.docs-content {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s ease-out;
+background: rgba(0, 0, 0, 0.2);
+}
+
+/* Manter consistência do fundo ao expandir */
+.docs-wrapper.expanded,
+.docs-content.expanded {
+background: var(--gray-dark) !important;
+}
+
+/* Padding para itens internos */
+.docs-content .menu-item a {
+padding: 0.5rem 1.2rem 0.5rem 2.4rem;
+height: 32px;
+font-size: 0.8rem;
+}
+
+
+/* Ajuste da seta do menu */
+.menu-arrow {
+margin-left: auto;
+transition: transform 0.3s ease;
+font-size: 1rem;
+margin-left: auto;
+transition: transform 0.3s;
+}
+
+
+.menu-item.open > a .menu-arrow {
+transform: rotate(90deg);
+}
+
+.docs-toggle.open .menu-arrow,
+.docs-button.open .menu-arrow {
+transform: rotate(90deg);
+}
+
+/* Scroll personalizado */
+.docs-wrapper::-webkit-scrollbar {
+width: 4px;
+background-color: transparent;
+}
+
+.docs-wrapper::-webkit-scrollbar-thumb {
+background-color: var(--gray-dark);
+border-radius: 4px;
+}
+
+/* Estilos refinados para o botão de documentação @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+/* Estilos refinados para o botão de documentação */
+/* Estilos refinados para o botão de documentação */
+/* Estilos refinados do botão de documentação */
+/* Estilos base do botão */
+/* Ajuste do botão documentação para alinhar com os outros */
+.docs-toggle {
+border: none;
+background: transparent;
+margin: 0;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+font-family: inherit;
+}
+
+/* Linha lateral */
+.docs-toggle::before {
+content: '';
+position: absolute;
+left: 0;
+top: 0;
+height: 100%;
+width: 1px;
+background: transparent;
+transition: background-color 0.3s ease;
+}
+
+/* Container do ícone */
+.docs-toggle .menu-icon {
+position: relative;
+width: 18px;
+height: 18px;
+min-width: 18px;
+
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+/* Estado base da pasta */
+.docs-toggle .folder-closed,
+.docs-toggle .folder-open {
+position: absolute;
+width: 20px;
+height: 20px;
+color: var(--text-secondary);
+transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.docs-toggle .folder-closed {
+opacity: 1;
+}
+
+.docs-toggle .folder-open {
+opacity: 0;
+}
+
+/* Texto e seta */
+.docs-toggle .menu-text {
+color: var(--text-secondary);
+transition: color 0.3s ease;
+}
+
+.docs-toggle .menu-arrow {
+margin-left: auto;
+color: var(--text-secondary);
+transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover */
+.docs-toggle:hover {
+background: rgba(255, 214, 0, 0.03);
+}
+
+.docs-toggle:hover::before {
+background-color: var(--accent-gold);
+}
+
+.docs-toggle:hover .folder-closed,
+.docs-toggle:hover .menu-text,
+.docs-toggle:hover .menu-arrow {
+color: var(--accent-gold);
+}
+
+/* Estado selecionado total */
+.docs-toggle.selected {
+background: var(--menu-hover);
+}
+
+.docs-toggle.selected::before {
+background-color: var(--accent-gold);
+}
+
+.docs-toggle.selected .folder-closed {
+opacity: 0;
+}
+
+.docs-toggle.selected .folder-open {
+opacity: 1;
+color: var(--accent-gold);
+}
+
+.docs-toggle.selected .menu-text,
+.docs-toggle.selected .menu-arrow {
+color: var(--accent-gold);
+}
+
+.docs-toggle.selected .menu-arrow {
+transform: rotate(90deg);
+}
+
+/* Estado ícone-only (quando subitem selecionado) */
+.docs-toggle.icon-only .folder-closed {
+opacity: 0;
+}
+
+.docs-toggle.icon-only .folder-open {
+opacity: 1;
+color: var(--accent-gold);
+}
+
+.docs-toggle.icon-only .menu-text {
+color: var(--text-secondary);
+}
+
+.docs-toggle.icon-only .menu-arrow {
+color: var(--text-secondary);
+transform: rotate(90deg);
+}
+
+/* Sidebar colapsada */
+.sidebar.collapsed .docs-toggle {
+padding: 0.75rem;
+justify-content: center;
+}
+
+.sidebar.collapsed .docs-toggle .menu-text,
+.sidebar.collapsed .docs-toggle .menu-arrow {
+display: none;
+}
+
+/* Wrapper de conteúdo */
+.docs-wrapper {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s ease;
+}
+
+.docs-wrapper.expanded {
+max-height: 1000px;
+}
+
+
+/* Primeiro nível de submenu */
+.submenu,
+.docs-wrapper {
+background: var(--submenu-level-1) !important;
+width: 100%;
+overflow: hidden;
+transition: all 0.3s ease-out;
+}
+
+/* Segundo nível de submenu */
+.submenu .submenu,
+.docs-content,
+.docs-section .docs-content {
+background: var(--submenu-level-2) !important;
+}
+
+/* Terceiro nível de submenu */
+.submenu .submenu .submenu,
+.docs-content .submenu,
+.docs-section .docs-content .submenu {
+background: var(--submenu-level-3) !important;
+}
+
+/* Estados de hover e seleção */
+.menu-item a:hover,
+.docs-toggle:hover,
+.docs-button:hover,
+.menu-item.selected > a,
+.docs-toggle.selected,
+.docs-button.selected {
+color: var(--accent-gold);
+background: var(--menu-hover);
+}
+
+/* Mantém as hierarquias quando expandido */
+.docs-wrapper.expanded {
+background: var(--submenu-level-1) !important;
+}
+
+.docs-content.expanded {
+background: var(--submenu-level-2) !important;
+}
+
+/* Barra lateral dourada para itens selecionados */
+.menu-item.selected > a::before,
+.docs-toggle.selected::before,
+.docs-button.selected::before {
+content: '';
+position: absolute;
+left: 0;
+top: 0;
+height: 100%;
+width: 3px;
+background: var(--accent-gold);
+}
+
+
+
+
+
+.tech-icon {
+width: 20px;
+height: 20px;
+display: inline-block;
+}
+
+.tech-icon svg {
+width: 18px; /* Reduzido de 22px */
+height: 18px; /* Reduzido de 22px */
+fill: currentColor;
+transition: fill 0.3s ease;
+}
+
+.menu-item:hover .tech-icon svg {
+fill: var(--accent-gold);
+}
+.docs-wrapper {
+transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+opacity: 1;
+}
+
+.docs-wrapper.closing {
+opacity: 0;
+max-height: 0 !important;
+}
+
+.sidebar.collapsed .menu-arrow,
+.sidebar.collapsed .menu-text,
+.sidebar.collapsed .logo-text {
+display: none; /* Oculta completamente, melhor que usar opacity/visibility */
+}
+/* Footer ajustado */
+/* 1. Mudança no posicionamento do footer - fixado na parte inferior sem position:fixed */
+.footer {
+    position: relative !important; /* Altera de fixed para relative */
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100%;
+    height: 50px; /* Altura consistente */
+    background-color: var(--black-absolute, #000);
+    border-top: 1px solid var(--black-elegant, #0A0A0A);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 100;
+    margin-top: auto; /* Empurra para o final do container */
+}
+
+
+
+
+
+.footer-left {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+white-space: nowrap; /* Evita que o texto quebre para a próxima linha */
+}
+
+.footer-left i {
+color: var(--accent-gold);
+font-size: 1.2rem;
+}
+
+.footer-right {
+display: flex;
+align-items: center;
+gap: 1rem;
+white-space: nowrap; /* Evita que o texto quebre */
+}
+
+.footer-version {
+padding: 0.2rem 0.6rem;
+background: var(--gray-dark);
+border-radius: 12px;
+font-size: 0.7rem;
+/* Remova line-height se estiver causando problemas com a centralização vertical */
+/* line-height: 1;  Remova ou ajuste se necessário */
+}
+
+@media (max-width: 768px) {
+.content-area {
+margin-left: 80px;
+}
+
+.construction-title {
+font-size: 2rem;
+}
+
+.construction-text {
+font-size: 1rem;
+}
+
+.footer {
+padding: 0.5rem 1rem;
+}
+
+.footer-right {
+justify-content: center;
+}
+}
+
+
+
+/* Estilos para o cabeçalho */
+.content-header {
+height: 56px;
+padding: 0 1.5rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+background-color: var(--black-rich);
+border-bottom: 1px solid var(--gray-dark);
+}
+
+
+/* Estilos para os breadcrumbs */
+.breadcrumbs {
+display: flex;
+align-items: center;
+}
+
+.breadcrumb-item {
+font-size: 0.9rem; /* Tamanho da fonte */
+cursor: pointer;    /* Cursor de link */
+transition: color 0.2s ease; /* Transição suave de cor */
+}
+.breadcrumb-item:not(.active){
+color: var(--text-primary);
+}
+
+
+.breadcrumb-item.active {
+color: var(--accent-gold); /* Cor do item ativo */
+font-weight: bold;
+cursor: default; /* Sem cursor de link no item ativo */
+}
+
+.breadcrumb-item:hover:not(.active) {
+color: var(--accent-gold-hover); /* Cor no hover (exceto no item ativo) */
+text-decoration: underline;
+}
+
+.separator {
+margin: 0 0.5rem; /* Espaçamento entre os itens */
+color: var(--text-secondary);
+font-size: 0.8rem;
+}
+
+/* Estilos para a área de informações do usuário */
+.user-info {
+display: flex;
+align-items: center;
+gap: 1rem; /* Espaço entre os elementos */
+}
+
+.username {
+font-size: 0.9rem;
+color: var(--text-primary);
+margin-right: 0.5rem; /* Espaço entre o nome de usuário e os botões */
+white-space: nowrap;
+}
+
+.settings-button, .logout-button {
+background: none;
+border: none;
+color: var(--text-secondary);
+font-size: 1.1rem; /* Tamanho do ícone */
+cursor: pointer;
+padding: 0.3rem;    /* Espaçamento interno para os botões */
+border-radius: 4px; /* Borda arredondada */
+transition: background-color 0.2s ease, color 0.2s ease;
+display: flex; /* Para centralizar os ícones */
+align-items: center;
+justify-content: center;
+width: 30px; /* Largura e altura fixas para os botões */
+height: 30px;
+}
+
+.settings-button:hover, .logout-button:hover {
+background-color: var(--menu-hover);
+color: var(--accent-gold);
+}
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+.content-header {
+padding: 0.75rem 1rem; /* Padding menor em telas menores */
+flex-direction: column;  /* Empilha os elementos em telas menores */
+align-items: flex-start; /* Alinha à esquerda em telas menores */
+gap: 0.5rem; /* Espaço entre breadcrumbs e user-info */
+}
+.user-info{
+width: 100%;
+justify-content: flex-end;
+}
+.username {
+font-size: 0.8rem; /* Fonte menor em telas menores */
+}
+.breadcrumbs{
+width: 100%;
+}
+}
+
+/* Core Windows Styles */
+.core-windows-content {
+padding: 2rem;
+min-height: calc(100vh - 120px); /* Altura da viewport menos header e footer */
+background: var(--black-pearl);
+}
+
+/* Dashboard Summary */
+.dashboard-summary {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 1.5rem;
+margin-bottom: 2rem;
+}
+
+.summary-card {
+background: var(--black-smoke);
+padding: 1.5rem;
+border-radius: 8px;
+border: 1px solid var(--gray-dark);
+display: flex;
+align-items: center;
+gap: 1rem;
+transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.summary-card:hover {
+transform: translateY(-5px);
+border-color: var(--accent-gold);
+}
+
+.summary-card i {
+font-size: 2rem;
+color: var(--accent-gold);
+}
+
+.card-info {
+flex: 1;
+}
+
+.card-info h3 {
+color: var(--text-primary);
+font-size: 1.1rem;
+margin-bottom: 0.5rem;
+}
+
+.card-info .count {
+color: var(--accent-gold);
+font-size: 1.5rem;
+font-weight: bold;
+}
+
+/* Actions Panel */
+.actions-panel {
+background: var(--black-smoke);
+padding: 1.5rem;
+border-radius: 8px;
+margin-bottom: 2rem;
+}
+
+.actions-panel h2 {
+color: var(--text-primary);
+margin-bottom: 1rem;
+}
+
+.action-buttons {
+display: flex;
+gap: 1rem;
+flex-wrap: wrap;
+}
+
+.action-btn {
+background: var(--gray-dark);
+border: none;
+padding: 0.8rem 1.5rem;
+border-radius: 4px;
+color: var(--text-primary);
+display: flex;
+align-items: center;
+gap: 0.5rem;
+cursor: pointer;
+transition: background 0.3s ease;
+}
+
+.action-btn:hover {
+background: var(--accent-gold);
+}
+
+.action-btn i {
+font-size: 1.2rem;
+}
+
+/* Recent Activities */
+.recent-activities {
+background: var(--black-smoke);
+padding: 1.5rem;
+border-radius: 8px;
+}
+
+.recent-activities h2 {
+color: var(--text-primary);
+margin-bottom: 1rem;
+}
+
+.activity-list {
+display: flex;
+flex-direction: column;
+gap: 1rem;
+}
+
+.activity-item {
+display: flex;
+align-items: flex-start;
+gap: 1rem;
+padding: 1rem;
+background: var(--black-pearl);
+border-radius: 4px;
+}
+
+.activity-item i {
+font-size: 1.5rem;
+}
+
+.activity-item i.success {
+color: #4CAF50;
+}
+
+.activity-item i.warning {
+color: #FFC107;
+}
+
+.activity-item i.error {
+color: #F44336;
+}
+
+.activity-info h4 {
+color: var(--text-primary);
+margin-bottom: 0.25rem;
+}
+
+.activity-info p {
+color: var(--text-secondary);
+font-size: 0.9rem;
+}
+
+.activity-info .time {
+color: var(--text-secondary);
+font-size: 0.8rem;
+opacity: 0.7;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+.core-windows-content {
+padding: 1rem;
+}
+
+.action-buttons {
+flex-direction: column;
+}
+
+.action-btn {
+width: 100%;
+}
+}
+/* Layout principal */
+.main-container {
+display: flex;
+min-height: 100vh;
+}
+
+
+
+
+
+/* Header */
+.content-header {
+    height: 56px;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--black-rich);
+    border-bottom: 1px solid var(--gray-dark);
+    flex-shrink: 0; /* Impede que o header encolha */
+}
+
+.footer-left {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+.footer-left i {
+color: var(--accent-gold);
+font-size: 1.2rem;
+}
+
+.footer-right {
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+
+.footer-version {
+padding: 0.2rem 0.6rem;
+background: var(--gray-dark);
+border-radius: 12px;
+font-size: 0.7rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+.content-area {
+margin-left: 80px;
+}
+}
+/* Ajuste no CSS para garantir que os links sociais fiquem sempre visíveis */
+.social-links {
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+padding: 1rem;
+display: flex;
+gap: 1rem;
+justify-content: center;
+flex-wrap: wrap;
+background: var(--black-rich);
+border-top: 1px solid var(--gray-dark);
+}
+
+/* Garantir que o menu principal não sobreponha os links sociais */
+.sidebar {
+width: 260px;
+height: 100vh;
+background: var(--black-rich);
+position: fixed;
+transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+z-index: 1;
+padding-bottom: 80px;
+display: flex;
+flex-direction: column;
+}
+
+.menu {
+flex: 1;
+overflow-y: auto;
+}
+/* Estilos para páginas de erro e manutenção */
+.error-container,
+.maintenance-container {
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: calc(100vh - 112px); /* altura total - (header + footer) */
+padding: 2rem;
+}
+
+.error-content,
+.maintenance-content {
+text-align: center;
+max-width: 600px;
+padding: 2rem;
+background: var(--black-smoke);
+border-radius: 8px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.error-content h1,
+.maintenance-content h1 {
+font-size: 4rem;
+color: var(--accent-gold);
+margin-bottom: 1rem;
+}
+
+.error-content h2 {
+font-size: 1.5rem;
+color: var(--text-primary);
+margin-bottom: 1rem;
+}
+
+.error-content p,
+.maintenance-content p {
+color: var(--text-secondary);
+margin-bottom: 2rem;
+}
+
+.btn-primary {
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+padding: 0.75rem 1.5rem;
+background: var(--accent-gold);
+color: var(--black-rich);
+border-radius: 4px;
+text-decoration: none;
+font-weight: 500;
+transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+background: var(--accent-gold-hover);
+transform: translateY(-2px);
+}
+
+.btn-primary i {
+font-size: 1.2em;
+}
+@media (max-width: 768px) {
+.content-area {
+margin-left: 80px;
+}
+.main-content {
+padding: 1rem;
+}
+}
+
+/* Ajustes para o posicionamento dos links sociais */
+.social-links {
+position: relative; /* Alterado de absolute para relative */
+width: 100%;
+padding: 1rem;
+display: flex;
+gap: 1rem;
+justify-content: center;
+flex-wrap: wrap;
+background: var(--black-rich);
+border-top: 1px solid var(--gray-dark);
+margin-top: 1rem; /* Adiciona margem superior para separar do conteúdo */
+}
+
+/* Estrutura da sidebar para manter a ordem correta dos elementos */
+.sidebar {
+width: 260px;
+height: 100vh;
+background: var(--black-rich);
+position: fixed;
+transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+z-index: 1;
+display: flex;
+flex-direction: column;
+}
+
+/* Hierarquia de conteúdo da sidebar */
+.sidebar-header {
+flex-shrink: 0; /* Impede que o cabeçalho diminua */
+}
+
+.menu {
+flex: 1;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+padding-bottom: 1rem; /* Espaço para os links sociais */
+}
+
+/* Ajustes para comportamento adequado dos submenus */
+.submenu {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+background: var(--submenu-level-1) !important;
+width: 100%;
+}
+
+.submenu.expanded {
+max-height: fit-content; /* Permite que o submenu se expanda o quanto for necessário */
+}
+
+/* Correções para o menu de documentação */
+.docs-wrapper {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+background: var(--submenu-level-1) !important;
+width: 100%;
+}
+
+.docs-wrapper.expanded {
+max-height: fit-content; /* Permite que o wrapper de documentação se expanda adequadamente */
+}
+
+.docs-content {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+background: var(--submenu-level-2) !important;
+}
+
+.docs-content.expanded {
+max-height: fit-content; /* Permite que o conteúdo de documentação se expanda adequadamente */
+}
+
+/* Estilização específica para botões de documentação */
+.docs-toggle, 
+.docs-button {
+width: 100%;
+height: 36px;
+padding: 0.6rem 1.2rem;
+display: flex;
+align-items: center;
+gap: 0.8rem;
+color: var(--text-secondary);
+cursor: pointer;
+background: none;
+border: none;
+font-family: 'Poppins', sans-serif;
+font-size: 0.875rem;
+position: relative;
+text-align: left;
+transition: all 0.3s ease;
+}
+
+/* Estado aberto para botões de documentação */
+.docs-button.open .menu-arrow,
+.docs-toggle.open .menu-arrow {
+transform: rotate(90deg);
+}
+
+/* Ajustes para o modo collapsed da sidebar */
+.sidebar.collapsed {
+width: 80px;
+}
+
+.sidebar.collapsed .menu-text,
+.sidebar.collapsed .logo-text,
+.sidebar.collapsed .menu-arrow {
+display: none;
+}
+
+.sidebar.collapsed .social-links {
+padding: 0.75rem;
+flex-direction: column;
+align-items: center;
+}
+
+.sidebar.collapsed .social-links a {
+width: 30px;
+height: 30px;
+margin: 0.25rem 0;
+}
+
+/* Ajustes para visualização de submenus aninhados */
+.submenu .submenu {
+background: var(--submenu-level-2) !important;
+}
+
+.submenu .submenu .submenu {
+background: var(--submenu-level-3) !important;
+}
+
+/* Espaçamento e estilo dos itens de menu */
+.menu-item a {
+padding: 0.6rem 1.2rem;
+width: 100%;
+display: flex;
+align-items: center;
+height: 40px;
+font-size: 0.875rem;
+gap: 0.8rem;
+color: var(--text-secondary);
+text-decoration: none;
+transition: all 0.3s ease;
+position: relative;
+}
+
+/* Ajustes para submenus aninhados */
+.submenu .menu-item a {
+height: 32px;
+padding: 0.5rem 1.2rem 0.5rem 2.4rem;
+font-size: 0.8rem;
+}
+
+.submenu .submenu .menu-item a {
+padding-left: 3.2rem;
+height: 30px;
+font-size: 0.75rem;
+}
+
+.submenu .submenu .submenu .menu-item a {
+padding-left: 4rem;
+height: 28px;
+font-size: 0.75rem;
+}
+.maintenance-link {
+opacity: 0.7;
+pointer-events: auto !important; /* Permita cliques, mas usaremos JavaScript para redirecioná-los */
+}
+
+.maintenance-link .menu-icon {
+opacity: 0.5;
+}
+
+.maintenance-badge {
+font-size: 9px;
+background-color: #FFC107;
+color: #333;
+padding: 2px 4px;
+border-radius: 4px;
+margin-left: 8px;
+font-weight: bold;
+white-space: nowrap;
+vertical-align: middle;
+}
+
+
+/* Correções para problemas de layout e comportamento da SPA */
+
+/* 1. Correção para evitar que o footer fique colado ao header */
+.main-content {
+    flex: 1; /* Faz o conteúdo expandir */
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 106px); /* Altura da viewport menos header e footer */
+    background-color: var(--black-pearl);
+    padding: 20px;
+    position: relative;
+    overflow-y: auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: opacity 0.3s ease;
+    flex: 1; /* Expande para ocupar o espaço disponível */
+    padding: 2rem;
+    background-color: var(--black-pearl);
+    overflow-y: visible; /* Permite que o conteúdo interno cresça */
+}
+/* Barra de rolagem personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--black-elegant);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gray-dark);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
+
+/* Suporte para Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-dark) var(--black-elegant);
+}
+
+/* 2. Correção para a estrutura geral do layout */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+
+/* 4. Garantir que o container de inventário sempre seja visível */
+.inventory-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    padding-bottom: 20px;
+}
+.main-content > div {
+    min-height: 200px;
+}
+
+.footer + .footer {
+    display: none !important;
+}
+
+/* 5. Garantir que a user-info sempre esteja visível no header */
+.user-info {
+    display: flex !important;
+    align-items: center;
+    gap: 1rem;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 1000;
+}
+
+/* 6. Fixar cor da seta para amarelo */
+.menu-item.open > a.has-submenu .menu-arrow,
+.sidebar .menu-item a:hover .menu-arrow,
+.ri-arrow-left-s-line {
+    color: var(--accent-gold, #FFD600) !important;
+}
+
+/* 7. Corrigir problema de clique nos menus */
+.sidebar .menu-item a,
+.sidebar .submenu .menu-item a {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+/* 8. Garantir visibilidade durante carregamento da página */
+.sidebar, 
+.main-content, 
+.header, 
+.footer {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 9. Assegurar que o conteúdo permaneça visível durante transições */
+body.loading .main-content {
+    opacity: 0.7;
+}
+
+/* 10. Fixar problemas de menu que não respondem ao clique */
+.sidebar .menu-item {
+    pointer-events: auto !important;
+}
+
+.sidebar .menu-item a {
+    cursor: pointer !important;
+    user-select: none;
+}
+
+/* 11. Garantir que os itens do menu sejam clicáveis */
+.sidebar .menu-item > a,
+.sidebar .submenu .menu-item > a {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto !important;
+}
+/* 9. Ajuste para larguras menores de tela */
+@media (max-width: 768px) {
+    .content-area {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+    
+    .footer {
+        padding: 0 10px;
+    }
+}
+/* Correções para a barra de rolagem e comportamento de overflow */
+
+
+
+
+
+/* 3. Ajustar a área de conteúdo para permitir rolagem */
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    overflow-y: auto; /* Garante que a área de conteúdo tenha barra de rolagem */
+    background: var(--black-pearl);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 4. Correção para quando a sidebar está colapsada */
+.sidebar.collapsed + .content-area {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+/* 5. Garantir que o conteúdo principal tenha barra de rolagem quando necessário */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: auto; /* Garante rolagem vertical */
+    padding: 20px;
+    background-color: var(--black-pearl);
+}
+
+/* 6. Estilização da barra de rolagem para todos os elementos */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: var(--black-pearl);
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--black-elegant);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--gray-dark);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-gold);
+}
+
+/* Para Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-dark) var(--black-elegant);
+}
+
+/* 7. Ajuste específico para o container de inventário */
+.inventory-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    padding-bottom: 20px;
+    overflow-y: visible; /* Permite que o conteúdo cresça verticalmente */
+}
+
+/* 8. Assegurar que tabelas e outros containers grandes tenham rolagem */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Rolagem horizontal para tabelas grandes */
+    margin-bottom: 20px;
+}
+
+/* 9. Corrigir possíveis problemas de overflow no footer */
+.footer {
+    width: 100%;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--black-absolute);
+    border-top: 1px solid var(--gray-dark);
+    height: 50px; /* Altura fixa */
+    flex-shrink: 0; /* Impede que o footer encolha */
+    margin-top: auto; /* Empurra para o final */
+    z-index: 10;
+}
+
+/* 10. Ajustes para modais e outros elementos fixos */
+.modal-content {
+    max-height: 80vh;
+    overflow-y: auto; /* Permite rolagem em modais grandes */
+}
+
+/* 11. Corrigir altura dos cards */
+.card {
+    margin-bottom: 20px;
+    overflow: visible; /* Permite que o conteúdo dos cards cresça */
+}
+
+/* 12. Responsividade para scrollbars */
+@media (max-width: 768px) {
+    ::-webkit-scrollbar {
+        width: 6px; /* Scrollbar mais fina em dispositivos móveis */
+    }
+    
+    .content-area {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+}

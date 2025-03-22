@@ -1,0 +1,47 @@
+/* CSS principal do sistema
+   Importa os arquivos CSS modulares para criar uma interface completa */
+/* main.css*/
+
+/* Importar variáveis CSS */
+@import url('vars.css');
+
+/* Importar estilos base e reset */
+@import url('reset.css');
+
+/* Importar layout e estrutura básica */
+@import url('layout.css');
+
+/* Importar estilos de cabeçalho */
+@import url('header.css');
+
+/* Importar estilos de cards */
+@import url('cards.css');
+
+/* Importar estilos de formulários */
+@import url('forms.css');
+
+/* Importar estilos de botões */
+@import url('buttons.css');
+
+/* Importar estilos de tabelas */
+@import url('tables.css');
+
+/* Importar estilos de modais */
+@import url('modals.css');
+
+/* Importar estilos de feedback */
+@import url('feedback.css');
+
+/* Importar animações */
+@import url('animations.css');
+
+/* Importar utilitários */
+@import url('utils.css');
+
+/* Correção para Firefox */
+@-moz-document url-prefix() {
+  .main-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-dark) var(--black-elegant);
+  }
+}

@@ -1,0 +1,3049 @@
+/* Animações e efeitos visuais para o módulo Ansible */
+
+/* animations.css */
+.spinner {
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top: 2px solid var(--accent-gold);
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  animation: spin 1.2s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Loading Banner */
+.loading-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  border: 1px solid var(--black-elegant);
+  position: relative;
+}
+
+.loading-banner.success {
+  background: rgba(76, 175, 80, 0.1);
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.loading-banner.error {
+  background: rgba(244, 67, 54, 0.1);
+  border-color: rgba(244, 67, 54, 0.3);
+}
+
+.loading-banner .progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  border-radius: 0 0 6px 6px;
+}
+
+/* Animação de shimmer */
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* Animação de pulsação */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+  70% { box-shadow: 0 0 0 4px rgba(76, 175, 80, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+}
+
+.host-banner.valid.active::before {
+  animation: pulse 2s infinite;
+}
+/* CSS principal do módulo Ansible 
+   Importa os arquivos CSS modulares para criar uma interface completa */
+/* ansible.css */
+
+/* Importar variáveis CSS */
+@import url('variables.css');
+
+/* Importar layout e estrutura básica */
+@import url('layout.css');
+
+/* Importar estilos de cabeçalho */
+@import url('header.css');
+
+/* Importar estilos de hosts */
+@import url('hosts.css');
+
+/* Importar estilos de playbooks */
+@import url('playbooks.css');
+
+/* Importar estilos de execução */
+@import url('execution.css');
+
+/* Importar estilos de saída */
+@import url('output.css');
+
+/* Importar estilos de botões */
+@import url('buttons.css');
+
+/* Importar estilos de debug */
+@import url('debug.css');
+
+/* Importar animações */
+@import url('animations.css');
+
+/* Correção para Firefox */
+@-moz-document url-prefix() {
+  .ansible-container {
+    overflow: hidden;
+  }
+}
+/* Estilos para botões e controles interativos do módulo Ansible */
+/* buttons.css */
+
+/* Botões padrão */
+.ansible-button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--accent-gold);
+  color: var(--black-absolute);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  height: 32px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ansible-button:hover {
+  background: #FFD54F;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.ansible-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.ansible-button.ansible-secondary {
+  background: var(--error-red);
+  color: white;
+}
+
+.ansible-button.ansible-secondary:hover {
+  background: #EF5350;
+}
+
+.ansible-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.ansible-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Estilos para mensagens de status */
+#execution-status {
+  font-size: 11px;
+  margin-top: 6px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#execution-status.success {
+  color: var(--success-green);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+#execution-status.error {
+  color: var(--error-red);
+  font-weight: 500;
+}
+
+#execution-status svg {
+  width: 12px;
+  height: 12px;
+}
+/* Estilos para a área de debug do módulo Ansible */
+/* debug.css */
+/* Área de debug */
+.ansible-debug {
+  margin-top: 16px;
+  padding: 12px;
+  background: linear-gradient(to bottom, var(--black-smoke) 0%, rgba(30, 30, 30, 0.95) 100%);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  border: 1px solid var(--black-elegant);
+  position: relative;
+}
+
+.ansible-debug::before {
+  content: 'Debug';
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: var(--accent-gold);
+  color: var(--black-absolute);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.ansible-debug-toggle {
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--accent-gold);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.ansible-debug-toggle:hover {
+  color: #FFD54F;
+}
+
+.ansible-debug-toggle svg {
+  stroke: var(--accent-gold);
+  transition: all 0.2s;
+  width: 12px;
+  height: 12px;
+}
+
+.ansible-debug-toggle:hover svg {
+  stroke: #FFD54F;
+  transform: translateY(-1px);
+}
+
+.ansible-debug-output {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%);
+  padding: 10px;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  border: 1px solid var(--gray-dark);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  line-height: 1.5;
+}
+
+.ansible-debug-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ansible-debug-output::-webkit-scrollbar-track {
+  background: var(--black-elegant);
+  border-radius: 3px;
+}
+
+.ansible-debug-output::-webkit-scrollbar-thumb {
+  background: var(--gray-dark);
+  border-radius: 3px;
+  border: 1px solid var(--black-elegant);
+}
+/* Estilos para execução de playbooks no módulo Ansible */
+/* execution.css */
+.execution-card {
+  background: linear-gradient(135deg, #2a2a2a 0%, #212121 100%);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid var(--black-elegant);
+  
+  /* Estrutura flexível para organizar elementos */
+  display: flex;
+  flex-direction: column;
+}
+
+.ansible-output {
+  font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+  background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%);
+  color: var(--text-secondary);
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid var(--gray-dark);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  display: none; /* Oculto por padrão */
+  max-height: 400px; /* Altura máxima com rolagem */
+}
+
+
+/* Script para ajustar a posição do button-group para cada card */
+/* (Este estilo será aplicado via JavaScript) */
+.button-group-positioned {
+  position: absolute !important; /* Substituirá o fixed do button-group */
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+}
+
+/* Estilização extra para o botão toggle para melhor visibilidade */
+.toggle-output-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: rgba(255, 214, 0, 0.15); /* Cor dourada suave */
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.toggle-output-btn:hover {
+  background: rgba(255, 214, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.execution-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.execution-card.selected {
+  background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 214, 0, 0.3);
+  transform: translateY(-1px);
+  border: none;
+}
+
+.execution-card.success::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--success-green);
+  border-radius: 3px 0 0 3px;
+}
+
+.execution-card.failed::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--error-red);
+  border-radius: 3px 0 0 3px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 214, 0, 0.1);
+}
+
+.playbook-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.3px;
+}
+
+.playbook-title svg {
+  stroke: var(--accent-gold);
+  width: 14px;
+  height: 14px;
+}
+
+.playbook-title .selected-icon {
+  display: none;
+}
+
+.execution-card.selected .playbook-title .selected-icon {
+  display: inline-block;
+}
+
+/* Status de tarefa */
+.task-status {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-status svg {
+  width: 12px;
+  height: 12px;
+}
+
+.task-status.running svg {
+  animation: spin 1.5s linear infinite;
+}
+
+.task-status.success {
+  color: var(--success-green);
+  background: rgba(76, 175, 80, 0.15);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.task-status.failed {
+  color: var(--error-red);
+  background: rgba(244, 67, 54, 0.15);
+  font-weight: 600;
+}
+
+.task-status.cancelled {
+  color: var(--warning-orange);
+  background: rgba(255, 167, 38, 0.15);
+  font-weight: 600;
+}
+
+/* Informações do host na execução - REFORMATADO PARA HORIZONTAL */
+.host-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Nova versão horizontal dos detalhes do host */
+.host-details {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.host-details p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex: 1;
+  min-width: 150px;
+  max-width: 220px;
+}
+
+.host-details p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+  min-width: auto;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.host-details p svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-tertiary);
+}
+
+/* Barra de progresso */
+.progress-container {
+  background: rgba(0, 0, 0, 0.3);
+  height: 4px;
+  border-radius: 2px;
+  margin: 10px 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent-gold) 0%, #FFD54F 50%, var(--accent-gold) 100%);
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: 200% 100%;
+  animation: progress-animation 2s infinite linear;
+}
+
+@keyframes progress-animation {
+  0% { background-position: 0% 0%; }
+  100% { background-position: -200% 0%; }
+}
+/* Button-group realmente fixo no fundo do card */
+/* Button-group realmente fixo no fundo do card */
+.button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  position: relative;
+  margin-top: 10px;
+  padding: 8px 0;
+  z-index: 10;
+  background: linear-gradient(135deg, #2a2a2a 0%, #212121 100%); /* Mesma cor do card */
+  border-top: 1px solid rgba(51, 51, 51, 0.3);
+  border-bottom: 1px solid rgba(51, 51, 51, 0.3);
+}
+
+
+.card-content {
+  position: relative;
+}
+
+
+/* Selo de tempo para execuções */
+.execution-timestamp {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.execution-timestamp svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--text-tertiary);
+}
+
+/* Botão Cancelar */
+* Estilo para quando a saída estiver visível */
+.ansible-output.visible {
+  display: block;
+}
+
+/* Assegurar que o botão de cancelar tem estilo consistente */
+.cancel-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--error-red);
+  color: white;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+}
+
+
+.cancel-btn:hover {
+  background: #EF5350;
+  transform: translateY(-1px);
+}
+
+.cancel-btn:active {
+  transform: translateY(1px);
+}
+
+.cancel-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Botão Ver Mais/Menos - modificado para manter posição fixa */
+/* Botão Ver Mais/Menos - modificado para sticky */
+.toggle-output-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(255, 214, 0, 0.15); /* Cor dourada suave */
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+
+.toggle-output-btn:hover {
+  background: rgba(255, 214, 0, 0.25);
+}
+
+
+.toggle-output-btn:active {
+  transform: translateY(1px);
+}
+
+.toggle-output-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Mensagem de cancelamento */
+.ansible-cancelled-message {
+  margin: 10px 0;
+  padding: 8px;
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 3px solid var(--warning-orange);
+  color: var(--warning-orange);
+  font-weight: 500;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Estilos para execução de playbooks no módulo Ansible */
+/* execution.css */
+/* Cartão de execução */
+.execution-card {
+  background: linear-gradient(135deg, #2a2a2a 0%, #212121 100%);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  padding: 12px;
+  padding-bottom: 20px; /* Reduzir o padding desnecessário */
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid var(--black-elegant);
+  padding-bottom: 60px; /* Espaço para acomodar os botões */
+
+  overflow: visible; /* Permitir que o button-group seja visível fora do card */
+}
+
+
+/* Melhoria visual dos botões */
+.toggle-output-btn, .cancel-btn {
+  border-radius: 4px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.toggle-output-btn {
+  background: rgba(255, 214, 0, 0.2);
+  font-weight: 600;
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 214, 0, 0.3);
+}
+
+/* Ajuste para execução em linha abaixo dos outros elementos do card */
+.execution-card .progress-container {
+  margin-bottom: 20px; /* Aumenta a margem abaixo da barra de progresso */
+}
+
+
+.ansible-output {
+  margin-top: 50px; /* Espaço para os botões acima */
+  margin-bottom: 0;
+  background: #1a1a1a; /* Mesmo tom de fundo do button-group */
+  overflow-y: auto;
+}
+
+
+
+/* Script para ajustar a posição do button-group para cada card */
+/* (Este estilo será aplicado via JavaScript) */
+.button-group-positioned {
+  position: absolute !important; /* Substituirá o fixed do button-group */
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+}
+
+/* Estilização extra para o botão toggle para melhor visibilidade */
+.toggle-output-btn {
+  background: rgba(255, 214, 0, 0.15); /* Cor dourada suave */
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 214, 0, 0.1); /* Borda sutil */
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 214, 0, 0.25);
+  border-color: rgba(255, 214, 0, 0.2);
+}
+
+.execution-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.execution-card.selected {
+  background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 214, 0, 0.3);
+  transform: translateY(-1px);
+  border: none;
+}
+
+.execution-card.success::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--success-green);
+  border-radius: 3px 0 0 3px;
+}
+
+.execution-card.failed::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--error-red);
+  border-radius: 3px 0 0 3px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 214, 0, 0.1);
+}
+
+.playbook-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.3px;
+}
+
+.playbook-title svg {
+  stroke: var(--accent-gold);
+  width: 14px;
+  height: 14px;
+}
+
+.playbook-title .selected-icon {
+  display: none;
+}
+
+.execution-card.selected .playbook-title .selected-icon {
+  display: inline-block;
+}
+
+/* Status de tarefa */
+.task-status {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-status svg {
+  width: 12px;
+  height: 12px;
+}
+
+.task-status.running svg {
+  animation: spin 1.5s linear infinite;
+}
+
+.task-status.success {
+  color: var(--success-green);
+  background: rgba(76, 175, 80, 0.15);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.task-status.failed {
+  color: var(--error-red);
+  background: rgba(244, 67, 54, 0.15);
+  font-weight: 600;
+}
+
+.task-status.cancelled {
+  color: var(--warning-orange);
+  background: rgba(255, 167, 38, 0.15);
+  font-weight: 600;
+}
+
+/* Informações do host na execução - REFORMATADO PARA HORIZONTAL */
+.host-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Nova versão horizontal dos detalhes do host */
+.host-details {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.host-details p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex: 1;
+  min-width: 150px;
+  max-width: 220px;
+}
+
+.host-details p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+  min-width: auto;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.host-details p svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-tertiary);
+}
+
+/* Barra de progresso */
+.progress-container {
+  background: rgba(0, 0, 0, 0.3);
+  height: 4px;
+  border-radius: 2px;
+  margin: 10px 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent-gold) 0%, #FFD54F 50%, var(--accent-gold) 100%);
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: 200% 100%;
+  animation: progress-animation 2s infinite linear;
+}
+
+@keyframes progress-animation {
+  0% { background-position: 0% 0%; }
+  100% { background-position: -200% 0%; }
+}
+/* Button-group com fundo escuro para integrar melhor ao card */
+.button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  position: absolute; /* Posição absoluta em relação ao card */
+  top: 160px; /* Posição fixa no topo logo após os elementos iniciais do card */
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background: #1a1a1a; /* Fundo sólido escuro sem transparência */
+  border-top: 1px solid #333333; /* Borda sutil para separar do conteúdo acima */
+  border-bottom: 1px solid #333333; /* Borda sutil para separar do conteúdo abaixo */
+  padding: 10px 12px; /* Alinhado com o padding do card */
+  margin: 0;
+  width: 100%; /* Ocupa toda a largura do card */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Sombra interna sutil */
+}
+
+/* Selo de tempo para execuções */
+.execution-timestamp {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.execution-timestamp svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--text-tertiary);
+}
+
+/* Botão Cancelar */
+.cancel-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--error-red);
+  color: white;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+}
+
+.cancel-btn:hover {
+  background: #EF5350;
+  transform: translateY(-1px);
+}
+
+.cancel-btn:active {
+  transform: translateY(1px);
+}
+
+.cancel-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Botão Ver Mais/Menos - modificado para manter posição fixa */
+/* Botão Ver Mais/Menos - modificado para sticky */
+.toggle-output-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.12); /* Aumentado o contraste */
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  position: relative;
+  z-index: 15;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Adicionado sombra para destaque */
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+
+.toggle-output-btn:active {
+  transform: translateY(1px);
+}
+
+.toggle-output-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Mensagem de cancelamento */
+.ansible-cancelled-message {
+  margin: 10px 0;
+  padding: 8px;
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 3px solid var(--warning-orange);
+  color: var(--warning-orange);
+  font-weight: 500;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Estilos para execução de playbooks no módulo Ansible */
+/* execution.css */
+/* Cartão de execução */
+.execution-card {
+  background: linear-gradient(135deg, #2a2a2a 0%, #212121 100%);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  padding: 12px;
+  padding-bottom: 20px; /* Reduzir o padding desnecessário */
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid var(--black-elegant);
+  padding-bottom: 60px; /* Espaço para acomodar os botões */
+
+  overflow: visible; /* Permitir que o button-group seja visível fora do card */
+}
+
+
+/* Melhoria visual dos botões */
+.toggle-output-btn, .cancel-btn {
+  border-radius: 4px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.toggle-output-btn {
+  background: rgba(255, 214, 0, 0.2);
+  font-weight: 600;
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 214, 0, 0.3);
+}
+
+/* Ajuste para execução em linha abaixo dos outros elementos do card */
+.execution-card .progress-container {
+  margin-bottom: 20px; /* Aumenta a margem abaixo da barra de progresso */
+}
+
+
+.ansible-output {
+  margin-top: 50px; /* Espaço para os botões acima */
+  margin-bottom: 0;
+  background: #1a1a1a; /* Mesmo tom de fundo do button-group */
+  overflow-y: auto;
+}
+
+
+
+/* Script para ajustar a posição do button-group para cada card */
+/* (Este estilo será aplicado via JavaScript) */
+.button-group-positioned {
+  position: absolute !important; /* Substituirá o fixed do button-group */
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+}
+
+/* Estilização extra para o botão toggle para melhor visibilidade */
+.toggle-output-btn {
+  background: rgba(255, 214, 0, 0.15); /* Cor dourada suave */
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 214, 0, 0.1); /* Borda sutil */
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 214, 0, 0.25);
+  border-color: rgba(255, 214, 0, 0.2);
+}
+
+.execution-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.execution-card.selected {
+  background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 214, 0, 0.3);
+  transform: translateY(-1px);
+  border: none;
+}
+
+.execution-card.success::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--success-green);
+  border-radius: 3px 0 0 3px;
+}
+
+.execution-card.failed::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--error-red);
+  border-radius: 3px 0 0 3px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 214, 0, 0.1);
+}
+
+.playbook-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.3px;
+}
+
+.playbook-title svg {
+  stroke: var(--accent-gold);
+  width: 14px;
+  height: 14px;
+}
+
+.playbook-title .selected-icon {
+  display: none;
+}
+
+.execution-card.selected .playbook-title .selected-icon {
+  display: inline-block;
+}
+
+/* Status de tarefa */
+.task-status {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-status svg {
+  width: 12px;
+  height: 12px;
+}
+
+.task-status.running svg {
+  animation: spin 1.5s linear infinite;
+}
+
+.task-status.success {
+  color: var(--success-green);
+  background: rgba(76, 175, 80, 0.15);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.task-status.failed {
+  color: var(--error-red);
+  background: rgba(244, 67, 54, 0.15);
+  font-weight: 600;
+}
+
+.task-status.cancelled {
+  color: var(--warning-orange);
+  background: rgba(255, 167, 38, 0.15);
+  font-weight: 600;
+}
+
+/* Informações do host na execução - REFORMATADO PARA HORIZONTAL */
+.host-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Nova versão horizontal dos detalhes do host */
+.host-details {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.host-details p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex: 1;
+  min-width: 150px;
+  max-width: 220px;
+}
+
+.host-details p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+  min-width: auto;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.host-details p svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-tertiary);
+}
+
+/* Barra de progresso */
+.progress-container {
+  background: rgba(0, 0, 0, 0.3);
+  height: 4px;
+  border-radius: 2px;
+  margin: 10px 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent-gold) 0%, #FFD54F 50%, var(--accent-gold) 100%);
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: 200% 100%;
+  animation: progress-animation 2s infinite linear;
+}
+
+@keyframes progress-animation {
+  0% { background-position: 0% 0%; }
+  100% { background-position: -200% 0%; }
+}
+/* Button-group com fundo escuro para integrar melhor ao card */
+.button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  position: absolute; /* Posição absoluta em relação ao card */
+  top: 160px; /* Posição fixa no topo logo após os elementos iniciais do card */
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background: #1a1a1a; /* Fundo sólido escuro sem transparência */
+  border-top: 1px solid #333333; /* Borda sutil para separar do conteúdo acima */
+  border-bottom: 1px solid #333333; /* Borda sutil para separar do conteúdo abaixo */
+  padding: 10px 12px; /* Alinhado com o padding do card */
+  margin: 0;
+  width: 100%; /* Ocupa toda a largura do card */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Sombra interna sutil */
+}
+
+/* Selo de tempo para execuções */
+.execution-timestamp {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.execution-timestamp svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--text-tertiary);
+}
+
+/* Botão Cancelar */
+.cancel-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--error-red);
+  color: white;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+}
+
+.cancel-btn:hover {
+  background: #EF5350;
+  transform: translateY(-1px);
+}
+
+.cancel-btn:active {
+  transform: translateY(1px);
+}
+
+.cancel-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Botão Ver Mais/Menos - modificado para manter posição fixa */
+/* Botão Ver Mais/Menos - modificado para sticky */
+.toggle-output-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.12); /* Aumentado o contraste */
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  position: relative;
+  z-index: 15;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Adicionado sombra para destaque */
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+
+.toggle-output-btn:active {
+  transform: translateY(1px);
+}
+
+.toggle-output-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Mensagem de cancelamento */
+.ansible-cancelled-message {
+  margin: 10px 0;
+  padding: 8px;
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 3px solid var(--warning-orange);
+  color: var(--warning-orange);
+  font-weight: 500;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* header.css */
+
+/* header.css */
+.ansible-header {
+  width: 100%;
+  padding: 16px;
+  background: var(--gradient-header); /* Mantém o gradiente do inventário */
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg), inset 0 1px 2px rgba(255, 214, 0, 0.05);
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column; /* Alterado para column para melhor organização */
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px solid var(--black-elegant);
+  position: relative;
+  overflow: hidden;
+  min-height: 70px;
+}
+
+.ansible-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 214, 0, 0.03) 50%, transparent 100%);
+  pointer-events: none;
+}
+
+.ansible-header-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ansible-header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.3px;
+}
+
+.ansible-header-title svg {
+  stroke: var(--accent-gold);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+  width: 22px;
+  height: 22px;
+}
+
+.ansible-header-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* Estilo atualizado para o elemento de filtros */
+.ansible-filter-container {
+  display: flex;
+  width: 100%;
+  gap: 15px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+/* Mantendo a compatibilidade com o estilo antigo */
+.ansible-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid var(--black-elegant);
+  width: 100%;
+}
+
+.ansible-filter-group {
+  flex: 1;
+  min-width: 150px;
+}
+
+.ansible-filter-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.ansible-select {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--black-rich);
+  border: 1px solid var(--gray-dark);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 12px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23d4d4d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 24px;
+  transition: all 0.2s;
+  height: 32px;
+}
+
+.ansible-select:hover {
+  border-color: var(--accent-gold);
+}
+
+.ansible-select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px rgba(255, 214, 0, 0.2);
+}
+
+.ansible-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--black-elegant);
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.ansible-progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent-gold) 0%, #FFC107 100%);
+  transition: width 0.3s ease-out;
+}
+
+.ansible-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+  background-size: 200% 100%;
+}
+
+.ansible-heading {
+  font-size: 16px;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.3px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 214, 0, 0.1);
+}
+
+.ansible-heading svg {
+  stroke: var(--accent-gold);
+  width: 16px;
+  height: 16px;
+}
+
+/* Estilos para o botão de execução */
+.ansible-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  background: var(--gray-dark);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.ansible-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.ansible-button:active {
+  transform: translateY(1px);
+}
+
+.ansible-button svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+}
+
+.ansible-button.ansible-primary {
+  background: var(--accent-gold);
+  color: var(--black-absolute);
+}
+
+.ansible-button.ansible-primary:hover {
+  background: var(--accent-gold-hover);
+}
+
+.ansible-button.ansible-secondary {
+  background: var(--error-red);
+  color: white;
+}
+
+.ansible-button.ansible-secondary:hover {
+  background: #EF5350;
+}
+
+.ansible-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Corrigindo a ação */
+.ansible-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+  align-items: center;
+  z-index: 10;
+  position: relative;
+}
+/* Estilos para os hosts do módulo Ansible - Redesenhado similar ao card de execução */
+/* hosts.css */
+
+/* Container de hosts */
+.ansible-hosts-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 16px;
+  background: var(--gradient-card);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 16px;
+  position: relative;
+  flex-wrap: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  border: 1px solid var(--black-elegant);
+  min-height: 150px;
+}
+/* Barra de rolagem para hosts */
+.ansible-hosts-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.ansible-hosts-container::-webkit-scrollbar-track {
+  background: var(--black-elegant);
+  border-radius: 3px;
+}
+
+.ansible-hosts-container::-webkit-scrollbar-thumb {
+  background: var(--gray-dark);
+  border-radius: 3px;
+}
+
+/* Mensagem de status para hosts */
+.hosts-status-message {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8); /* Fundo escuro sólido */
+  color: var(--accent-gold);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  z-index: 10;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--black-elegant);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Card de host - REDESENHADO com quadrados aninhados */
+.host-banner {
+  flex: 0 0 auto;
+  width: 300px;
+  min-width: 300px;
+  padding: 0; /* Remove padding para permitir design aninhado */
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1c1c1c 100%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--black-elegant);
+}
+
+.host-banner:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 3px 6px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 214, 0, 0.3);
+}
+
+/* Efeitos para hosts válidos/inválidos */
+.host-banner.valid {
+  position: relative;
+}
+
+.host-banner.valid::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: var(--success-green);
+  border-radius: 4px 0 0 4px;
+  z-index: 2;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+}
+
+.host-banner.invalid {
+  position: relative;
+  opacity: 0.9;
+}
+
+.host-banner.invalid::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: var(--error-red);
+  border-radius: 4px 0 0 4px;
+  z-index: 2;
+  box-shadow: 0 0 8px rgba(244, 67, 54, 0.4);
+}
+
+/* Efeito para hosts selecionados */
+.host-banner.selected {
+  background: linear-gradient(135deg, #4a4a4a 0%, #383838 100%); /* Gradiente mais claro e elegante */
+  border: 1px solid rgba(255, 214, 0, 0.5); /* Borda sutil com tom dourado */
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7), /* Sombra escura mais profunda */
+              0 2px 8px rgba(0, 0, 0, 0.5), /* Camada de sombra secundária */
+              inset 0 1px 3px rgba(255, 255, 255, 0.1); /* Brilho interno sutil */
+  transform: translateY(-6px); /* Elevação para trazer o card "pra frente" */
+  z-index: 3; /* Garante que o card fique acima dos outros */
+  transition: all 0.3s ease; /* Transição suave para todos os efeitos */
+  position: relative; /* Mantém o posicionamento relativo para elementos internos */
+}
+/* Efeito no label/input do rodapé para parecer um botão mais "pra frente" */
+.host-banner.selected label {
+  color: var(--accent-gold);
+  font-weight: 600;
+  transform: scale(1.05); /* Leve aumento para destacar */
+  transition: all 0.2s ease;
+}
+
+.host-banner.selected input[type="checkbox"] {
+  accent-color: var(--accent-gold);
+  box-shadow: 0 0 6px rgba(255, 214, 0, 0.5); /* Brilho ao redor do checkbox */
+  transform: scale(1.1); /* Checkbox ligeiramente maior */
+}
+/* Ajuste no host-footer para destacar o botão no card selecionado */
+.host-banner.selected .host-footer {
+  background: linear-gradient(135deg, #333333 0%, #252525 100%); /* Fundo mais claro no rodapé */
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidade */
+}
+
+/* Cabeçalho do host - primeiro quadrado */
+.host-header {
+  background: linear-gradient(135deg, #333333 0%, #252525 100%);
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.host-banner.valid .host-header::after {
+  content: 'ONLINE';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(76, 175, 80, 0.15);
+  color: var(--success-green);
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.host-banner.invalid .host-header::after {
+  content: 'OFFLINE';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(244, 67, 54, 0.15);
+  color: var(--error-red);
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.host-banner h4 {
+  font-size: 14px;
+  color: var(--text-primary);
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding-right: 85px; /* Espaço para o badge de status */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Conteúdo do host - segundo quadrado */
+.host-content {
+  padding: 12px;
+  background: linear-gradient(135deg, #292929 0%, #212121 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  flex: 1;
+}
+
+/* Layout horizontal para informações do host - Redesenhado */
+.host-info-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 0;
+  padding: 10px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para host inválido com layout horizontal */
+.host-banner.invalid .host-info-horizontal {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.05) 0%, rgba(244, 67, 54, 0.1) 100%);
+  border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+.host-info-horizontal span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  flex: 1;
+  min-width: 130px;
+  max-width: 210px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.host-info-horizontal span:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 214, 0, 0.2);
+}
+
+.host-info-horizontal strong {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-right: 2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.host-info-horizontal svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+/* Estilo específico para texto de host inválido */
+.host-banner.invalid p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--error-red);
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(244, 67, 54, 0.08);
+  padding: 8px 12px;
+  border-radius: 4px;
+  width: 100%;
+  border: 1px solid rgba(244, 67, 54, 0.15);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.host-banner.invalid p svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--error-red);
+}
+
+/* Rodapé do host - retângulo longo */
+.host-footer {
+  background: linear-gradient(135deg, #262626 0%, #1a1a1a 100%);
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.host-banner label {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--accent-gold);
+  cursor: pointer;
+  transition: color 0.2s;
+  font-weight: 500;
+  margin: 0;
+}
+
+.host-banner label:hover {
+  color: #FFD54F;
+}
+
+.host-banner input[type="checkbox"] {
+  margin-right: 6px;
+  accent-color: var(--accent-gold);
+  width: 14px;
+  height: 14px;
+}
+
+/* Badge para sistema operacional - Redesenhado */
+.os-badge {
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.os-badge:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.os-badge svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-secondary);
+}
+
+.os-badge img {
+  width: 14px;
+  height: 14px;
+  filter: brightness(0) invert(0.7);
+}
+
+/* OS Badge específico para Linux */
+.os-badge.linux {
+  background: rgba(76, 175, 80, 0.08);
+  border-color: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+}
+
+.os-badge.linux:hover {
+  background: rgba(76, 175, 80, 0.12);
+  border-color: rgba(76, 175, 80, 0.25);
+}
+
+.os-badge.linux img {
+  filter: brightness(0) saturate(100%) invert(64%) sepia(16%) saturate(1207%) hue-rotate(81deg) brightness(89%) contrast(85%);
+}
+
+/* OS Badge específico para Windows */
+.os-badge.windows {
+  background: rgba(3, 169, 244, 0.08);
+  border-color: rgba(3, 169, 244, 0.2);
+  color: #03A9F4;
+}
+
+.os-badge.windows:hover {
+  background: rgba(3, 169, 244, 0.12);
+  border-color: rgba(3, 169, 244, 0.25);
+}
+
+.os-badge.windows img {
+  filter: brightness(0) saturate(100%) invert(65%) sepia(73%) saturate(4990%) hue-rotate(177deg) brightness(101%) contrast(96%);
+}
+/* Contador de hosts */
+.host-counter {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.8); /* Fundo escuro sólido */
+  color: var(--accent-gold);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--black-elegant);
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+.host-counter svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--accent-gold);
+}
+
+/* Barra de progresso no container de hosts - MELHORADA */
+.ansible-hosts-container .progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  border-radius: 0 0 6px 6px;
+  height: 6px; /* Aumentada para 6px */
+  z-index: 2;
+  background: var(--black-elegant);
+}
+
+.ansible-hosts-container .progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent-gold) 0%, #FFD54F 50%, var(--accent-gold) 100%);
+  border-radius: 0;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: 200% 100%;
+  animation: progress-animation 2s infinite linear;
+  box-shadow: 0 0 10px rgba(255, 214, 0, 0.3); /* Adicionado efeito de brilho */
+}
+
+/* Loading Banner - CORRIGIDO para cobrir todo o banner */
+.loading-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 100%);
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  border: 1px solid var(--black-elegant);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  justify-content: center;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.loading-banner.success {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(76, 175, 80, 0.1) 100%);
+  border-color: rgba(76, 175, 80, 0.2);
+}
+
+.loading-banner.error {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.05) 0%, rgba(244, 67, 54, 0.1) 100%);
+  border-color: rgba(244, 67, 54, 0.2);
+}
+
+.loading-banner .progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  border-radius: 0 0 6px 6px;
+  height: 6px;
+}
+
+.loading-banner .spinner {
+  width: 20px;
+  height: 20px;
+  border-width: 3px;
+}
+
+#loading-message {
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+}
+/* layout.css */
+/* Container principal */
+.ansible-container {
+  width: 100%;
+  padding: 15px;
+  font-family: 'Inter', 'Arial', sans-serif;
+  color: var(--text-primary);
+  box-sizing: border-box;
+  background: var(--black-pearl); /* Fundo igual ao inventário */
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  min-height: calc(100vh - 56px); /* Ajuste para o footer */
+}
+
+/* Reset de estilos básicos */
+.ansible-container * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Layout de duas colunas */
+.ansible-layout {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Seção de playbooks */
+.ansible-playbooks {
+  flex: 0 0 35%;
+  background: var(--gradient-card); /* Mesmo gradiente dos cards do inventário */
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  overflow-y: auto;
+  max-height: 450px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  border: 1px solid var(--black-elegant);
+  position: relative;
+}
+
+/* Seção de execução */
+.ansible-execution {
+  flex: 1;
+  background: var(--gradient-card);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  overflow-y: auto;
+  max-height: 450px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  border: 1px solid var(--black-elegant);
+}
+
+/* Padronizar barras de rolagem */
+.ansible-playbooks::-webkit-scrollbar,
+.ansible-execution::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.ansible-playbooks::-webkit-scrollbar-track,
+.ansible-execution::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: var(--black-elegant);
+  border-radius: 3px;
+}
+
+.ansible-playbooks::-webkit-scrollbar-thumb,
+.ansible-execution::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: var(--gray-dark);
+  border-radius: 3px;
+  border: 1px solid var(--black-elegant);
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  background: var(--black-pearl); /* Fundo global */
+}
+
+/* Remover linha branca da sidebar */
+.sidebar {
+  background: var(--black-rich);
+  border-right: none; /* Remove a borda branca */
+}
+
+/* Media queries */
+@media (max-width: 1200px) {
+  .ansible-layout {
+    flex-direction: column;
+  }
+  
+  .ansible-playbooks, 
+  .ansible-execution {
+    flex: 1 1 100%;
+    width: 100%;
+    margin-bottom: 12px;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ansible-container {
+    padding: 10px;
+  }
+}
+
+/* Estilos para o cabeçalho fixo */
+.ansible-fixed-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--bg-primary);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.ansible-fixed-header.scrolled {
+  padding: 5px 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.ansible-fixed-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.ansible-selection-counter {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 8px 12px;
+  background-color: var(--bg-secondary);
+  border-radius: 6px;
+  margin-right: 15px;
+  border: 1px solid var(--border-color);
+}
+
+.ansible-counter-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.ansible-counter-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: var(--accent-gold);
+  color: var(--text-dark);
+}
+
+.ansible-counter-badge.empty {
+  background-color: var(--error-red);
+  color: white;
+}
+
+.ansible-actions-fixed {
+  display: flex;
+  gap: 10px;
+}
+
+.ansible-advanced-filter {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 10px;
+  background-color: var(--bg-tertiary);
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  margin-top: 10px;
+}
+
+.ansible-filter-group {
+  flex: 1;
+  min-width: 180px;
+}
+
+.filter-label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+}
+
+.ansible-select-container {
+  position: relative;
+}
+
+.ansible-select-container::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--text-secondary);
+  pointer-events: none;
+}
+
+.ansible-select {
+  width: 100%;
+  padding: 8px 10px;
+  padding-right: 30px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  appearance: none;
+}
+
+.ansible-select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px rgba(255, 214, 0, 0.2);
+}
+
+.ansible-select optgroup {
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.ansible-select option {
+  padding: 5px;
+}
+
+/* Ajustes para o layout principal para considerar cabeçalho fixo */
+.ansible-container {
+  padding-top: 10px;
+}
+
+/* Contador de playbooks */
+.playbooks-counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-color: var(--bg-secondary);
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.playbooks-counter .count {
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+/* Tooltip para o contador */
+.ansible-counter-tooltip {
+  position: relative;
+  cursor: help;
+}
+
+.ansible-counter-tooltip:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  border-radius: 4px;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 10;
+  margin-top: 5px;
+}
+
+/* Modificações do modal Site24x7 */
+.device-key-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.device-key-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.device-key-tab {
+  padding: 10px 15px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.device-key-tab.active {
+  color: var(--accent-gold);
+  border-bottom-color: var(--accent-gold);
+  font-weight: bold;
+}
+
+.device-key-panel {
+  display: none;
+}
+
+.device-key-panel.active {
+  display: block;
+}
+
+.device-key-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.device-key-card {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: var(--bg-secondary);
+}
+
+.device-key-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.device-key-card.selected {
+  border-color: var(--accent-gold);
+  background-color: rgba(255, 214, 0, 0.1);
+}
+
+.device-key-card h4 {
+  margin: 0 0 10px 0;
+  color: var(--text-primary);
+}
+
+.device-key-card .key-value {
+  font-family: monospace;
+  background-color: var(--bg-tertiary);
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.device-key-card .key-region {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+/* Estilos para a saída do Ansible */
+/* output.css */
+/* Saída do Ansible */
+.ansible-output {
+  font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+  background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%);
+  color: var(--text-secondary);
+  padding: 10px;
+  padding-bottom: 50px; /* Espaço para não sobrepor o conteúdo com os botões */
+
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  max-height: none; /* Removida altura máxima para evitar cortes */
+  overflow-y: auto;
+  display: none;
+  margin-top: 10px;
+  margin-bottom: 0; /* Removido margin-bottom para não criar espaço antes do botão */
+  border: 1px solid var(--gray-dark);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  position: relative;
+}
+
+
+
+.ansible-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ansible-output::-webkit-scrollbar-track {
+  background: var(--black-elegant);
+  border-radius: 3px;
+}
+
+.ansible-output::-webkit-scrollbar-thumb {
+  background: var(--gray-dark);
+  border-radius: 3px;
+  border: 1px solid var(--black-elegant);
+}
+
+.ansible-output::-webkit-scrollbar-thumb:hover {
+  background: #505050;
+}
+
+.ansible-output-container {
+  font-family: inherit;
+  color: inherit;
+  line-height: inherit;
+  white-space: inherit;
+  word-break: break-word;
+  position: relative;
+}
+
+/* Badge de cópia para saída */
+.copy-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-tertiary);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  opacity: 0.5; /* Mais discreto */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.copy-badge:hover {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0.8;
+}
+
+.copy-badge svg {
+  width: 9px;
+  height: 9px;
+  stroke: var(--text-tertiary);
+}
+
+/* Classes para saída do Ansible */
+.ansible-play { 
+  color: #569cd6; 
+  font-weight: bold; 
+  margin: 8px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(86, 156, 214, 0.3);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ansible-task { 
+  color: #9cdcfe; 
+  font-weight: 600; 
+  margin: 6px 0;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ansible-ok { 
+  color: #4ec9b0; 
+  padding: 2px 0;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  margin: 3px 0;
+}
+
+.ansible-changed { 
+  color: #dcdcaa; 
+  padding: 2px 0;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  margin: 3px 0;
+}
+
+.ansible-failed { 
+  color: #f14c4c; 
+  padding: 4px;
+  font-weight: bold;
+  font-size: 12px;
+  background: rgba(241, 76, 76, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid #f14c4c;
+  margin: 6px 0;
+}
+
+.ansible-unreachable {
+  color: #f14c4c;
+  padding: 4px;
+  font-weight: bold;
+  font-size: 12px;
+  background: rgba(241, 76, 76, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid #f14c4c;
+  margin: 6px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ansible-skipping {
+  color: #808080;
+  padding: 2px 0;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  margin: 3px 0;
+}
+
+.ansible-recap { 
+  color: #569cd6; 
+  font-weight: bold; 
+  margin-top: 10px; 
+  padding-top: 6px; 
+  border-top: 1px solid rgba(86, 156, 214, 0.3);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ansible-stats { 
+  padding: 3px 0;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px 8px;
+  border-radius: 4px;
+  margin: 6px 0;
+}
+
+.ansible-console-line {
+  padding: 2px 0;
+  color: #d4d4d4;
+}
+
+/* Estilo para informações do host na saída horizontal */
+.ansible-host-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid var(--black-elegant);
+}
+
+.ansible-host-info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin: 0;
+}
+
+.ansible-host-info-item strong {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-right: 2px;
+}
+
+.ansible-host-info-item svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-tertiary);
+}
+
+/* Efeito de digitação para saída do Ansible */
+.typing-effect {
+  border-right: 1px solid var(--accent-gold);
+  animation: cursor-blink 1s step-end infinite;
+  padding-right: 1px;
+}
+
+@keyframes cursor-blink {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--accent-gold); }
+}
+
+/* Mensagem de cancelamento */
+.ansible-cancelled-message {
+  margin: 10px 0;
+  padding: 8px;
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 3px solid var(--warning-orange);
+  color: var(--warning-orange);
+  font-weight: 500;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Estilos para as playbooks do módulo Ansible */
+/* playbooks.css */
+
+/* Seção de playbooks */
+.ansible-playbooks {
+  flex: 0 0 30%;
+  background: var(--gradient-card);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  overflow-y: auto;
+  max-height: 600px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  border: 1px solid var(--black-elegant);
+  position: relative;
+}
+
+/* Item de playbook - Ajustado para hover sem embaçamento */
+.playbook-item {
+  padding: 8px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #252525 100%);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease; /* Removido 'all' para controle específico */
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--black-elegant);
+  overflow: hidden;
+  min-height: 60px;
+}
+
+.playbook-item:hover {
+  background: linear-gradient(135deg, #383838 0%, #303030 100%); /* Gradiente mais claro, mas sem embaçamento */
+  transform: translateY(-1px); /* Mantém o efeito de elevação */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra mais forte para destacar, sem blur */
+  border-color: rgba(255, 214, 0, 0.2); /* Borda dourada sutil */
+}
+
+.playbook-item.selected {
+  background: linear-gradient(135deg, #3d3d3d 0%, #333333 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 214, 0, 0.3);
+  transform: translateY(-1px);
+  border: none;
+}
+
+.playbook-item h4 {
+  font-size: 12px;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playbook-item small {
+  font-size: 9px;
+  color: var(--text-tertiary);
+  display: block;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playbook-item .playbook-meta {
+  display: flex;
+  gap: 4px;
+  font-size: 8px;
+  color: var(--text-secondary);
+}
+
+.playbook-item .tag {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1px 4px;
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.playbook-item .tag svg {
+  width: 8px;
+  height: 8px;
+}
+
+.playbook-item input[type="checkbox"] {
+  accent-color: var(--accent-gold);
+  width: 14px;
+  height: 14px;
+}
+
+/* Filtros - Mantidos como estão */
+.ansible-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid var(--black-elegant);
+}
+
+.ansible-filter-group {
+  flex: 1;
+}
+
+.ansible-filter-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.ansible-select {
+  width: 100%;
+  padding: 6px 8px;
+  background: var(--black-rich);
+  border: 1px solid var(--gray-dark);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 12px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23d4d4d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 24px;
+  transition: all 0.2s;
+  height: 32px;
+}
+
+.ansible-select:hover {
+  border-color: var(--accent-gold);
+}
+
+.ansible-select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px rgba(255, 214, 0, 0.2);
+}
+
+/* Botões de ação - Mantidos como estão */
+.ansible-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+  align-items: center;
+}
+
+/* Contador de playbooks - Mantido */
+.playbook-counter {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--accent-gold);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--black-elegant);
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+.playbook-counter svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--accent-gold);
+}
+
+/* No playbooks message - Mantido */
+.no-playbooks {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border: 1px dashed var(--gray-dark);
+}
+
+/* Loading playbooks - Mantido */
+.loading-playbooks {
+  text-align: center;
+  padding: 20px;
+  color: var(--accent-gold);
+  font-size: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border: 1px dashed var(--gray-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.loading-playbooks::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 214, 0, 0.3);
+  border-top: 2px solid var(--accent-gold);
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+/* Media queries - Mantidas */
+@media (max-width: 1200px) {
+  .ansible-layout {
+    flex-direction: column;
+  }
+  
+  .ansible-playbooks, 
+  .ansible-execution {
+    flex: 1 1 100%;
+    width: 100%;
+    margin-bottom: 12px;
+    max-height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ansible-container {
+    padding: 10px;
+  }
+  
+  .ansible-playbooks {
+    max-height: 400px;
+  }
+}
+/* variables.css */
+:root {
+  /* Cores base do inventário */
+  --black-absolute: #000000;
+  --black-rich: #030303;
+  --black-elegant: #0A0A0A;
+  --black-pearl: #121212;
+  --black-smoke: #1A1A1A;
+  --gray-dark: #2A2A2A;
+  
+  /* Cores de acento */
+  --accent-gold: #FFD600;
+  --accent-gold-hover: #FFE033;
+  
+  /* Texto */
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+  --text-tertiary: #808080;
+  
+  /* Estados e mensagens */
+  --success-green: #2E7D32;
+  --error-red: #C62828;
+  --warning-orange: #FF9800; /* Ajustado para combinar com inventário */
+  
+  /* Gradientes */
+  --gradient-header: linear-gradient(135deg, var(--black-rich) 0%, var(--black-smoke) 100%);
+  --gradient-card: linear-gradient(135deg, var(--black-smoke) 0%, rgba(25, 25, 25, 0.95) 100%);
+  --gradient-card-header: linear-gradient(135deg, var(--black-rich) 0%, var(--gray-dark) 100%);
+}

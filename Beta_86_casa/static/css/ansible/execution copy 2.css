@@ -1,0 +1,511 @@
+/* =======================================
+   CARTÃO DE EXECUÇÃO ANSIBLE - REDESENHADO
+   ======================================= */
+
+/* Cartão principal com camadas visuais aninhadas */
+.execution-card {
+  background: linear-gradient(135deg, #2a2a2a 0%, #212121 100%);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  padding: 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  border: 1px solid var(--black-elegant);
+  overflow: visible; /* Alterado para visible para permitir conteúdo externo */
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Efeito de hover suave */
+.execution-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* Estado selecionado com destaque dourado */
+.execution-card.selected {
+  background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 214, 0, 0.4);
+  transform: translateY(-3px);
+}
+
+/* Marcadores de status na lateral esquerda */
+.execution-card.success::before,
+.execution-card.failed::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  z-index: 5;
+  border-radius: 4px 0 0 4px;
+}
+
+.execution-card.success::before {
+  background: var(--success-green);
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+}
+
+.execution-card.failed::before {
+  background: var(--error-red);
+  box-shadow: 0 0 8px rgba(244, 67, 54, 0.4);
+}
+
+/* PRIMEIRA CAMADA: CABEÇALHO */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #333333 0%, #262626 100%);
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 4;
+}
+
+.playbook-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.3px;
+}
+
+.playbook-title svg {
+  stroke: var(--accent-gold);
+  width: 16px;
+  height: 16px;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+.playbook-title .selected-icon {
+  display: none;
+  color: var(--accent-gold);
+}
+
+.execution-card.selected .playbook-title .selected-icon {
+  display: inline-block;
+}
+
+/* Badge de status da tarefa */
+.task-status {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.task-status svg {
+  width: 12px;
+  height: 12px;
+}
+
+.task-status.running {
+  color: var(--accent-gold);
+  background: rgba(255, 214, 0, 0.1);
+  border-color: rgba(255, 214, 0, 0.2);
+}
+
+.task-status.running svg {
+  animation: spinner-rotation 1.5s linear infinite;
+}
+
+.task-status.success {
+  color: var(--success-green);
+  background: rgba(76, 175, 80, 0.1);
+  border-color: rgba(76, 175, 80, 0.2);
+  font-weight: 600;
+}
+
+.task-status.failed {
+  color: var(--error-red);
+  background: rgba(244, 67, 54, 0.1);
+  border-color: rgba(244, 67, 54, 0.2);
+  font-weight: 600;
+}
+
+.task-status.cancelled {
+  color: var(--warning-orange);
+  background: rgba(255, 167, 38, 0.1);
+  border-color: rgba(255, 167, 38, 0.2);
+  font-weight: 600;
+}
+
+/* SEGUNDA CAMADA: SELO DE TEMPO */
+.execution-timestamp {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.15), transparent);
+  margin: 0;
+  padding: 6px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 3;
+}
+
+.execution-timestamp svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--text-tertiary);
+}
+
+/* TERCEIRA CAMADA: INFORMAÇÕES DO HOST */
+.host-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: linear-gradient(135deg, #292929 0%, #222222 100%);
+  padding: 14px 16px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+/* Layout horizontal refinado para detalhes do host */
+.host-details {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: transparent;
+  padding: 0;
+}
+
+.host-details p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  flex: 1;
+  min-width: 150px;
+  max-width: 220px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.15s ease;
+}
+
+.host-details p:hover {
+  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 214, 0, 0.1);
+}
+
+.host-details p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+  min-width: auto;
+  display: inline-block;
+  margin-right: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.host-details p svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-tertiary);
+}
+
+/* QUARTA CAMADA: BARRA DE PROGRESSO */
+.progress-container {
+  background: rgba(0, 0, 0, 0.3);
+  height: 6px;
+  margin: 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent-gold) 0%, #FFD54F 50%, var(--accent-gold) 100%);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: 200% 100%;
+  animation: progress-animation 2s infinite linear;
+  box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
+}
+
+@keyframes progress-animation {
+  0% { background-position: 0% 0%; }
+  100% { background-position: -200% 0%; }
+}
+
+@keyframes spinner-rotation {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* QUINTA CAMADA: ÁREA DE CONTROLES */
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  background: linear-gradient(135deg, #252525 0%, #1e1e1e 100%);
+  padding: 12px 16px;
+  position: relative; /* Alterado de relative para static */
+  z-index: 10; /* Z-index aumentado para garantir que fique acima do conteúdo */
+  border-top: 1px solid rgba(51, 51, 51, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  margin-top: auto; /* Garante que fique no fim do flex container */
+  order: 2; /* Define a ordem no flex container */
+}
+
+
+/* Botões refinados com hierarquia visual */
+.toggle-output-btn,
+.cancel-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease; /* Removida transição de transform */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  min-width: 88px; /* Garante largura mínima para estabilidade */
+  justify-content: center; /* Centraliza o conteúdo */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+
+.toggle-output-btn {
+  background: linear-gradient(to bottom, rgba(255, 214, 0, 0.2), rgba(255, 214, 0, 0.15));
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 214, 0, 0.2);
+}
+
+.toggle-output-btn:hover {
+  background: linear-gradient(to bottom, rgba(255, 214, 0, 0.25), rgba(255, 214, 0, 0.2));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.cancel-btn {
+  background: linear-gradient(to bottom, var(--error-red), #B71C1C);
+  color: white;
+  border: 1px solid rgba(183, 28, 28, 0.6);
+}
+
+
+.cancel-btn:hover {
+  background: linear-gradient(to bottom, #EF5350, #D32F2F);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+.toggle-output-btn:active,
+.cancel-btn:active {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+
+/* Ícones com tamanho fixo */
+.toggle-output-btn svg,
+.cancel-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0; /* Impede que o ícone seja comprimido */
+}
+/* SEXTA CAMADA: ÁREA DE SAÍDA */
+.ansible-output {
+  font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+  background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%);
+  color: var(--text-secondary);
+  padding: 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  display: none;
+  border-top: 1px solid #333;
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 5;
+  max-height: 400px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  order: 3; /* Define a ordem para aparecer após os botões */
+  margin-top: 0; /* Garante que não haja espaço adicional */
+}
+
+
+.ansible-output.visible {
+  display: block;
+}
+
+.ansible-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Conteúdo principal do cartão */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 180px; /* Ajuste conforme necessário para seu design */
+
+  order: 1; /* Define a ordem no flex container */
+}
+.execution-card .card-header,
+.execution-card .execution-timestamp,
+.execution-card .host-info,
+.execution-card .progress-container {
+  /* Sem alterações */
+}
+
+
+
+
+.ansible-output::-webkit-scrollbar-track {
+  background: var(--black-elegant);
+  border-radius: 3px;
+}
+
+.ansible-output::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 3px;
+  border: 1px solid var(--black-elegant);
+}
+
+.ansible-output::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Refinamento para a saída do log */
+.ansible-play {
+  color: #5e9bfb; 
+  font-weight: bold; 
+  margin: 12px 0 8px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(94, 155, 251, 0.2);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ansible-task { 
+  color: #9cdcfe; 
+  font-weight: 600; 
+  margin: 10px 0 6px 0;
+  padding-left: 10px;
+  border-left: 2px solid rgba(156, 220, 254, 0.3);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ansible-ok { 
+  color: #4ec9b0; 
+  padding: 3px 0;
+  font-size: 12px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 3px 0;
+}
+
+.ansible-changed { 
+  color: #dcdcaa; 
+  padding: 3px 0;
+  font-size: 12px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 3px 0;
+}
+
+.ansible-failed { 
+  color: #f14c4c; 
+  padding: 8px;
+  font-weight: bold;
+  font-size: 12px;
+  background: rgba(241, 76, 76, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid #f14c4c;
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.ansible-skipping {
+  color: #808080;
+  padding: 3px 0;
+  font-size: 12px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 3px 0;
+  font-style: italic;
+}
+
+.ansible-recap { 
+  color: #5e9bfb; 
+  font-weight: bold; 
+  margin-top: 16px; 
+  padding-top: 8px; 
+  border-top: 1px solid rgba(94, 155, 251, 0.2);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ansible-stats { 
+  padding: 3px 0;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+/* Notificação de cancelamento */
+.ansible-cancelled-message {
+  margin: 12px 0;
+  padding: 10px 12px;
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 3px solid var(--warning-orange);
+  color: var(--warning-orange);
+  font-weight: 500;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.ansible-cancelled-message svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--warning-orange);
+}

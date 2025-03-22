@@ -1,0 +1,108 @@
+---
+- name: Instalação de Antivírus no Windows
+  hosts: windows
+  vars:
+    # Script padrão, pode ser substituído pela variável antivirus_script
+    antivirus_script: "{{ antivirus_script | default('antivirus.ps1') }}"
+    # Diretório remoto onde o script será copiado
+    target_dir: "C:\\Users\\_admin-skyone\\Desktop\\Agents_Skyone\\antivirus"
+
+  tasks:
+    - name: Criar diretório para antivírus
+      win_file:
+        path: "{{ target_dir }}"
+        state: directory
+      tags: antivirus
+      ignore_errors: yes
+
+    - name: Preparar script personalizado
+      block:
+        - name: Criar arquivo de script personalizado
+          win_copy:
+            content: "{{ script_content }}"
+            dest: "{{ target_dir }}\\{{ antivirus_script }}"
+          when: custom_script | default(false) | bool
+      rescue:
+        - name: Registrar falha na criação do script personalizado
+          debug:
+            msg: "Não foi possível criar o script personalizado. Usando script predefinido."
+      tags: antivirus
+
+    - name: Copiar arquivo de instalação do antivírus para o servidor
+      win_copy:
+        src: "/home/opc/agents/windows/{{ antivirus_script }}"
+        dest: "{{ target_dir }}\\{{ antivirus_script }}"
+      when: not (custom_script | default(false) | bool)
+      tags: antivirus
+      ignore_errors: yes
+
+    - name: Iniciar instalação do Antivírus
+      win_shell: |
+        cd "{{ target_dir }}"
+        powershell -ExecutionPolicy Bypass -File "{{ antivirus_script }}"
+      register: antivirus_installation
+      failed_when: antivirus_installation.rc != 0 and antivirus_installation.rc != null
+      tags: antivirus
+      ignore_errors: yes
+
+    - name: Mostrar saída da instalação do Antivírus
+      debug:
+        var: antivirus_installation.stdout_lines
+      tags: antivirus
+
+    # Substituindo win_service_info por win_shell para compatibilidade
+    - name: Verificar execução do serviço de antivírus
+      win_shell: |
+        $service = Get-Service -Name "ds_agent" -ErrorAction SilentlyContinue
+        if ($service) {
+            Write-Output "Service exists: $true"
+            Write-Output "Status: $($service.Status)"
+        } else {
+            Write-Output "Service exists: $false"
+            Write-Output "Status: NA"
+        }
+      register: av_service_check
+      ignore_errors: yes
+      tags: antivirus
+
+    - name: Extrair informações do serviço (compatível com Ansible 2.10)
+      set_fact:
+        service_exists: "{{ 'Service exists: True' in av_service_check.stdout }}"
+        service_status: "{{ av_service_check.stdout | regex_search('Status: ([a-zA-Z]+)', '\\1') | first | default('NA') }}"
+      tags: antivirus
+      
+    - name: Mostrar status do serviço de antivírus
+      debug:
+        msg: >
+          {% if service_exists %}
+          O serviço de antivírus está {{ service_status }}.
+          {% else %}
+          O serviço de antivírus não foi encontrado.
+          {% endif %}
+      tags: antivirus
+
+    # Iniciar serviço se não estiver rodando, compatível com Ansible 2.10
+    - name: Iniciar o serviço de antivírus se estiver instalado mas não rodando
+      win_shell: |
+        $service = Get-Service -Name "ds_agent" -ErrorAction SilentlyContinue
+        if ($service -and $service.Status -ne "Running") {
+            Start-Service -Name "ds_agent"
+            Write-Output "Service started"
+        } else {
+            Write-Output "No action needed"
+        }
+      when: service_exists and service_status != 'Running'
+      ignore_errors: yes
+      tags: antivirus
+
+    - name: Limpar arquivos temporários do Antivírus
+      win_file:
+        path: "{{ target_dir }}"
+        state: absent
+      tags: antivirus
+      ignore_errors: yes
+      
+    - name: Finalizar instalação
+      debug:
+        msg: "Instalação do antivírus finalizada. Verifique o status do serviço para confirmar o funcionamento."
+      tags: antivirus

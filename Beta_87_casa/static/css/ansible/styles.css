@@ -1,0 +1,1650 @@
+/* =======================================
+   VARIÁVEIS E CONFIGURAÇÕES GLOBAIS
+   ======================================= */
+   :root {
+    /* Cores base do inventário */
+    --black-absolute: #000000;
+    --black-rich: #030303;
+    --black-elegant: #0A0A0A;
+    --black-pearl: #121212;
+    --black-smoke: #1A1A1A;
+    --gray-dark: #2A2A2A;
+    
+    /* Cores de acento */
+    --accent-gold: #FFD600;
+    --accent-gold-hover: #FFE033;
+    
+    /* Texto */
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --text-tertiary: #808080;
+    
+    /* Estados e mensagens */
+    --success-green: #2E7D32;
+    --error-red: #C62828;
+    --warning-orange: #FF9800;
+    
+    /* Gradientes */
+    --gradient-header: linear-gradient(135deg, var(--black-rich) 0%, var(--black-smoke) 100%);
+    --gradient-card: linear-gradient(135deg, var(--black-smoke) 0%, rgba(25, 25, 25, 0.95) 100%);
+    --gradient-card-header: linear-gradient(135deg, var(--black-rich) 0%, var(--gray-dark) 100%);
+    
+    /* Sombras */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* =======================================
+     ANIMAÇÕES
+     ======================================= */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  @keyframes progress-animation {
+    0% { background-position: 0% 0%; }
+    100% { background-position: -200% 0%; }
+  }
+  
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+    70% { box-shadow: 0 0 0 4px rgba(76, 175, 80, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+  }
+  
+  @keyframes cursor-blink {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--accent-gold); }
+  }
+  
+  /* =======================================
+     CONTAINER PRINCIPAL E RESETS
+     ======================================= */
+  .ansible-container {
+    width: 100%;
+    padding: 15px;
+    font-family: 'Inter', 'Arial', sans-serif;
+    color: var(--text-primary);
+    box-sizing: border-box;
+    background: var(--black-pearl);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    min-height: calc(100vh - 120px); /* Altura da viewport menos header e footer */
+    position: relative;
+    z-index: 1; /* Evita conflitos com a sidebar */
+  }
+  
+  .ansible-container * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* =======================================
+     LAYOUT PRINCIPAL
+     ======================================= */
+  .ansible-layout {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  /* Seção de playbooks */
+  .ansible-playbooks {
+    flex: 0 0 35%;
+    background: var(--gradient-card);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    overflow-y: auto;
+    max-height: 450px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-dark) var(--black-elegant);
+    border: 1px solid var(--black-elegant);
+    position: relative;
+  }
+  
+  /* Seção de execução */
+  .ansible-execution {
+    flex: 1;
+    background: var(--gradient-card);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    overflow-y: auto;
+    max-height: 450px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-dark) var(--black-elegant);
+    border: 1px solid var(--black-elegant);
+  }
+  
+  /* =======================================
+     CABEÇALHO E FILTROS
+     ======================================= */
+     .ansible-header {
+      width: 100%;
+      padding: 16px;
+      background: var(--gradient-header);
+      border-radius: 8px;
+      box-shadow: var(--shadow-lg), inset 0 1px 2px rgba(255, 214, 0, 0.05);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--black-elegant);
+      position: relative;
+      overflow: hidden;
+      min-height: 70px;
+    }
+    
+    .ansible-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 214, 0, 0.03) 50%, transparent 100%);
+      pointer-events: none;
+    }
+    
+    .ansible-header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+      letter-spacing: 0.3px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .ansible-header-title svg {
+      stroke: var(--accent-gold);
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+      width: 22px;
+      height: 22px;
+    }
+    
+    .ansible-header-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-top: 4px;
+    }
+  .ansible-header-subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-top: 4px;
+  }
+  
+  .ansible-filter-container {
+    display: flex;
+    width: 100%;
+    gap: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+  
+  .ansible-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--black-elegant);
+    width: 100%;
+  }
+  
+  .ansible-filter-group {
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .ansible-filter-group label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10px;
+    color: var(--text-secondary);
+  }
+  
+  .ansible-select {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--black-rich);
+    border: 1px solid var(--gray-dark);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 12px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23d4d4d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 24px;
+    transition: all 0.2s;
+    height: 32px;
+  }
+  
+  .ansible-select:hover {
+    border-color: var(--accent-gold);
+  }
+  
+  .ansible-select:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 2px rgba(255, 214, 0, 0.2);
+  }
+  
+  /* =======================================
+     BOTÕES E AÇÕES
+     ======================================= */
+  .ansible-button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--accent-gold);
+    color: var(--black-absolute);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    height: 32px;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .ansible-button:hover {
+    background: var(--accent-gold-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .ansible-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+  
+  .ansible-button.ansible-secondary {
+    background: var(--error-red);
+    color: white;
+  }
+  
+  .ansible-button.ansible-secondary:hover {
+    background: #EF5350;
+  }
+  
+  .ansible-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .ansible-button svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .ansible-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+    align-items: center;
+    z-index: 10;
+    position: relative;
+  }
+  
+  /* =======================================
+     HOSTS
+     ======================================= */
+  .ansible-hosts-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 16px;
+    background: var(--gradient-card);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 16px;
+    position: relative;
+    flex-wrap: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-dark) var(--black-elegant);
+    border: 1px solid var(--black-elegant);
+    min-height: 150px;
+  }
+  
+  .ansible-hosts-container::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .ansible-hosts-container::-webkit-scrollbar-track {
+    background: var(--black-elegant);
+    border-radius: 3px;
+  }
+  
+  .ansible-hosts-container::-webkit-scrollbar-thumb {
+    background: var(--gray-dark);
+    border-radius: 3px;
+  }
+  
+  .hosts-status-message {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--accent-gold);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    border: 1px solid var(--black-elegant);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .host-banner {
+    flex: 0 0 auto;
+    width: 300px;
+    min-width: 300px;
+    padding: 0;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1c1c1c 100%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--black-elegant);
+  }
+  
+  .host-banner:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 3px 6px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 214, 0, 0.3);
+  }
+  
+  .host-banner.valid::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--success-green);
+    border-radius: 4px 0 0 4px;
+    z-index: 2;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+  }
+  
+  .host-banner.invalid::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--error-red);
+    border-radius: 4px 0 0 4px;
+    z-index: 2;
+    box-shadow: 0 0 8px rgba(244, 67, 54, 0.4);
+  }
+  
+  .host-banner.selected {
+    background: linear-gradient(135deg, #4a4a4a 0%, #383838 100%);
+    border: 1px solid rgba(255, 214, 0, 0.5);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7),
+                0 2px 8px rgba(0, 0, 0, 0.5),
+                inset 0 1px 3px rgba(255, 255, 255, 0.1);
+    transform: translateY(-6px);
+    z-index: 3;
+  }
+  
+  .host-header {
+    background: linear-gradient(135deg, #333333 0%, #252525 100%);
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+  
+  .host-banner.valid .host-header::after {
+    content: 'ONLINE';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(76, 175, 80, 0.15);
+    color: var(--success-green);
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .host-banner.invalid .host-header::after {
+    content: 'OFFLINE';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(244, 67, 54, 0.15);
+    color: var(--error-red);
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .host-banner h4 {
+    font-size: 14px;
+    color: var(--text-primary);
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding-right: 85px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .host-content {
+    padding: 12px;
+    background: linear-gradient(135deg, #292929 0%, #212121 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    flex: 1;
+  }
+  
+  .host-info-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 0;
+    padding: 10px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .host-banner.invalid .host-info-horizontal {
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.05) 0%, rgba(244, 67, 54, 0.1) 100%);
+    border: 1px solid rgba(244, 67, 54, 0.2);
+  }
+  
+  .host-info-horizontal span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.25);
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    flex: 1;
+    min-width: 130px;
+    max-width: 210px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+  }
+  
+  .host-info-horizontal span:hover {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 214, 0, 0.2);
+  }
+  
+  .host-info-horizontal strong {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-right: 2px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .host-info-horizontal svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--text-tertiary);
+    flex-shrink: 0;
+  }
+  
+  .host-banner.invalid p {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--error-red);
+    font-size: 12px;
+    font-weight: 500;
+    background: rgba(244, 67, 54, 0.08);
+    padding: 8px 12px;
+    border-radius: 4px;
+    width: 100%;
+    border: 1px solid rgba(244, 67, 54, 0.15);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .host-banner.invalid p svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--error-red);
+  }
+  
+  .host-footer {
+    background: linear-gradient(135deg, #262626 0%, #1a1a1a 100%);
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .host-banner.selected .host-footer {
+    background: linear-gradient(135deg, #333333 0%, #252525 100%);
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  .host-banner label {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: var(--accent-gold);
+    cursor: pointer;
+    transition: color 0.2s;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  .host-banner.selected label {
+    color: var(--accent-gold);
+    font-weight: 600;
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+  }
+  
+  .host-banner label:hover {
+    color: #FFD54F;
+  }
+  
+  .host-banner input[type="checkbox"] {
+    margin-right: 6px;
+    accent-color: var(--accent-gold);
+    width: 14px;
+    height: 14px;
+  }
+  
+  .host-banner.selected input[type="checkbox"] {
+    accent-color: var(--accent-gold);
+    box-shadow: 0 0 6px rgba(255, 214, 0, 0.5);
+    transform: scale(1.1);
+  }
+  
+  .os-badge {
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+  }
+  
+  .os-badge:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .os-badge svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--text-secondary);
+  }
+  
+  .os-badge img {
+    width: 14px;
+    height: 14px;
+    filter: brightness(0) invert(0.7);
+  }
+  
+  .os-badge.linux {
+    background: rgba(76, 175, 80, 0.08);
+    border-color: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+  }
+  
+  .os-badge.linux:hover {
+    background: rgba(76, 175, 80, 0.12);
+    border-color: rgba(76, 175, 80, 0.25);
+  }
+  
+  .os-badge.linux img {
+    filter: brightness(0) saturate(100%) invert(64%) sepia(16%) saturate(1207%) hue-rotate(81deg) brightness(89%) contrast(85%);
+  }
+  
+  .os-badge.windows {
+    background: rgba(3, 169, 244, 0.08);
+    border-color: rgba(3, 169, 244, 0.2);
+    color: #03A9F4;
+  }
+  
+  .os-badge.windows:hover {
+    background: rgba(3, 169, 244, 0.12);
+    border-color: rgba(3, 169, 244, 0.25);
+  }
+  
+  .os-badge.windows img {
+    filter: brightness(0) saturate(100%) invert(65%) sepia(73%) saturate(4990%) hue-rotate(177deg) brightness(101%) contrast(96%);
+  }
+  
+  .host-counter {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--accent-gold);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--black-elegant);
+    z-index: 10;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+  }
+  
+  .host-counter svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--accent-gold);
+  }
+  
+  .ansible-hosts-container .progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    border-radius: 0 0 6px 6px;
+    height: 6px;
+    z-index: 2;
+    background: var(--black-elegant);
+  }
+  
+  .ansible-hosts-container .progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent-gold) 0%, #FFD54F 50%, var(--accent-gold) 100%);
+    border-radius: 0;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: 200% 100%;
+    animation: progress-animation 2s infinite linear;
+    box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
+  }
+  
+  /* =======================================
+     PLAYBOOKS
+     ======================================= */
+  .playbook-item {
+    padding: 8px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #252525 100%);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--black-elegant);
+    overflow: hidden;
+    min-height: 60px;
+  }
+  
+  .playbook-item:hover {
+    background: linear-gradient(135deg, #383838 0%, #303030 100%);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(255, 214, 0, 0.2);
+  }
+  
+  .playbook-item.selected {
+    background: linear-gradient(135deg, #3d3d3d 0%, #333333 100%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 214, 0, 0.3);
+    transform: translateY(-1px);
+    border: none;
+  }
+  
+  .playbook-item h4 {
+    font-size: 12px;
+    color: var(--text-primary);
+    margin: 0 0 2px 0;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .playbook-item small {
+    font-size: 9px;
+    color: var(--text-tertiary);
+    display: block;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .playbook-item .playbook-meta {
+    display: flex;
+    gap: 4px;
+    font-size: 8px;
+    color: var(--text-secondary);
+  }
+  
+  .playbook-item .tag {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1px 4px;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .playbook-item .tag svg {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .playbook-item input[type="checkbox"] {
+    accent-color: var(--accent-gold);
+    width: 14px;
+    height: 14px;
+  }
+  
+  .playbook-counter {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--accent-gold);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--black-elegant);
+    z-index: 10;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+  }
+  
+  .playbook-counter svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--accent-gold);
+  }
+  
+  .no-playbooks {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    border: 1px dashed var(--gray-dark);
+  }
+  
+  .loading-playbooks {
+    text-align: center;
+    padding: 20px;
+    color: var(--accent-gold);
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    border: 1px dashed var(--gray-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .loading-playbooks::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 214, 0, 0.3);
+    border-top: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+  }
+  .execution-card {
+    background: linear-gradient(135deg, #2a2a2a 0%, #212121 100%);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    padding: 12px;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    position: relative;
+    border: 1px solid var(--black-elegant);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 60px; /* Espaço para botões */
+    overflow: visible;
+  }
+  
+  .execution-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  .execution-card.selected {
+    background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 214, 0, 0.3);
+    transform: translateY(-1px);
+    border: none;
+  }
+  
+  .execution-card.success::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--success-green);
+    border-radius: 3px 0 0 3px;
+  }
+  
+  .execution-card.failed::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--error-red);
+    border-radius: 3px 0 0 3px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 214, 0, 0.1);
+  }
+  
+  .playbook-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 600;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.3px;
+  }
+  
+  .playbook-title svg {
+    stroke: var(--accent-gold);
+    width: 14px;
+    height: 14px;
+  }
+  
+  .playbook-title .selected-icon {
+    display: none;
+  }
+  
+  .execution-card.selected .playbook-title .selected-icon {
+    display: inline-block;
+  }
+  
+  .task-status {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .task-status svg {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .task-status.running svg {
+    animation: spin 1.5s linear infinite;
+  }
+  
+  .task-status.success {
+    color: var(--success-green);
+    background: rgba(76, 175, 80, 0.15);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  
+  .task-status.failed {
+    color: var(--error-red);
+    background: rgba(244, 67, 54, 0.15);
+    font-weight: 600;
+  }
+  
+  .task-status.cancelled {
+    color: var(--warning-orange);
+    background: rgba(255, 167, 38, 0.15);
+    font-weight: 600;
+  }
+  
+  .host-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+  
+  .host-details {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+  }
+  
+  .host-details p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    flex: 1;
+    min-width: 150px;
+    max-width: 220px;
+  }
+  
+  .host-details p strong {
+    color: var(--text-primary);
+    font-weight: 600;
+    min-width: auto;
+    display: inline-block;
+    margin-right: 4px;
+  }
+  
+  .host-details p svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--text-tertiary);
+  }
+  
+  .progress-container {
+    background: rgba(0, 0, 0, 0.3);
+    height: 4px;
+    border-radius: 2px;
+    margin: 10px 0;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent-gold) 0%, #FFD54F 50%, var(--accent-gold) 100%);
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: 200% 100%;
+    animation: progress-animation 2s infinite linear;
+  }
+  
+  .execution-timestamp {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .execution-timestamp svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--text-tertiary);
+  }
+  /* =======================================
+   GRUPO DE BOTÕES
+   ======================================= */
+.button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 100;
+  background: transparent;
+  padding: 8px 0;
+}
+
+.toggle-output-btn,
+.cancel-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  box-shadow: var(--shadow-sm);
+}
+
+.toggle-output-btn {
+  background: rgba(255, 214, 0, 0.15);
+  color: var(--text-primary);
+  font-weight: 600;
+  border: 1px solid rgba(255, 214, 0, 0.1);
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 214, 0, 0.25);
+  border-color: rgba(255, 214, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.cancel-btn {
+  background: var(--error-red);
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #EF5350;
+  transform: translateY(-1px);
+}
+
+.cancel-btn:active,
+.toggle-output-btn:active {
+  transform: translateY(1px);
+}
+
+.cancel-btn svg,
+.toggle-output-btn svg {
+  width: 12px;
+  height: 12px;
+}
+/* =======================================
+   SAÍDA DO ANSIBLE
+   ======================================= */
+   .ansible-output {
+    font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+    background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%);
+    color: var(--text-secondary);
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    margin-top: 10px;
+    display: none;
+    border: 1px solid var(--gray-dark);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-dark) var(--black-elegant);
+    position: relative;
+    max-height: 400px;
+  }
+  
+  .ansible-output.visible {
+    display: block;
+  }
+  
+  .ansible-output::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .ansible-output::-webkit-scrollbar-track {
+    background: var(--black-elegant);
+    border-radius: 3px;
+  }
+  
+  .ansible-output::-webkit-scrollbar-thumb {
+    background: var(--gray-dark);
+    border-radius: 3px;
+    border: 1px solid var(--black-elegant);
+  }
+  
+  .ansible-output::-webkit-scrollbar-thumb:hover {
+    background: #505050;
+  }
+  
+  .copy-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-tertiary);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    opacity: 0.5;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .copy-badge:hover {
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0.8;
+  }
+  
+  .copy-badge svg {
+    width: 9px;
+    height: 9px;
+    stroke: var(--text-tertiary);
+  }
+  
+  .ansible-play { 
+    color: #569cd6; 
+    font-weight: bold; 
+    margin: 8px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(86, 156, 214, 0.3);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .ansible-task { 
+    color: #9cdcfe; 
+    font-weight: 600; 
+    margin: 6px 0;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .ansible-ok { 
+    color: #4ec9b0; 
+    padding: 2px 0;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    margin: 3px 0;
+  }
+  
+  .ansible-changed { 
+    color: #dcdcaa; 
+    padding: 2px 0;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    margin: 3px 0;
+  }
+  
+  .ansible-failed { 
+    color: #f14c4c; 
+    padding: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    background: rgba(241, 76, 76, 0.1);
+    border-radius: 4px;
+    border-left: 3px solid #f14c4c;
+    margin: 6px 0;
+  }
+  
+  .ansible-unreachable {
+    color: #f14c4c;
+    padding: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    background: rgba(241, 76, 76, 0.1);
+    border-radius: 4px;
+    border-left: 3px solid #f14c4c;
+    margin: 6px 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .ansible-skipping {
+    color: #808080;
+    padding: 2px 0;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    margin: 3px 0;
+  }
+  
+  .ansible-recap { 
+    color: #569cd6; 
+    font-weight: bold; 
+    margin-top: 10px; 
+    padding-top: 6px; 
+    border-top: 1px solid rgba(86, 156, 214, 0.3);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .ansible-stats { 
+    padding: 3px 0;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px 8px;
+    border-radius: 4px;
+    margin: 6px 0;
+  }
+  
+  .ansible-console-line {
+    padding: 2px 0;
+    color: #d4d4d4;
+  }
+  
+  .ansible-host-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--black-elegant);
+  }
+  
+  .ansible-host-info-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin: 0;
+  }
+  
+  .ansible-host-info-item strong {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-right: 2px;
+  }
+  
+  .ansible-host-info-item svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--text-tertiary);
+  }
+  
+  .typing-effect {
+    border-right: 1px solid var(--accent-gold);
+    animation: cursor-blink 1s step-end infinite;
+    padding-right: 1px;
+  }
+  
+  .ansible-cancelled-message {
+    margin: 10px 0;
+    padding: 8px;
+    background: rgba(255, 152, 0, 0.1);
+    border-left: 3px solid var(--warning-orange);
+    color: var(--warning-orange);
+    font-weight: 500;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  /* =======================================
+   ÁREA DE DEBUG
+   ======================================= */
+.ansible-debug {
+  margin-top: 16px;
+  padding: 12px;
+  background: linear-gradient(to bottom, var(--black-smoke) 0%, rgba(30, 30, 30, 0.95) 100%);
+  border-radius: 6px;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  border: 1px solid var(--black-elegant);
+  position: relative;
+}
+
+.ansible-debug::before {
+  content: 'Debug';
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: var(--accent-gold);
+  color: var(--black-absolute);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.3px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.ansible-debug-toggle {
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--accent-gold);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.ansible-debug-toggle:hover {
+  color: #FFD54F;
+}
+
+.ansible-debug-toggle svg {
+  stroke: var(--accent-gold);
+  transition: all 0.2s;
+  width: 12px;
+  height: 12px;
+}
+
+.ansible-debug-toggle:hover svg {
+  stroke: #FFD54F;
+  transform: translateY(-1px);
+}
+
+.ansible-debug-output {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%);
+  padding: 10px;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  border: 1px solid var(--gray-dark);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  line-height: 1.5;
+}
+
+.ansible-debug-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ansible-debug-output::-webkit-scrollbar-track {
+  background: var(--black-elegant);
+  border-radius: 3px;
+}
+
+.ansible-debug-output::-webkit-scrollbar-thumb {
+  background: var(--gray-dark);
+  border-radius: 3px;
+  border: 1px solid var(--black-elegant);
+}
+
+/* =======================================
+   RESPONSIVIDADE
+   ======================================= */
+@media (max-width: 1200px) {
+  .ansible-layout {
+    flex-direction: column;
+  }
+  
+  .ansible-playbooks, 
+  .ansible-execution {
+    flex: 1 1 100%;
+    width: 100%;
+    margin-bottom: 12px;
+    max-height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ansible-container {
+    padding: 10px;
+  }
+  
+  .ansible-header {
+    padding: 12px;
+  }
+  
+  .ansible-header-title {
+    font-size: 18px;
+  }
+  
+  .ansible-filter-container {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .ansible-hosts-container {
+    padding: 12px;
+  }
+  
+  .host-banner {
+    width: 280px;
+    min-width: 280px;
+  }
+  
+  .host-info-horizontal span {
+    min-width: 100%;
+    max-width: 100%;
+  }
+  
+  .button-group {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .ansible-container {
+    padding: 8px;
+  }
+  
+  .ansible-header-title {
+    font-size: 16px;
+  }
+  
+  .ansible-header-title svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .playbook-title {
+    font-size: 13px;
+  }
+  
+  .host-banner {
+    width: 260px;
+    min-width: 260px;
+  }
+  
+  .toggle-output-btn span,
+  .cancel-btn span {
+    display: none;
+  }
+}
+
+/* Correções para Firefox */
+@-moz-document url-prefix() {
+  .ansible-container {
+    overflow: hidden;
+  }
+}
+
+
+/* =======================================
+   LOADING E SPINNER - VERSÃO CORRIGIDA
+   ======================================= */
+   @keyframes spin-fixed {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+
+
+
+  /* Versão isolada do loading banner para evitar propagação de estilos */
+.ansible-container .loading-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 100%);
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  border: 1px solid var(--black-elegant);
+  position: static; /* Alterado de relative para static */
+  width: 100%;
+  min-height: 100px;
+  justify-content: center;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  transform: none; /* Garante que não haja transformação */
+  overflow: hidden; /* Contém elementos filho */
+}
+
+/* Estados de sucesso e erro sem alteração de posicionamento */
+.ansible-container .loading-banner.success {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(76, 175, 80, 0.1) 100%);
+  border-color: rgba(76, 175, 80, 0.2);
+}
+
+.ansible-container .loading-banner.error {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.05) 0%, rgba(244, 67, 54, 0.1) 100%);
+  border-color: rgba(244, 67, 54, 0.2);
+}
+
+/* Reposicionamento do container de progresso para ficar contido */
+.ansible-container .loading-banner .progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  border-radius: 0 0 6px 6px;
+  height: 6px;
+  z-index: 1; /* Evita sobreposição com outros elementos */
+}
+
+/* Tamanho fixo para o spinner dentro do banner */
+.ansible-container .loading-banner .spinner {
+  width: 20px;
+  height: 20px;
+  border-width: 3px;
+  margin: 0 5px 0 0; /* Espaço fixo à direita */
+  transform: none !important; /* Garante que apenas a animação de spin seja aplicada */
+}
+
+/* Ajustes para o texto do loading para garantir posicionamento estável */
+.ansible-container #loading-message {
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  flex-grow: 0; /* Impede que o texto empurre outros elementos */
+  white-space: nowrap; /* Evita quebras de linha que alterariam o layout */
+}
+
+/* Isolamento do container para impedir afetação global */
+.ansible-container {
+  isolation: isolate; /* Cria um novo contexto de empilhamento */
+  contain: layout; /* Impede que mudanças de layout se propaguem para fora */
+}
+
+
+
+
+.spinner {
+
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top: 2px solid var(--accent-gold);
+  transform-origin: center center;
+  animation-name: spinner-rotation;
+  animation-duration: 1.2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  box-sizing: border-box;
+  vertical-align: middle;
+  isolation: isolate;
+}
+
+@keyframes spinner-rotation {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+

@@ -1,0 +1,365 @@
+/* docs-menu.css */
+:root {
+    --black-absolute: #000000;
+    --black-rich: #030303;
+    --black-elegant: #0A0A0A;
+    --black-pearl: #121212;
+    --black-smoke: #1A1A1A;
+    --gray-dark: #2A2A2A;
+    --accent-gold: #FFD600;
+    --accent-gold-hover: #FFE033;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --submenu-hover: rgba(255, 214, 0, 0.05);
+    --menu-hover: rgba(255, 214, 0, 0.1);
+    --submenu-level-1: #2A2A2A;
+    --submenu-level-2: #242424;
+    --submenu-level-3: #1E1E1E;
+}
+
+/* Correção dos ícones de pasta aberta/fechada */
+.docs-toggle {
+    border: none;
+    background: transparent;
+    margin: 0;
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-transform: capitalize;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.6rem 1.2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+}
+
+/* Linha lateral */
+.docs-toggle::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background: transparent;
+    transition: background-color 0.3s ease;
+}
+
+/* Container do ícone com posicionamento correto */
+.docs-toggle .menu-icon {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Corrigindo a posição dos ícones de pasta */
+.docs-toggle .folder-closed,
+.docs-toggle .folder-open {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    color: var(--text-secondary);
+    transition: opacity 0.3s ease, color 0.3s ease;
+    left: 0;  /* Garante que ambos fiquem alinhados */
+    top: 0;   /* Garante que ambos fiquem alinhados */
+}
+
+.docs-toggle .folder-closed {
+    opacity: 1;
+}
+
+.docs-toggle .folder-open {
+    opacity: 0;
+}
+
+/* Estados de visibilidade dos ícones de pasta */
+.docs-toggle.selected .folder-closed {
+    opacity: 0;
+}
+
+.docs-toggle.selected .folder-open {
+    opacity: 1;
+    color: var(--accent-gold);
+}
+
+.docs-toggle.icon-only .folder-closed {
+    opacity: 0;
+}
+
+.docs-toggle.icon-only .folder-open {
+    opacity: 1;
+    color: var(--accent-gold);
+}
+
+/* Texto e seta */
+.docs-toggle .menu-text {
+    color: var(--text-secondary);
+    transition: color 0.3s ease, opacity 0.3s ease;
+    margin-left: 0.8rem;
+}
+
+.docs-toggle .menu-arrow {
+    margin-left: auto;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover */
+.docs-toggle:hover {
+    background: var(--menu-hover);
+}
+
+.docs-toggle:hover::before {
+    background-color: var(--accent-gold);
+}
+
+.docs-toggle:hover .folder-closed,
+.docs-toggle:hover .menu-text,
+.docs-toggle:hover .menu-arrow {
+    color: var(--accent-gold);
+}
+
+/* Estado selecionado total */
+.docs-toggle.selected {
+    background: var(--menu-hover);
+    color: var(--accent-gold);
+}
+
+.docs-toggle.selected::before {
+    background-color: var(--accent-gold);
+}
+
+.docs-toggle.selected .menu-text,
+.docs-toggle.selected .menu-arrow {
+    color: var(--accent-gold);
+}
+
+.docs-toggle.selected .menu-arrow {
+    transform: rotate(90deg);
+}
+
+/* Estado icon-only (quando subitem selecionado) */
+.docs-toggle.icon-only .menu-text {
+    color: var(--text-secondary);
+}
+
+.docs-toggle.icon-only .menu-arrow {
+    color: var(--text-secondary);
+    transform: rotate(90deg);
+}
+
+/* Sidebar colapsada */
+.sidebar.collapsed .docs-toggle {
+    padding: 0.75rem;
+    justify-content: center;
+}
+
+.sidebar.collapsed .docs-toggle .menu-text,
+.sidebar.collapsed .docs-toggle .menu-arrow {
+    display: none;
+}
+
+/* Correção da barra de rolagem da sidebar */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: var(--black-rich);
+    position: fixed;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;  /* Esconde o overflow principal */
+}
+
+.menu {
+    flex: 1;
+    overflow-y: auto;  /* Habilita a rolagem dentro do menu */
+    padding-bottom: 80px;  /* Espaço para os links sociais */
+    scrollbar-width: thin;  /* Para Firefox */
+}
+
+/* Estilo da barra de rolagem personalizada */
+.menu::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+    display: block;  /* Forçar exibição */
+}
+
+.menu::-webkit-scrollbar-track {
+    background: var(--black-pearl);
+    border-radius: 3px;
+}
+
+.menu::-webkit-scrollbar-thumb {
+    background: var(--gray-dark);
+    border-radius: 3px;
+}
+
+.menu::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
+
+/* Wrapper de documentação */
+.docs-wrapper {
+    max-height: 0;
+    overflow: hidden;
+    background: var(--submenu-level-1);
+    width: 100%;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    opacity: 1;
+}
+
+.docs-wrapper.expanded {
+    max-height: 1000px; /* Aumentado para garantir que todo o conteúdo seja exibido */
+    opacity: 1;
+}
+
+.docs-wrapper.closing {
+    max-height: 0;
+    opacity: 0;
+}
+
+/* Conteúdo interno da documentação */
+.docs-content {
+    max-height: 0;
+    overflow: hidden;
+    background: var(--submenu-level-2);
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.docs-content.expanded {
+    max-height: 500px; /* Aumentado para comportar mais conteúdo */
+}
+
+/* Correção para os botões de submenu não fecharem ao clicar */
+.docs-button {
+    width: 100%;
+    height: 36px;
+    padding: 0.6rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem;
+    text-align: left;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+}
+
+.docs-button:hover {
+    background: var(--submenu-hover);
+    color: var(--accent-gold);
+}
+
+.docs-button.selected {
+    background: var(--menu-hover);
+    color: var(--accent-gold);
+}
+
+/* Submenu comum - evita fechamento */
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    background: var(--submenu-level-1);
+    width: 100%;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    opacity: 1;
+}
+
+.submenu.expanded {
+    max-height: 400px;
+    opacity: 1;
+}
+
+.submenu.closing {
+    max-height: 0;
+    opacity: 0;
+}
+
+/* Scroll personalizado para wrapper de documentação */
+.docs-wrapper::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+
+.docs-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--gray-dark);
+    border-radius: 4px;
+}
+
+/* Garantir que a sidebar não feche quando clicando em itens */
+.sidebar.collapsed .submenu {
+    opacity: 0;
+    max-height: 0 !important;
+    pointer-events: none; /* Impede interações quando colapsado */
+}
+
+/* Social links fixos */
+.social-links {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--black-rich);
+    border-top: 1px solid var(--gray-dark);
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 2; /* Garantir que fique acima do conteúdo */
+}
+/* Correção para o botão de colapsar a sidebar */
+.sidebar-header button {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--black-rich);
+    border: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s ease;
+}
+
+/* Aumentando a área do botão para evitar que seja cortado */
+.sidebar-header {
+    position: relative;
+    padding-right: 15px; /* Espaço adicional para o botão */
+}
+
+/* Ajuste para garantir que o botão seja completamente visível */
+.sidebar::after {
+    content: '';
+    position: absolute;
+    right: -15px; /* Estendendo a área efetiva da sidebar */
+    top: 0;
+    height: 56px; /* Altura do cabeçalho */
+    width: 30px; /* Largura suficiente para o botão */
+    background: transparent;
+    z-index: 1;
+}

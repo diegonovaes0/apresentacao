@@ -1,0 +1,198 @@
+---
+#######################################
+# Preparação Local
+#######################################
+- name: Preparar arquivo 24x7.sh localmente
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    site24x7_key: "us_6499e42d6685af5f41ae1d82a68b4cc6"
+    local_file_path: "/home/opc/agents/linux"
+    file_name: "24x7.sh"
+    script_content: |
+      #!/bin/bash
+      # Executa o script de instalação do Site24x7
+      bash -c "$(curl -sL https://staticdownloads.site24x7.com/server/Site24x7InstallScript.sh)" readlink -i -key={{ site24x7_key }} -automation=true
+
+  tasks:
+    #######################################
+    # Configuração do Diretório Local
+    #######################################
+    - name: Criar diretório local se não existir
+      file:
+        path: "{{ local_file_path }}"
+        state: directory
+        mode: '0755'
+      tags: ['local_setup']
+
+    #######################################
+    # Backup
+    #######################################
+    - name: Criar backup do arquivo local existente
+      copy:
+        src: "{{ local_file_path }}/{{ file_name }}"
+        dest: "{{ local_file_path }}/{{ file_name }}.backup-{{ ansible_date_time.iso8601 }}"
+        remote_src: yes
+      ignore_errors: yes
+      tags: ['local_backup']
+
+    #######################################
+    # Criação do Arquivo
+    #######################################
+    - name: Criar/Atualizar arquivo 24x7.sh local
+      copy:
+        content: "{{ script_content }}"
+        dest: "{{ local_file_path }}/{{ file_name }}"
+        mode: '0755'
+      register: local_file_update
+      tags: ['local_create']
+
+#######################################
+# Instalação Remota
+#######################################
+- name: Instalação do Site24x7 no servidor remoto
+  hosts: all
+  become: yes
+  vars:
+    site24x7_key: "us_bf0da5d532db330e40b1299ccdd24e23"
+    install_log: "/home/opc/log/site24x7_install.log"
+    retries: 300
+
+  tasks:
+    #######################################
+    # Preparação dos Diretórios
+    #######################################
+    - name: Criar diretório de log
+      file:
+        path: "/home/opc/log"
+        state: directory
+        mode: '0755'
+      tags: ['remote_setup']
+
+    - name: Criar diretório de instalação
+      file:
+        path: /home/opc/24x7
+        state: directory
+        mode: '0755'
+      tags: ['remote_setup']
+
+    #######################################
+    # Cópia de Arquivos
+    #######################################
+    - name: Copiar arquivo do host local para o servidor remoto
+      copy:
+        src: "/home/opc/agents/linux/24x7.sh"
+        dest: "/home/opc/24x7/24x7.sh"
+        mode: '0755'
+      tags: ['remote_copy']
+
+    #######################################
+    # Configuração de Permissões
+    #######################################
+    - name: Garantir permissões corretas
+      file:
+        path: /home/opc/24x7/24x7.sh
+        mode: '0755'
+        owner: root
+        group: root
+      tags: ['remote_setup']
+
+    #######################################
+    # Instalação
+    #######################################
+    - name: Iniciar instalação do Site24x7
+      shell: ./24x7.sh
+      args:
+        chdir: /home/opc/24x7/
+      async: 2000
+      poll: 0
+      register: install_job
+      tags: ['remote_install']
+
+    #######################################
+    # Monitoramento da Instalação
+    #######################################
+    - name: Aguardar conclusão da instalação
+      async_status:
+        jid: "{{ install_job.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: "{{ retries }}"
+      delay: 20
+      tags: ['remote_install']
+
+    #######################################
+    # Verificação do Serviço
+    #######################################
+    - name: Verificar status do serviço
+      shell: systemctl status site24x7monagent
+      register: status_output
+      ignore_errors: yes
+      tags: ['verify']
+
+    #######################################
+    # Verificação do Processo
+    #######################################
+    - name: Verificar processo
+      shell: ps aux | grep site24x7monagent | grep -v grep
+      register: process_check
+      ignore_errors: yes
+      tags: ['verify']
+
+    #######################################
+    # Coleta de Informações
+    #######################################
+    - name: Obter IP público
+      shell: curl -s http://api.ipify.org
+      register: public_ip
+      ignore_errors: yes
+      tags: ['info']
+
+    #######################################
+    # Exibição do Resumo
+    #######################################
+    - name: Resumo da Instalação
+      debug:
+        msg: 
+          - "╔══════════════════════════════════════════════════════════════╗"
+          - "║                    INSTALAÇÃO CONCLUÍDA                      ║"
+          - "╠══════════════════════════════════════════════════════════════╣"
+          - "║ HOSTNAME     → {{ ansible_hostname }}"
+          - "║ IP PÚBLICO   → {{ public_ip.stdout }}"
+          - "║ IP PRIVADO   → {{ ansible_default_ipv4.address }}"
+          - "║ CHAVE        → {{ site24x7_key }}"
+          - "║ STATUS       → {{ 'ATIVO ✅' if 'active (running)' in status_output.stdout else 'VERIFICAR ⚠️' }}"
+          - "║ PROCESSO     → {{ 'RODANDO ✅' if process_check.stdout != '' else 'VERIFICAR ⚠️' }}"
+          - "╚══════════════════════════════════════════════════════════════╝"
+      ignore_errors: yes
+      tags: ['summary']
+
+    #######################################
+    # Registro de Log
+    #######################################
+    - name: Registrar log da instalação
+      copy:
+        content: |
+          Instalação realizada em: {{ ansible_date_time.iso8601 }}
+          Hostname: {{ ansible_hostname }}
+          IP Público: {{ public_ip.stdout }}
+          IP Privado: {{ ansible_default_ipv4.address }}
+          Chave: {{ site24x7_key }}
+          Status do Serviço: {{ 'ATIVO' if 'active (running)' in status_output.stdout else 'VERIFICAR' }}
+          Status do Processo: {{ 'RODANDO' if process_check.stdout != '' else 'VERIFICAR' }}
+        dest: "{{ install_log }}"
+        mode: '0644'
+      tags: ['log']
+
+    #######################################
+    # Limpeza Final
+    #######################################
+    - name: Limpar arquivos temporários
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /home/opc/24x7/24x7.sh
+        - /home/opc/24x7/install.sh
+      ignore_errors: yes
+      tags: ['cleanup']

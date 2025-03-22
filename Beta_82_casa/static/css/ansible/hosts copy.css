@@ -1,0 +1,42 @@
+
+
+.automation-core .automation-button {
+    padding: 10px 20px;
+    background: var(--accent-gold);
+    color: var(--black-absolute);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s ease;
+}
+
+.automation-core .automation-button:hover {
+    background: var(--accent-gold-hover);
+}
+
+.automation-status {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.automation-orbitals {
+    display: flex;
+    gap: 8px;
+}
+
+.automation-button.orbital-button {
+    padding: 8px;
+    background: var(--gray-dark);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.automation-button.orbital-button:hover {
+    background: var(--black-pearl);
+}

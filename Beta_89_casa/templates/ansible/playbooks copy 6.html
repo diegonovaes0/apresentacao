@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ansible Automation Hub - Automato Platform</title>
+    <style>
+        /* Variáveis de Tema */
+        :root {
+            --black-pearl: #1c2526;
+            --black-rich: #2a2e2e;
+            --gray-dark: #4a4a4a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #707070;
+            --accent-gold: #ffd600;
+            --gradient-card: linear-gradient(135deg, #2a2e2e 0%, #1c2526 100%);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Reset e Estilo Global */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Arial', sans-serif;
+        }
+
+        body {
+            background: var(--black-pearl);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-dark) var(--black-pearl);
+        }
+
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: var(--black-pearl);
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: var(--gray-dark);
+            border-radius: 4px;
+        }
+
+        /* Container Principal */
+        .ansible-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: var(--black-pearl);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Cabeçalho */
+        .ansible-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--gray-dark);
+            margin-bottom: 20px;
+        }
+
+        .ansible-header-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+
+        .ansible-header-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Layout Principal */
+        .ansible-layout {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+
+        /* Seção de Playbooks */
+        .ansible-playbooks {
+            flex: 0 0 40%;
+            background: var(--gradient-card);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-dark);
+            height: auto; /* Expande conforme o conteúdo */
+        }
+
+        .ansible-playbooks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .ansible-heading {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .playbook-counter {
+            background: rgba(255, 214, 0, 0.1);
+            color: var(--accent-gold);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Filtros */
+        .ansible-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .ansible-filter-group {
+            flex: 1;
+        }
+
+        .ansible-filter-group label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .ansible-select {
+            width: 100%;
+            padding: 8px;
+            background: var(--black-rich);
+            border: 1px solid var(--gray-dark);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 14px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            padding-right: 24px;
+        }
+
+        .ansible-select:hover,
+        .ansible-select:focus {
+            border-color: var(--accent-gold);
+            outline: none;
+        }
+
+        /* Lista de Playbooks */
+        .ansible-playbooks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: auto; /* Remove limite de altura */
+        }
+
+        .playbook-item {
+            padding: 12px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #252525 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--gray-dark);
+        }
+
+        .playbook-item:hover {
+            background: linear-gradient(135deg, #383838 0%, #303030 100%);
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-gold);
+        }
+
+        .playbook-item.selected {
+            background: linear-gradient(135deg, #3d3d3d 0%, #333333 100%);
+            border: 2px solid var(--accent-gold);
+        }
+
+        .playbook-item input[type="checkbox"] {
+            accent-color: var(--accent-gold);
+            width: 16px;
+            height: 16px;
+        }
+
+        .playbook-item h4 {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin: 0;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playbook-item .tag {
+            background: rgba(255, 214, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            color: var(--accent-gold);
+        }
+
+        /* Seção de Execução */
+        .ansible-execution {
+            flex: 1;
+            background: var(--gradient-card);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-dark);
+            height: auto;
+        }
+
+        .ansible-executions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Modal de Loading */
+        .loading-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--gray-dark);
+            border-top: 4px solid var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-modal p {
+            color: var(--accent-gold);
+            font-size: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Media Queries */
+        @media (max-width: 1024px) {
+            .ansible-layout {
+                flex-direction: column;
+            }
+
+            .ansible-playbooks,
+            .ansible-execution {
+                flex: 1 1 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ansible-container {
+                padding: 10px;
+            }
+
+            .ansible-filters {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ansible-container">
+        <!-- Cabeçalho -->
+        <div class="ansible-header">
+            <div class="ansible-header-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 0-7.35 16.83l7.35-12.66 7.35 12.66A10 10 0 0 0 12 2z"/>
+                    <path d="M12 8v6"/>
+                    <circle cx="12" cy="12" r="1"/>
+                </svg>
+                Ansible Automation Hub
+            </div>
+            <div class="ansible-header-subtitle">Orquestração e Automação de Infraestrutura</div>
+        </div>
+
+        <!-- Layout Principal -->
+        <div class="ansible-layout">
+            <!-- Seção de Playbooks -->
+            <div class="ansible-playbooks">
+                <div class="ansible-playbooks-header">
+                    <h3 class="ansible-heading">Playbooks Disponíveis</h3>
+                    <div class="playbook-counter" id="playbook-counter">0 Playbooks</div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="ansible-filters">
+                    <div class="ansible-filter-group">
+                        <label>Sistema Operacional</label>
+                        <select id="os-filter" class="ansible-select">
+                            <option value="all">Todos</option>
+                            <option value="linux" selected>Linux</option>
+                            <option value="windows">Windows</option>
+                        </select>
+                    </div>
+                    <div class="ansible-filter-group">
+                        <label>Categoria</label>
+                        <select id="category-filter" class="ansible-select">
+                            <option value="all">Todas</option>
+                            <option value="configuracoes">Configurações</option>
+                            <option value="baseline">Baseline</option>
+                            <option value="agentes">Agentes</option>
+                            <option value="seguranca">Segurança</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Lista de Playbooks -->
+                <div id="playbooks-list" class="ansible-playbooks-list"></div>
+            </div>
+
+            <!-- Seção de Execução -->
+            <div class="ansible-execution">
+                <h3 class="ansible-heading">Execuções em Andamento</h3>
+                <div id="running-playbooks" class="ansible-executions-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Loading -->
+    <div id="loading-modal" class="loading-modal">
+        <div class="loading-spinner"></div>
+        <p>Carregando Playbooks...</p>
+    </div>
+
+    <script>
+        // Dados fictícios de playbooks
+        const playbooksData = [
+            { id: 1, name: "deploy_nginx.yml", category: "configuracoes", os: "linux", tags: ["web", "nginx"] },
+            { id: 2, name: "install_agent.yml", category: "agentes", os: "windows", tags: ["monitoring"] },
+            { id: 3, name: "secure_ssh.yml", category: "seguranca", os: "linux", tags: ["security"] },
+            { id: 4, name: "baseline_config.yml", category: "baseline", os: "linux", tags: ["baseline"] },
+            { id: 5, name: "update_system.yml", category: "configuracoes", os: "windows", tags: ["update"] },
+        ];
+
+        // Elementos do DOM
+        const playbooksList = document.getElementById("playbooks-list");
+        const playbookCounter = document.getElementById("playbook-counter");
+        const osFilter = document.getElementById("os-filter");
+        const categoryFilter = document.getElementById("category-filter");
+        const loadingModal = document.getElementById("loading-modal");
+
+        // Função para carregar playbooks com simulação de delay
+        function loadPlaybooks() {
+            loadingModal.style.display = "flex";
+            playbooksList.innerHTML = "";
+
+            setTimeout(() => {
+                const osValue = osFilter.value;
+                const categoryValue = categoryFilter.value;
+
+                const filteredPlaybooks = playbooksData.filter(playbook => {
+                    return (osValue === "all" || playbook.os === osValue) &&
+                           (categoryValue === "all" || playbook.category === categoryValue);
+                });
+
+                filteredPlaybooks.forEach(playbook => {
+                    const playbookItem = document.createElement("div");
+                    playbookItem.classList.add("playbook-item");
+                    playbookItem.innerHTML = `
+                        <input type="checkbox" id="playbook-${playbook.id}">
+                        <h4>${playbook.name}</h4>
+                        <span class="tag">${playbook.tags[0]}</span>
+                    `;
+                    playbooksList.appendChild(playbookItem);
+
+                    // Evento de seleção
+                    const checkbox = playbookItem.querySelector(`#playbook-${playbook.id}`);
+                    checkbox.addEventListener("change", () => {
+                        playbookItem.classList.toggle("selected", checkbox.checked);
+                    });
+                });
+
+                playbookCounter.textContent = `${filteredPlaybooks.length} Playbooks`;
+                loadingModal.style.display = "none";
+            }, 1000); // Simula carregamento
+        }
+
+        // Função para filtrar playbooks ao mudar os filtros
+        function applyFilters() {
+            loadPlaybooks();
+        }
+
+        // Inicialização
+        osFilter.addEventListener("change", applyFilters);
+        categoryFilter.addEventListener("change", applyFilters);
+        document.addEventListener("DOMContentLoaded", loadPlaybooks);
+    </script>
+</body>
+</html>

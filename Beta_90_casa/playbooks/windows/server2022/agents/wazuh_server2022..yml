@@ -1,0 +1,98 @@
+---
+- name: Instalação do Wazuh no Windows Server
+  hosts: windows
+  vars:
+    wazuh_file: "{{ lookup('env', 'WAZUH_FILE') | default('wazuh.ps1', true) }}"
+    caminho_remoto_wazuh: C:\Users\_admin-skyone\Desktop\Agents_Skyone\wazuh\{{ wazuh_file }}
+    arquivos_dir: "./arquivos/windows"
+  
+  tasks:
+    - name: "Mensagem: Criando diretório para Wazuh"
+      debug:
+        msg: "🔒 Criando diretório para Wazuh no servidor 🔒"
+
+    - name: "Criar diretório para Wazuh"
+      win_file:
+        path: C:\Users\_admin-skyone\Desktop\Agents_Skyone\wazuh
+        state: directory
+      ignore_errors: yes
+
+    - name: "Mensagem: Copiando arquivo de instalação do Wazuh"
+      debug:
+        msg: "🔒 Copiando arquivo de instalação do Wazuh 🔒"
+      
+    - name: "Copiar arquivo de instalação do Wazuh para o servidor"
+      win_copy:
+        src: "{{ arquivos_dir }}/{{ wazuh_file }}"
+        dest: "{{ caminho_remoto_wazuh }}"
+      ignore_errors: yes
+
+    - name: "Mensagem: Iniciando instalação do Wazuh"
+      debug:
+        msg: "🔒 Iniciando instalação do Wazuh 🔒"
+
+    - name: "Iniciar instalação do Wazuh"
+      win_shell: |
+        powershell -ExecutionPolicy Bypass -File "{{ caminho_remoto_wazuh }}"
+      register: wazuh_installation
+      failed_when: wazuh_installation.rc != 0
+      ignore_errors: yes
+
+    - name: "Mensagem: Mostrando saída completa da instalação do Wazuh"
+      debug:
+        msg: "🔒 Mostrando saída completa da instalação do Wazuh 🔒"
+
+    - name: "Mostrar saída completa da instalação do Wazuh"
+      debug:
+        var: wazuh_installation
+      ignore_errors: yes
+
+    - name: "Mensagem: Verificando se a instalação do Wazuh foi concluída com sucesso"
+      debug:
+        msg: "🔒 Verificando se a instalação do Wazuh foi concluída com sucesso 🔒"
+
+    - name: Verificar o estado do serviço Wazuh
+      win_service:
+        name: WazuhSvc
+      register: wazuh_service_status
+      ignore_errors: yes
+
+    - name: Mostrar detalhes do serviço Wazuh
+      debug:
+        var: wazuh_service_status
+      ignore_errors: yes
+
+    - name: Mostrar o estado do serviço Wazuh
+      debug:
+        msg: "O serviço Wazuh está {{ wazuh_service_status.state | default('não encontrado') }}"
+      ignore_errors: yes
+
+    - name: Iniciar o serviço Wazuh se não estiver rodando
+      win_service:
+        name: WazuhSvc
+        state: started
+      when: wazuh_service_status.state is defined and wazuh_service_status.state != "running"
+      ignore_errors: yes
+
+    - name: Definir o tipo de inicialização do serviço Wazuh para Automático
+      win_service:
+        name: WazuhSvc
+        start_mode: auto
+      ignore_errors: yes
+
+    - name: Confirmar que o serviço Wazuh está rodando
+      win_service:
+        name: WazuhSvc
+      register: updated_service_status
+      ignore_errors: yes
+
+    - name: Mostrar status atualizado do serviço Wazuh
+      debug:
+        msg: "O serviço Wazuh está {{ updated_service_status.state | default('não encontrado') }}"
+      ignore_errors: yes
+
+    - name: Limpar arquivos temporários do Wazuh
+      win_file:
+        path: C:\Users\_admin-skyone\Desktop\Agents_Skyone\wazuh
+        state: absent
+      ignore_errors: yes

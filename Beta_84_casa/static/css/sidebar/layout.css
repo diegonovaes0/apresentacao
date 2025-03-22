@@ -1,0 +1,247 @@
+/* layout.css */
+/* Estilos para layout principal e área de conteúdo */
+
+.main-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: var(--black-pearl);
+    overflow: hidden;
+}
+
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    background: var(--black-pearl);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar.collapsed + .content-area {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+.content-header {
+    height: 56px;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--black-rich);
+    border-bottom: 1px solid var(--gray-dark);
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background: var(--black-absolute);
+    border-top: 1px solid var(--gray-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    z-index: 10;
+    padding: 0.5rem 1.5rem;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.footer-left i {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    white-space: nowrap;
+}
+
+.footer-version {
+    padding: 0.2rem 0.6rem;
+    background: var(--gray-dark);
+    border-radius: 12px;
+    font-size: 0.7rem;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+    .content-area {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+    
+    .main-content {
+        padding: 1rem;
+    }
+    
+    .content-header {
+        padding: 0.75rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .user-info {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .username {
+        font-size: 0.8rem;
+    }
+    
+    .breadcrumbs {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-area {
+        padding: 0.25rem;
+    }
+    
+    .footer {
+        padding: 0.5rem 1rem;
+    }
+    
+    .footer-right {
+        justify-content: center;
+    }
+}
+
+/* Adicione estes estilos ao seu arquivo CSS */
+
+/* Estilo para o botão de atualização */
+.inventory-btn.accent {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.inventory-btn.accent:hover {
+    background-color: #2980b9;
+}
+
+.inventory-btn.accent:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+/* Estilo para badges de status */
+.inventory-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 500;
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.inventory-badge.success {
+    background-color: #e6f7e6;
+    color: #2c8c2c;
+}
+
+.inventory-badge.error {
+    background-color: #ffe6e6;
+    color: #c53030;
+}
+
+.inventory-badge.pending {
+    background-color: #fff8e6;
+    color: #e0941b;
+}
+
+.inventory-badge i {
+    font-size: 0.9em;
+}
+
+/* Estilo para grupo de botões */
+.inventory-actions-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* Estilo para o modal de mensagem centralizada */
+.center-message-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-message-content {
+    background-color: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.center-message-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.center-message-text {
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.center-message-button {
+    align-self: flex-end;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.center-message-button:hover {
+    background-color: #2980b9;
+}
+

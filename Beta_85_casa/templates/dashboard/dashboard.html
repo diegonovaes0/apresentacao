@@ -1,0 +1,441 @@
+{% extends "base.html" %}
+
+{% block title %}Core Windows - Automato Platform{% endblock %}
+
+{% block module %}Ansible{% endblock %}
+{% block submodule %}Core{% endblock %}
+{% block page %}Windows{% endblock %}
+
+{% block content %}
+<div class="core-windows-content">
+    <!-- Dashboard Summary -->
+    <div class="dashboard-summary">
+        <div class="summary-card">
+            <i class="ri-computer-line"></i>
+            <div class="card-info">
+                <h3>Hosts Windows</h3>
+                <span class="count" id="windows-hosts-count">0</span>
+            </div>
+        </div>
+        <div class="summary-card">
+            <i class="ri-file-code-line"></i>
+            <div class="card-info">
+                <h3>Playbooks Windows</h3>
+                <span class="count" id="windows-playbooks-count">0</span>
+            </div>
+        </div>
+        <div class="summary-card">
+            <i class="ri-history-line"></i>
+            <div class="card-info">
+                <h3>Execuções este mês</h3>
+                <span class="count" id="executions-count">0</span>
+            </div>
+        </div>
+        <div class="summary-card">
+            <i class="ri-shield-check-line"></i>
+            <div class="card-info">
+                <h3>Taxa de Sucesso</h3>
+                <span class="count" id="success-rate">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Playbooks por Categoria -->
+    <div class="actions-panel">
+        <h2>Playbooks por Categoria</h2>
+        <div class="category-stats" id="category-stats">
+            <div class="category-item">
+                <div class="category-icon"><i class="ri-shield-line"></i></div>
+                <div class="category-info">
+                    <h4>Segurança</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="category-count"><span id="security-count">0</span> playbooks</div>
+                </div>
+            </div>
+            
+            <div class="category-item">
+                <div class="category-icon"><i class="ri-settings-line"></i></div>
+                <div class="category-info">
+                    <h4>Configuração</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="category-count"><span id="config-count">0</span> playbooks</div>
+                </div>
+            </div>
+            
+            <div class="category-item">
+                <div class="category-icon"><i class="ri-base-station-line"></i></div>
+                <div class="category-info">
+                    <h4>Baseline</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="category-count"><span id="baseline-count">0</span> playbooks</div>
+                </div>
+            </div>
+            
+            <div class="category-item">
+                <div class="category-icon"><i class="ri-robot-line"></i></div>
+                <div class="category-info">
+                    <h4>Agentes</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="category-count"><span id="agents-count">0</span> playbooks</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Atualizações Recentes -->
+    <div class="recent-activities">
+        <h2>Atualizações Recentes</h2>
+        <div class="activity-list" id="updates-list">
+            <div class="activity-item">
+                <i class="ri-refresh-line success"></i>
+                <div class="activity-info">
+                    <h4>Novos Playbooks de Segurança</h4>
+                    <p>Adicionados 3 novos playbooks para hardening de Windows Server 2022</p>
+                    <span class="time">Há 2 dias</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <i class="ri-tools-line warning"></i>
+                <div class="activity-info">
+                    <h4>Melhoria na Detecção de Sistemas</h4>
+                    <p>Otimização na identificação de versões do Windows</p>
+                    <span class="time">Há 5 dias</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <i class="ri-bug-line error"></i>
+                <div class="activity-info">
+                    <h4>Correção de Bugs</h4>
+                    <p>Resolvido problema de autenticação WinRM em ambientes com múltiplos domínios</p>
+                    <span class="time">Há 7 dias</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <i class="ri-file-add-line success"></i>
+                <div class="activity-info">
+                    <h4>Novo Framework de Configuração</h4>
+                    <p>Adicionado suporte a padrões SCE e CIS Benchmarks</p>
+                    <span class="time">Há 12 dias</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status de Servidores -->
+    <div class="actions-panel">
+        <h2>Status dos Servidores Windows</h2>
+        <div class="server-status-container">
+            <div class="status-chart">
+                <div class="chart-container" id="server-status-chart">
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #4CAF50;"></span>
+                            <span class="legend-label">Online</span>
+                            <span class="legend-value" id="online-count">0</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #FFC107;"></span>
+                            <span class="legend-label">Em manutenção</span>
+                            <span class="legend-value" id="maintenance-count">0</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #F44336;"></span>
+                            <span class="legend-label">Offline</span>
+                            <span class="legend-value" id="offline-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="version-distribution">
+                <h3>Distribuição de Versões</h3>
+                <div class="version-list" id="version-list">
+                    <div class="version-item">
+                        <span class="version-name">Windows Server 2022</span>
+                        <div class="version-bar">
+                            <div class="version-fill" style="width: 45%"></div>
+                        </div>
+                        <span class="version-percent">45%</span>
+                    </div>
+                    <div class="version-item">
+                        <span class="version-name">Windows Server 2019</span>
+                        <div class="version-bar">
+                            <div class="version-fill" style="width: 30%"></div>
+                        </div>
+                        <span class="version-percent">30%</span>
+                    </div>
+                    <div class="version-item">
+                        <span class="version-name">Windows Server 2016</span>
+                        <div class="version-bar">
+                            <div class="version-fill" style="width: 20%"></div>
+                        </div>
+                        <span class="version-percent">20%</span>
+                    </div>
+                    <div class="version-item">
+                        <span class="version-name">Outros</span>
+                        <div class="version-bar">
+                            <div class="version-fill" style="width: 5%"></div>
+                        </div>
+                        <span class="version-percent">5%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Estilos adicionais para os novos componentes */
+.category-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.category-item {
+    background: var(--black-smoke);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.category-icon {
+    background: var(--gray-dark);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+}
+
+.category-info {
+    flex: 1;
+}
+
+.category-info h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.progress-bar {
+    height: 6px;
+    background: var(--gray-dark);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--accent-gold);
+    border-radius: 3px;
+    transition: width 1s ease;
+}
+
+.category-count {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.server-status-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.status-chart {
+    background: var(--black-smoke);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.chart-container {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.legend-label {
+    flex: 1;
+    color: var(--text-secondary);
+}
+
+.legend-value {
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.version-distribution {
+    background: var(--black-smoke);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.version-distribution h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.version-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.version-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.version-name {
+    width: 170px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.version-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--gray-dark);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.version-fill {
+    height: 100%;
+    background: var(--accent-gold);
+    border-radius: 4px;
+}
+
+.version-percent {
+    width: 40px;
+    text-align: right;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .server-status-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .category-stats {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-summary {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Simula carregamento de dados
+    setTimeout(function() {
+        // Preenche contadores principais
+        document.getElementById('windows-hosts-count').textContent = '42';
+        document.getElementById('windows-playbooks-count').textContent = '87';
+        document.getElementById('executions-count').textContent = '256';
+        document.getElementById('success-rate').textContent = '94%';
+        
+        // Preenche contadores por categoria
+        document.getElementById('security-count').textContent = '34';
+        document.getElementById('config-count').textContent = '28';
+        document.getElementById('baseline-count').textContent = '15';
+        document.getElementById('agents-count').textContent = '10';
+        
+        // Preenche barras de progresso por categoria
+        const categoryItems = document.querySelectorAll('.category-item');
+        const categoryValues = [34, 28, 15, 10];
+        const maxValue = Math.max(...categoryValues);
+        
+        categoryItems.forEach((item, index) => {
+            const percentage = (categoryValues[index] / maxValue) * 100;
+            const progressFill = item.querySelector('.progress-fill');
+            progressFill.style.width = percentage + '%';
+        });
+        
+        // Preenche status de servidores
+        document.getElementById('online-count').textContent = '32';
+        document.getElementById('maintenance-count').textContent = '7';
+        document.getElementById('offline-count').textContent = '3';
+        
+        // Efeito de animação
+        animateCounters();
+    }, 500);
+    
+    function animateCounters() {
+        const counters = document.querySelectorAll('.count');
+        counters.forEach(counter => {
+            const target = parseInt(counter.textContent.replace(/\D/g, ''));
+            let count = 0;
+            const time = 2000; // 2 segundos para a animação
+            const interval = 50; // 50ms entre cada incremento
+            const increment = target / (time / interval);
+            
+            const timer = setInterval(() => {
+                count += increment;
+                const currentCount = Math.ceil(count);
+                if (counter.textContent.includes('%')) {
+                    counter.textContent = `${Math.min(currentCount, target)}%`;
+                } else {
+                    counter.textContent = Math.min(currentCount, target).toString();
+                }
+                
+                if (currentCount >= target) {
+                    clearInterval(timer);
+                }
+            }, interval);
+        });
+    }
+});
+</script>
+{% endblock %}

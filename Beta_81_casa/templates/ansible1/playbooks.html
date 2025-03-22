@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Gerenciador de Playbooks Ansible - Automato Platform
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block content %}
+    <!-- Container principal do módulo Ansible -->
+    <div class="ansible-container">
+        <!-- Cabeçalho do módulo -->
+        <div class="ansible-header">
+            <div class="ansible-header-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 0-7.35 16.83l7.35-12.66 7.35 12.66A10 10 0 0 0 12 2z"/>
+                    <path d="M12 8v6"/>
+                    <circle cx="12" cy="18" r="1"/>
+                </svg>
+                Gerenciador de Playbooks Ansible
+            </div>
+            <div class="ansible-header-subtitle">Controle e Automação Simplificados</div>
+            
+            <div class="ansible-progress-container">
+            </div>
+        </div>
+
+        <!-- Botão para selecionar todos os hosts -->
+        <button id="select-all-hosts-btn" class="ansible-button ansible-primary">Selecionar Todos os Hosts</button>
+        
+        <!-- Container para a lista de hosts -->
+        <div class="ansible-hosts-container" id="hosts-list"></div>
+
+        <!-- Layout principal com duas colunas -->
+        <div class="ansible-layout">
+            <!-- Seção de playbooks -->
+            <div class="ansible-playbooks">
+                <!-- Filtros para os playbooks -->
+                <div class="ansible-filters">
+                    <div class="ansible-filter-group">
+                        <select id="os-filter" class="ansible-select">
+                            <option value="linux" selected>Linux</option>
+                            <option value="windows">Windows</option>
+                        </select>
+                    </div>
+                    <div class="ansible-filter-group">
+                        <select id="category-filter" class="ansible-select">
+                            <option value="configuracoes">Configurações</option>
+                            <option value="baseline">Baseline</option>
+                            <option value="agentes">Agentes</option>
+                            <option value="seguranca">Segurança</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Título da seção de playbooks -->
+                <h3 class="ansible-heading">Playbooks Disponíveis</h3>
+                
+                <!-- Botões de ação para playbooks -->
+                <div class="ansible-actions">
+                    <button id="execute-selected" class="ansible-button ansible-primary">Executar</button>
+                    <button id="refresh" class="ansible-button ansible-primary">Atualizar</button>
+                    <button id="select-all-playbooks" class="ansible-button ansible-primary">Selecionar Todas</button>
+                    <button id="cancel-all" class="ansible-button ansible-secondary">Cancelar Todos</button>
+                </div>
+                
+                <!-- Lista de playbooks -->
+                <div id="playbooks" class="ansible-playbooks-list"></div>
+            </div>
+
+            <!-- Seção de execução de playbooks -->
+            <div class="ansible-execution">
+                <h3 class="ansible-heading">Execução de Playbooks</h3>
+                <div id="running-playbooks" class="ansible-executions-list"></div>
+            </div>
+        </div>
+        
+        <!-- Área de debug -->
+        <div id="debug-info" class="ansible-debug">
+            <div id="debug-toggle" class="ansible-debug-toggle">
+                Mostrar Debug
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </div>
+            <div id="baseline-configurator-container"></div>
+            <pre id="debug-output" class="ansible-debug-output"></pre>
+        </div>
+    </div>
+{% endblock %}
+  
+
+{% block scripts %}
+    <!-- JavaScript específico do módulo Ansible -->
+    <script src="{{ url_for('static', filename='js/ansible.js') }}"></script>
+{% endblock %}

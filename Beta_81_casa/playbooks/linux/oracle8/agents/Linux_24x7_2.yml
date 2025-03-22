@@ -1,0 +1,77 @@
+---
+# site24x7_reinstall_clean.yml
+# Playbook Ansible para desinstalar e reinstalar o Site24x7 de forma segura
+
+- name: Desinstalação e Reinstalação do Site24x7 Agent
+  hosts: all
+  become: yes
+  vars:
+    site24x7_api_key: "us_6499e42d6685af5f41ae1d82a68b4cc6"
+    temp_dir: "/tmp/site24x7-install"
+
+  tasks:
+    # Fase 1: Backup para rollback em caso de falha
+    - name: Verificar se o agente está funcionando antes de começar
+      shell: "/etc/init.d/site24x7monagent status || echo 'Agent not found'"
+      register: status_before
+      ignore_errors: yes
+      changed_when: false
+
+    # Fase 2: Limpar instalação atual
+    - name: Parar o serviço site24x7 (init.d) se existir
+      shell: "/etc/init.d/site24x7monagent stop || echo 'Service not found'"
+      ignore_errors: yes
+      when: status_before.rc == 0
+      register: service_stopped
+
+    - name: Criar diretório temporário 
+      file:
+        path: "{{ temp_dir }}"
+        state: directory
+        mode: '0755'
+
+    # Fase 3: Baixar e instalar usando o método shell que funciona
+    - name: Download do script de instalação Site24x7
+      get_url:
+        url: "https://staticdownloads.site24x7.com/server/Site24x7InstallScript.sh"
+        dest: "{{ temp_dir }}/Site24x7InstallScript.sh"
+        mode: '0755'
+
+    # Usando o comando exato que funcionou para você
+    - name: Executar o script de instalação (método que funciona)
+      shell: >
+        cd {{ temp_dir }} && bash -c "$(cat {{ temp_dir }}/Site24x7InstallScript.sh)" readlink -i -key={{ site24x7_api_key }} -automation=true -Force=yes
+      register: install_output
+      failed_when: false
+
+    - name: Exibir saída da instalação
+      debug:
+        var: install_output.stdout_lines
+      when: install_output.stdout_lines is defined
+
+    # Fase 4: Verificação e inicialização do serviço
+    - name: Recarregar systemd
+      shell: systemctl daemon-reload
+      ignore_errors: yes
+
+    - name: Iniciar serviço Site24x7 (init.d)
+      shell: "/etc/init.d/site24x7monagent start"
+      ignore_errors: yes
+
+    - name: Verificar status do serviço após instalação
+      shell: "/etc/init.d/site24x7monagent status || systemctl status site24x7monagent.service"
+      register: final_status
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Exibir status final do serviço
+      debug:
+        var: final_status.stdout_lines
+      when: final_status.stdout_lines is defined
+
+    # Fase 5: Limpeza
+    - name: Limpar diretório temporário após instalação
+      file:
+        path: "{{ temp_dir }}"
+        state: absent
+      when: install_output is defined

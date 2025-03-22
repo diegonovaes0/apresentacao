@@ -1,0 +1,39 @@
+/* 
+PAGINATION.CSS
+Este arquivo contém os estilos para elementos de paginação
+e navegação entre múltiplas páginas de conteúdo.
+*/
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  
+  .page-item {
+    display: inline-block;
+  }
+  
+  .page-link {
+    padding: 6px 10px;
+    background: var(--black-elegant);
+    color: var(--text-secondary);
+    border: 1px solid var(--gray-dark);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .page-link:hover {
+    background: var(--menu-hover);
+    color: var(--accent-gold);
+  }
+  
+  .page-item.active .page-link {
+    background: var(--accent-gold);
+    color: var(--black-absolute);
+    border-color: var(--accent-gold);
+  }

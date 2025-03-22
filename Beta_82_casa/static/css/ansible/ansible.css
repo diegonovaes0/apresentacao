@@ -1,0 +1,40 @@
+/* CSS principal do módulo Ansible 
+   Importa os arquivos CSS modulares para criar uma interface completa */
+/* ansible.css */
+
+/* Importar variáveis CSS */
+@import url('variables.css');
+
+/* Importar layout e estrutura básica */
+@import url('layout.css');
+
+/* Importar estilos de cabeçalho */
+@import url('header.css');
+
+/* Importar estilos de hosts */
+@import url('hosts.css');
+
+/* Importar estilos de playbooks */
+@import url('playbooks.css');
+
+/* Importar estilos de execução */
+@import url('execution.css');
+
+/* Importar estilos de saída */
+@import url('output.css');
+
+/* Importar estilos de botões */
+@import url('buttons.css');
+
+/* Importar estilos de debug */
+@import url('debug.css');
+
+/* Importar animações */
+@import url('animations.css');
+
+/* Correção para Firefox */
+@-moz-document url-prefix() {
+  .ansible-container {
+    overflow: hidden;
+  }
+}

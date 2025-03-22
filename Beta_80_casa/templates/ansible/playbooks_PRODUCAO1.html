@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Gerenciador de Playbooks Ansible - Automato Platform
+{% endblock %}
+
+{% block content %}
+    <!-- Container principal do módulo Ansible -->
+    <div class="ansible-container">
+        <!-- [CABEÇALHO MANTIDO IGUAL] -->
+        <div class="ansible-header">
+            <div class="ansible-header-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 0-7.35 16.83l7.35-12.66 7.35 12.66A10 10 0 0 0 12 2z"/>
+                    <path d="M12 8v6"/>
+                    <circle cx="12" cy="12" r="1"/>
+                </svg>
+                Gerenciador de Playbooks Ansible
+            </div>
+            <div class="ansible-header-subtitle">Controle e Automação Simplificados</div>
+            <div class="ansible-progress-container"></div>
+        </div>
+
+        <!-- Botão para selecionar todos os hosts -->
+        <button id="select-all-hosts-btn" class="ansible-button ansible-primary">Selecionar Todos os Hosts</button>
+
+        <!-- [CONTAINER DE HOSTS MANTIDO IGUAL] -->
+        <div class="ansible-hosts-container" id="hosts-list"></div>
+
+        <!-- [LAYOUT PRINCIPAL MANTIDO IGUAL] -->
+        <div class="ansible-layout">
+            <div class="ansible-playbooks">
+                <!-- [FILTROS MANTIDOS IGUAIS] -->
+                <div class="ansible-filters">
+                    <div class="ansible-filter-group">
+                        <select id="os-filter" class="ansible-select">
+                            <option value="linux" selected>Linux</option>
+                            <option value="windows">Windows</option>
+                        </select>
+                    </div>
+                    <div class="ansible-filter-group">
+                        <select id="category-filter" class="ansible-select">
+                            <option value="configuracoes">Configurações</option>
+                            <option value="baseline">Baseline</option>
+                            <option value="agentes">Agentes</option>
+                            <option value="seguranca">Segurança</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="ansible-heading">Playbooks Disponíveis</h3>
+
+                <!-- [PAINEL DE AÇÕES MANTIDO IGUAL] -->
+                <div class="ansible-automation-panel">
+                    <div class="automation-core">
+                        <button id="execute-selected" class="automation-button core-button" onclick="executePlaybooks()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--black-absolute)" stroke-width="2">
+                                <path d="M5 3l14 9-14 9V3z"/>
+                            </svg>
+                            Executar
+                        </button>
+                        <div id="execution-status" class="automation-status">1 host(s) e 2 playbook(s) selecionados</div>
+                    </div>
+                    <div class="automation-orbitals">
+                        <button id="refresh" class="automation-button orbital-button" title="Atualizar" onclick="refreshPlaybooks()">
+                            <i class="ri-restart-line"></i>
+                        </button>
+                        <button id="select-all-playbooks" class="automation-button orbital-button" title="Selecionar Todos" onclick="selectAllPlaybooks()">
+                            <i class="ri-checkbox-circle-line"></i>
+                        </button>
+                        <button id="cancel-all" class="automation-button orbital-button cancel-orbit" title="Cancelar Tudo" onclick="cancelAll()">
+                            <i class="ri-close-circle-line"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="playbooks" class="ansible-playbooks-list"></div>
+            </div>
+
+            <!-- Seção de execução de playbooks -->
+            <div class="ansible-execution">
+                <h3 class="ansible-heading">Execução de Playbooks</h3>
+                <div id="running-playbooks" class="ansible-executions-list">
+                    <!-- Cartão de execução -->
+                    <div class="execution-card">
+                        <div class="card-content">
+                            <!-- [CABEÇALHO DO CARD MANTIDO IGUAL] -->
+                            <div class="card-header">
+                                <span class="playbook-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M5 3l14 9-14 9V3z"/>
+                                    </svg>
+                                    onfi_oracle8.yml
+                                </span>
+                                <span class="task-status success">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M20 6L9 17l-5-5"/>
+                                    </svg>
+                                    Concluído com sucesso
+                                </span>
+                            </div>
+                            <!-- [TIMESTAMP MANTIDO IGUAL] -->
+                            <div class="execution-timestamp">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M12 8v4l3 3"/>
+                                </svg>
+                                Started: March 11, 2025 14:30
+                            </div>
+                            <!-- [HOST INFO MANTIDO IGUAL] -->
+                            <div class="host-info">
+                                <div class="host-details">
+                                    <p><strong>Hostname:</strong> DIEGO</p>
+                                    <p><strong>IP Público:</strong> 128.201.194.225</p>
+                                    <p><strong>IP Privado:</strong> 172.25.9.251</p>
+                                    <p><strong>Sistema:</strong> Ubuntu 22.04</p>
+                                </div>
+                            </div>
+                            <!-- Progress bar ajustada para amarelo -->
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 100%;"></div>
+                            </div>
+                            <!-- Botões em amarelo -->
+                            <div class="button-group">
+                                <button class="toggle-output-btn" onclick="toggleOutput(this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                    Ver Mais
+                                </button>
+                                <button class="cancel-btn" onclick="cancelExecution(this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M18 6L6 18M6 6l12 12"/>
+                                    </svg>
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Saída do Ansible ajustada -->
+                        <div class="ansible-output">
+                            <div class="ansible-play">PLAY [Configure Oracle8]</div>
+                            <div class="ansible-task">TASK [Install Dependencies]</div>
+                            <div class="ansible-ok">ok: [DIEGO]</div>
+                            <div class="ansible-task">TASK [Deploy Oracle8]</div>
+                            <div class="ansible-ok">ok: [DIEGO]</div>
+                            <div class="ansible-recap">PLAY RECAP</div>
+                            <div class="ansible-stats">DIEGO : ok=2 changed=0 unreachable=0 failed=0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [DEBUG MANTIDO IGUAL] -->
+        <div id="debug-info" class="ansible-debug">
+            <div id="debug-toggle" class="ansible-debug-toggle">
+                Mostrar Debug
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </div>
+            <div id="baseline-configurator-container"></div>
+            <pre id="debug-output" class="ansible-debug-output"></pre>
+        </div>
+    </div>
+
+ 
+
+    <!-- [JAVASCRIPT MANTIDO IGUAL] -->
+    <script>
+        function executePlaybooks() {
+            const status = document.getElementById('execution-status');
+            status.textContent = 'Executando playbooks...';
+            status.classList.add('success');
+            setTimeout(() => {
+                status.textContent = 'Execução concluída!';
+            }, 2000);
+        }
+
+        function refreshPlaybooks() {
+            alert('Atualizando lista de playbooks...');
+        }
+
+        function selectAllPlaybooks() {
+            const status = document.getElementById('execution-status');
+            status.textContent = 'Todos os playbooks selecionados!';
+            status.classList.remove('error');
+            status.classList.add('success');
+        }
+
+        function cancelAll() {
+            const status = document.getElementById('execution-status');
+            status.textContent = 'Todas as execuções canceladas.';
+            status.classList.remove('success');
+            status.classList.add('error');
+        }
+
+        function toggleOutput(button) {
+            const card = button.closest('.execution-card');
+            const output = card.querySelector('.ansible-output');
+            output.classList.toggle('visible');
+        }
+
+        function cancelExecution(button) {
+            const card = button.closest('.execution-card');
+            const output = card.querySelector('.ansible-output');
+            output.innerHTML = '<div class="ansible-cancelled-message"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m16.36-6.36l-1.42 1.42M7.06 17.94l-1.42 1.42M18.36 18.36l-1.42-1.42M7.06 6.06l-1.42-1.42"/></svg>Execução cancelada.</div>';
+            output.classList.add('visible');
+        }
+
+        // ansible.js
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Elementos do DOM
+    const playbooksList = document.getElementById("playbooks");
+    const selectAllPlaybooksBtn = document.getElementById("select-all-playbooks");
+    const executeBtn = document.getElementById("execute-selected");
+    const refreshBtn = document.getElementById("refresh");
+    const cancelBtn = document.getElementById("cancel-all");
+    const debugToggle = document.getElementById("debug-toggle");
+    const debugOutput = document.getElementById("debug-output");
+
+    // Função para criar um item de playbook
+    function createPlaybookItem(id, name, description) {
+        const div = document.createElement("div");
+        div.classList.add("playbook-item");
+        div.innerHTML = `
+            <span class="hook"></span>
+            <h4>${name}</h4>
+            <small>${description}</small>
+        `;
+        div.addEventListener("click", () => toggleSelection(div));
+        return div;
+    }
+
+    // Função para alternar seleção
+    function toggleSelection(item) {
+        item.classList.toggle("selected");
+    }
+
+    // Adicionar playbooks dinamicamente (exemplo com 29 playbooks)
+    for (let i = 1; i <= 29; i++) {
+        const playbook = createPlaybookItem(i, `Playbook ${i}`, `Descrição do Playbook ${i}`);
+        playbooksList.appendChild(playbook);
+    }
+
+    // Atualizar contador
+    const playbookCount = playbooksList.children.length;
+    document.querySelector(".playbook-counter").textContent = `${playbookCount} Playbooks`;
+
+    // Selecionar todos os playbooks
+    selectAllPlaybooksBtn.addEventListener("click", () => {
+        const items = playbooksList.querySelectorAll(".playbook-item");
+        items.forEach((item) => {
+            item.classList.add("selected");
+        });
+    });
+
+    // Executar playbooks selecionados
+    executeBtn.addEventListener("click", () => {
+        const selected = playbooksList.querySelectorAll(".playbook-item.selected");
+        debugOutput.textContent = `Executando ${selected.length} playbooks...`;
+        debugOutput.style.display = "block";
+    });
+
+    // Atualizar lista
+    refreshBtn.addEventListener("click", () => {
+        debugOutput.textContent = "Atualizando playbooks...";
+        debugOutput.style.display = "block";
+    });
+
+    // Cancelar tudo
+    cancelBtn.addEventListener("click", () => {
+        const items = playbooksList.querySelectorAll(".playbook-item");
+        items.forEach((item) => {
+            item.classList.remove("selected");
+        });
+        debugOutput.textContent = "Seleção cancelada.";
+        debugOutput.style.display = "block";
+    });
+
+    // Alternar debug
+    debugToggle.addEventListener("click", () => {
+        debugOutput.style.display =
+            debugOutput.style.display === "none" ? "block" : "none";
+        debugToggle.textContent =
+            debugOutput.style.display === "none" ? "Mostrar Debug" : "Ocultar Debug";
+    });
+});
+    </script>
+{% endblock %}

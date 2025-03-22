@@ -1,0 +1,310 @@
+/* Estilos redesenhados para os cards de host - Versão compacta e focada no cliente */
+
+/* Container de hosts */
+.ansible-hosts-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 12px;
+  background: var(--gradient-card);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 16px;
+  position: relative;
+  flex-wrap: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dark) var(--black-elegant);
+  border: 1px solid var(--black-elegant);
+  min-height: 120px;
+}
+
+/* Barra de rolagem para hosts */
+.ansible-hosts-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+/* Card de host redesenhado - mais compacto e focado */
+.host-banner {
+  flex: 0 0 auto;
+  width: 240px;
+  min-width: 240px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1c1c1c 100%);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--black-elegant);
+}
+
+.host-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 214, 0, 0.3);
+}
+
+/* Efeitos para hosts válidos/inválidos */
+.host-banner.valid::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--success-green);
+  border-radius: 3px 0 0 3px;
+  z-index: 2;
+}
+
+.host-banner.invalid {
+  opacity: 0.85;
+}
+
+.host-banner.invalid::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--error-red);
+  border-radius: 3px 0 0 3px;
+  z-index: 2;
+}
+
+/* Efeito para hosts selecionados */
+.host-banner.selected {
+  background: linear-gradient(135deg, #424242 0%, #323232 100%);
+  border: 1px solid rgba(255, 214, 0, 0.5);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  transform: translateY(-3px);
+  z-index: 3;
+}
+
+/* Cabeçalho do host - redesenhado para ser mais compacto */
+.host-header {
+  background: linear-gradient(135deg, #333333 0%, #252525 100%);
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.host-banner h4 {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+/* Badge de status online/offline compacto */
+.host-status-badge {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.host-banner.valid .host-status-badge {
+  background: rgba(76, 175, 80, 0.15);
+  color: var(--success-green);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.host-banner.invalid .host-status-badge {
+  background: rgba(244, 67, 54, 0.15);
+  color: var(--error-red);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+/* Conteúdo do host - layout mais compacto */
+.host-content {
+  padding: 8px;
+  background: linear-gradient(135deg, #292929 0%, #212121 100%);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Estilo dos itens de informação do host */
+.host-info-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.host-info-item svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.host-info-item strong {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-right: 1px;
+}
+
+.host-info-item-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+/* Rodapé do host - redesenhado para ser mais compacto */
+.host-footer {
+  background: linear-gradient(135deg, #262626 0%, #1a1a1a 100%);
+  padding: 6px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.host-banner label {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  color: var(--accent-gold);
+  cursor: pointer;
+  font-weight: 500;
+  margin: 0;
+}
+
+.host-banner input[type="checkbox"] {
+  margin-right: 4px;
+  accent-color: var(--accent-gold);
+  width: 12px;
+  height: 12px;
+}
+
+/* Badge de sistema operacional compacto */
+.os-badge {
+  font-size: 9px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.os-badge img,
+.os-badge svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* OS Badge específico para Linux */
+.os-badge.linux {
+  background: rgba(76, 175, 80, 0.08);
+  border-color: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+}
+
+/* OS Badge específico para Windows */
+.os-badge.windows {
+  background: rgba(3, 169, 244, 0.08);
+  border-color: rgba(3, 169, 244, 0.2);
+  color: #03A9F4;
+}
+
+/* Estilo para mensagem de erro em host inválido */
+.host-banner.invalid .host-error-message {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--error-red);
+  font-size: 11px;
+  background: rgba(244, 67, 54, 0.08);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(244, 67, 54, 0.15);
+  margin-top: 4px;
+}
+
+.host-banner.invalid .host-error-message svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--error-red);
+}
+
+/* Contador de hosts mais compacto */
+.host-counter {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--accent-gold);
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--black-elegant);
+  z-index: 10;
+}
+
+.host-counter svg {
+  width: 10px;
+  height: 10px;
+  stroke: var(--accent-gold);
+}
+
+/* Animações e transições otimizadas */
+@keyframes progress-animation {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 0%; }
+}
+
+/* Loading Banner mais compacto */
+.loading-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 100%);
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--black-elegant);
+  position: relative;
+  width: 100%;
+  min-height: 80px;
+  justify-content: center;
+}
+
+.loading-banner .spinner {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+#loading-message {
+  font-weight: 500;
+  font-size: 12px;
+}

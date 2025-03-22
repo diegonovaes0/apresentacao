@@ -1,0 +1,222 @@
+/* playbooks.css */
+
+:root {
+    --black-absolute: #000000;
+    --black-rich: #030303;
+    --black-elegant: #0A0A0A;
+    --black-pearl: #121212;
+    --black-smoke: #1A1A1A;
+    --gray-dark: #2A2A2A;
+    --accent-gold: #FFD600;
+    --accent-gold-hover: #FFE033;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --submenu-hover: rgba(255, 214, 0, 0.05);
+    --menu-hover: rgba(255, 214, 0, 0.1);
+    --submenu-level-1: #2A2A2A;
+    --submenu-level-2: #242424;
+    --submenu-level-3: #1E1E1E;
+}
+
+/* Container principal */
+.ansible-container {
+    padding: 20px;
+    background: var(--black-pearl);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Header */
+.ansible-header {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--black-elegant);
+    border-radius: 8px;
+    border: 1px solid var(--gray-dark);
+}
+
+.ansible-header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.ansible-header-subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* Layout principal */
+.ansible-layout {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Seção de playbooks */
+.ansible-playbooks {
+    flex: 0 0 30%;
+    min-width: 300px;
+    background: var(--black-rich);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--gray-dark);
+    position: relative;
+}
+
+/* Filtros */
+.ansible-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    background: var(--black-elegant);
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--gray-dark);
+}
+
+.ansible-filter-group {
+    flex: 1;
+}
+
+.ansible-select {
+    width: 100%;
+    padding: 8px;
+    background: var(--black-smoke);
+    border: 1px solid var(--gray-dark);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 12px;
+    transition: border-color 0.2s ease;
+}
+
+.ansible-select:hover,
+.ansible-select:focus {
+    border-color: var(--accent-gold);
+    outline: none;
+}
+
+/* Ações */
+.ansible-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.ansible-button {
+    padding: 8px 16px;
+    background: var(--gray-dark);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.ansible-button.ansible-primary {
+    background: var(--accent-gold);
+    color: var(--black-absolute);
+}
+
+.ansible-button.ansible-primary:hover {
+    background: var(--accent-gold-hover);
+}
+
+.ansible-button.ansible-secondary:hover {
+    background: var(--menu-hover);
+}
+
+/* Item de playbook */
+.playbook-item {
+    padding: 12px;
+    background: var(--black-smoke);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+    border: 1px solid var(--gray-dark);
+}
+
+.playbook-item:hover {
+    background: var(--submenu-level-1);
+    transform: scale(1.02);
+    border-color: var(--accent-gold);
+}
+
+.playbook-item.selected {
+    background: var(--submenu-level-2);
+    border: 2px solid var(--accent-gold);
+}
+
+.playbook-item h4 {
+    font-size: 14px;
+    color: var(--text-primary);
+    margin: 0;
+    font-weight: 500;
+    flex: 1;
+}
+
+.playbook-item small {
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+
+.playbook-item input[type="checkbox"] {
+    accent-color: var(--accent-gold);
+}
+
+/* Contador */
+.playbook-counter {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--black-elegant);
+    color: var(--accent-gold);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Execução */
+.ansible-execution {
+    flex: 1;
+    background: var(--black-rich);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--gray-dark);
+}
+
+/* Debug */
+.ansible-debug {
+    margin-top: 20px;
+    background: var(--black-elegant);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.ansible-debug-toggle {
+    cursor: pointer;
+    color: var(--accent-gold);
+}
+
+.ansible-debug-output {
+    display: none;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .ansible-playbooks,
+    .ansible-execution {
+        flex: 0 0 100%;
+    }
+}

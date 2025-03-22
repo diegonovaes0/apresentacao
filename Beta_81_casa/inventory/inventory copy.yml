@@ -1,0 +1,29 @@
+# Arquivo de Inventário Ansible (YAML)
+# Gerado automaticamente pela Automato Platform
+
+all:
+  children:
+    linux:
+      hosts:
+        204.216.148.0:
+          ansible_user: root
+          ansible_ssh_pass: vg%%9)#'Q(AXWE
+        127.0.0.1:
+          ansible_user: opc
+          ansible_ssh_pass: opc
+      vars:
+        ansible_connection: ssh
+        ansible_port: 22
+    windows:
+      hosts:
+        144.22.212.74:
+          ansible_user: _admin-skyone
+          ansible_password: qf%6a#R0)1'bdL1
+          ansible_connection: winrm
+          ansible_winrm_transport: ntlm
+          ansible_winrm_server_cert_validation: ignore
+      vars:
+        ansible_connection: winrm
+        ansible_port: 5986
+        ansible_winrm_transport: ntlm
+        ansible_winrm_server_cert_validation: ignore

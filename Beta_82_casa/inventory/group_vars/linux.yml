@@ -1,0 +1,39 @@
+---
+all:
+
+    # Variáveis de elevação de privilégios
+    ansible_become: true                     # Ativar elevação de privilégios (sudo)
+    ansible_become_method: sudo              # Método de elevação (sudo, su, etc.)
+    ansible_become_user: root                # Usuário alvo ao usar become (padrão: root)
+    ansible_become_pass: ''                  # Senha para become (deixe vazio se não usar)
+
+    # Variáveis de execução
+    ansible_forks: 5                         # Número de processos paralelos
+    ansible_gather_facts: true               # Coletar fatos automaticamente
+    ansible_command_timeout: 30              # Tempo limite para comandos (segundos)
+    ansible_pipelining: true                 # Habilitar pipelining para SSH (melhora desempenho)
+
+    # Variáveis de ambiente
+    ansible_env:
+      PATH: "/usr/local/bin:/usr/bin:/bin"   # Variável de ambiente PATH
+      LANG: "en_US.UTF-8"                    # Configuração de locale
+
+
+
+
+
+python_interpreters:
+  py27: /usr/bin/python2.7
+  py36: /usr/bin/python3.6
+  py37: /usr/bin/python3.7
+  py38: /usr/bin/python3.8
+  py39: /usr/bin/python3.9
+  py310: /usr/bin/python3.10
+  py311: /usr/bin/python3.11
+  py312: /usr/bin/python3.12
+ansible_python_interpreter: "{{ python_interpreters.py310 }}"
+
+
+
+
+

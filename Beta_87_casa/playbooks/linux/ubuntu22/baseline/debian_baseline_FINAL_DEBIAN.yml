@@ -1,0 +1,231 @@
+---
+- name: Configuração do sistema Debian
+  hosts: all
+  become: yes
+  vars_prompt:
+    - name: new_hostname
+      prompt: "Hostname da máquina"
+      private: no
+
+  vars:
+    root_password: "(37&vSvMUHi7mk"
+    partner_password: "s3qQj3Ds#iL)7#f"
+    log_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}"
+    ansible_python_interpreter: "auto_silent"
+
+  pre_tasks:
+    - name: Verificar e instalar Python se necessário
+      raw: |
+        if ! command -v python3 &>/dev/null; then
+          apt-get update && apt-get install -y python3
+        fi
+      changed_when: false
+      ignore_errors: yes
+
+  tasks:
+    - name: Definir o timestamp atual para logs
+      ansible.builtin.set_fact:
+        log_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}"
+      ignore_errors: yes
+    
+    - name: Definir fuso horário para America/Sao_Paulo
+      file:
+        src: /usr/share/zoneinfo/America/Sao_Paulo
+        dest: /etc/localtime
+        state: link
+        force: yes
+      tags: timezone
+      ignore_errors: yes
+
+    - name: Parar e desabilitar o serviço nftables
+      service:
+        name: nftables
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+
+    - name: Remover regras do nftables
+      shell: nft flush ruleset
+      ignore_errors: yes
+
+    - name: Desabilitar IPv6
+      lineinfile:
+        path: /etc/sysctl.conf
+        line: "{{ item }}"
+        state: present
+      loop:
+        - "net.ipv6.conf.all.disable_ipv6 = 1"
+        - "net.ipv6.conf.default.disable_ipv6 = 1"
+        - "net.ipv6.conf.lo.disable_ipv6 = 1"
+      notify: Aplicar sysctl
+      ignore_errors: yes
+
+    - name: Aplicar configurações do sysctl
+      command: sysctl -p
+      ignore_errors: yes
+
+    - name: Verificar o estado do IPv6
+      command: cat /proc/sys/net/ipv6/conf/all/disable_ipv6
+      register: ipv6_status
+      ignore_errors: yes
+
+    - name: Alterar o hostname da máquina
+      ansible.builtin.hostname:
+        name: "{{ new_hostname }}"
+      tags: hostname
+      ignore_errors: yes
+
+    - name: Atualizar /etc/hosts com o novo hostname
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.0\.1\s'
+        line: "127.0.0.1   {{ new_hostname }} localhost"
+        state: present
+      tags: hostname
+      ignore_errors: yes
+
+    - name: Instalar pacotes básicos essenciais
+      apt:
+        name:
+          - wget
+          - vim
+          - gdisk
+          - curl
+        state: present
+        update_cache: yes
+      tags: install
+      ignore_errors: yes
+
+    - name: Atualizar o sistema
+      apt:
+        upgrade: dist
+      tags: update
+      ignore_errors: yes
+
+    - name: Configurar SSH
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication yes' }
+        - { regexp: '^#?PubkeyAuthentication', line: 'PubkeyAuthentication yes' }
+        - { regexp: '^#?KbdInteractiveAuthentication', line: 'KbdInteractiveAuthentication yes' }
+        - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin yes' }
+        - { regexp: '^#?UsePAM', line: 'UsePAM yes' }
+      ignore_errors: yes
+
+    - name: Reiniciar o serviço SSH
+      service:
+        name: ssh
+        state: restarted
+      ignore_errors: yes
+
+    - name: Criar usuário parceiro
+      user:
+        name: parceiro
+        state: present
+        shell: /bin/bash
+        create_home: yes
+      ignore_errors: yes
+
+    - name: Definir senha para o usuário parceiro
+      shell: echo "parceiro:{{ partner_password }}" | chpasswd
+      no_log: true
+      ignore_errors: yes
+
+    - name: Definir senha para o usuário root
+      shell: echo "root:{{ root_password }}" | chpasswd
+      no_log: true
+      ignore_errors: yes
+
+    - name: Adicionar usuário parceiro ao grupo sudo
+      user:
+        name: parceiro
+        groups: sudo
+        append: yes
+      ignore_errors: yes
+
+    - name: Adicionar permissões sudo para o usuário parceiro
+      lineinfile:
+        path: /etc/sudoers
+        insertafter: '^root.*ALL=(ALL:ALL).*ALL'
+        line: 'parceiro ALL=(ALL:ALL) ALL'
+        validate: 'visudo -cf %s'
+        state: present
+      ignore_errors: yes
+
+    - name: Garantir que o diretório temporário /tmp/logs exista
+      file:
+        path: /tmp/logs
+        state: directory
+        mode: '0777'
+        owner: root
+        group: root
+      ignore_errors: yes
+
+    - name: Gerar IP público da máquina alvo
+      command: curl -s http://api.ipify.org
+      register: target_public_ip
+      changed_when: False
+      ignore_errors: yes
+
+    - name: Exportar informações para arquivo de log
+      copy:
+        content: |
+          Timestamp: {{ log_timestamp }}
+          Hostname: {{ ansible_facts.hostname | default('Hostname not found') }}
+          IP Address: {{ ansible_facts['default_ipv4'].address | default('IP not found') }}
+          Public IP: {{ target_public_ip.stdout | default('Public IP not found') }}
+          Parceiro User: parceiro
+          Parceiro Password: {{ partner_password }}
+          Root Password: {{ root_password }}
+        dest: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+      ignore_errors: yes
+
+    - name: Verificar se o arquivo de log foi criado
+      stat:
+        path: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+      register: log_file
+      ignore_errors: yes
+
+    - name: Garantir que o diretório de logs exista no controlador
+      file:
+        path: /home/ubuntu/logs
+        state: directory
+        mode: '0777'
+      ignore_errors: yes
+
+    - name: Trazer o arquivo de log para o controlador
+      fetch:
+        src: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+        dest: "/home/ubuntu/logs/"
+        flat: yes
+      when: log_file.stat.exists
+      ignore_errors: yes
+
+    - name: Remover o arquivo de log do nó remoto
+      file:
+        path: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+        state: absent
+      when: log_file.stat.exists
+      ignore_errors: yes
+
+  handlers:
+    - name: Reiniciar SSH
+      service:
+        name: ssh
+        state: restarted
+      ignore_errors: yes
+
+    - name: Aplicar sysctl
+      command: sysctl -p
+      ignore_errors: yes
+
+    - name: Reiniciar a máquina
+      reboot:
+        msg: "Reiniciando a máquina para aplicar alterações"
+        connect_timeout: 5
+        reboot_timeout: 600
+      ignore_errors: yes

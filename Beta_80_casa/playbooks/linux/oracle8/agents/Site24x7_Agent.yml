@@ -1,0 +1,75 @@
+---
+# Playbook: Site24x7 Agent
+# Descrição: Instala e configura o agente Site24x7 em servidores Linux
+# Categoria: agentes
+# OS: linux
+# Versão: 1.2.0
+
+- name: ⚡Instalação do Site24x7 Agent⚡
+  hosts: all
+  become: yes
+  vars:
+    # Esta variável será sobrescrita pela interface
+    device_key: "us_dbbaa0d164ea2cf1caddc8ba13a4dd43"
+    temp_dir: "/tmp/site24x7-install"
+    
+  tasks:
+    - name: ⚡Verificar se o Site24x7 Agent já está instalado⚡
+      stat:
+        path: /opt/site24x7/monagent/bin/monagent
+      register: agent_installed
+      
+    - name: ⚡Criar diretório para Site24x7⚡
+      file:
+        path: "{{ temp_dir }}"
+        state: directory
+        mode: '0755'
+      when: not agent_installed.stat.exists
+      
+    # Copiar o script pré-baixado
+    - name: ⚡Copiar script de instalação⚡
+      copy:
+        src: /home/opc/agents/linux/24x7.sh
+        dest: "{{ temp_dir }}/install.sh"
+        mode: '0755'
+      when: not agent_installed.stat.exists
+      ignore_errors: yes
+      
+    # Mostrar a chave que está sendo usada
+    - name: ⚡Informações do Site24x7⚡
+      debug:
+        msg: "Instalando Site24x7 com a chave: {{ device_key }}"
+      when: not agent_installed.stat.exists
+      
+    - name: ⚡Instalar Site24x7 Agent com a chave fornecida⚡
+      shell: "{{ temp_dir }}/install.sh -i -key={{ device_key }}"
+      args:
+        chdir: "{{ temp_dir }}"
+      when: not agent_installed.stat.exists
+      register: install_result
+      ignore_errors: yes
+      
+    - name: ⚡Verificar status do serviço Site24x7 Agent⚡
+      systemd:
+        name: site24x7monagent
+        state: started
+        enabled: yes
+      when: not agent_installed.stat.exists
+      ignore_errors: yes
+      
+    - name: ⚡Limpar arquivos temporários do Site24x7⚡
+      file:
+        path: "{{ temp_dir }}"
+        state: absent
+      when: not agent_installed.stat.exists
+      ignore_errors: yes
+      
+    - name: ⚡Status da instalação (já instalado)⚡
+      debug:
+        msg: "Site24x7 Agent já está instalado em {{ ansible_hostname }}"
+      when: agent_installed.stat.exists
+
+    - name: ⚡Status da instalação (instalado agora)⚡
+      debug:
+        msg: "Site24x7 Agent foi instalado com sucesso em {{ ansible_hostname }} com a chave {{ device_key }}"
+      when: not agent_installed.stat.exists

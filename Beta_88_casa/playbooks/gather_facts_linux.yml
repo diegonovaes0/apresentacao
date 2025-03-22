@@ -1,0 +1,53 @@
+---
+- name: Coletar Informações do Host Linux
+  hosts: all
+  gather_facts: yes
+  become: no
+  
+  tasks:
+    - name: Coletar informações básicas do sistema
+      set_fact:
+        system_info: "{{ ansible_distribution }} {{ ansible_distribution_version }}{% if ansible_os_family == 'Debian' %} (Debian){% elif ansible_os_family == 'RedHat' %} (RedHat){% endif %}"
+
+    - name: Formatar informações do sistema
+      set_fact:
+        formatted_info:
+          hostname: "{{ ansible_hostname }}"
+          private_ip: "{{ ansible_default_ipv4.address | default('N/A') }}"
+          system: "{{ system_info }}"
+
+    - name: Obter IP Público
+      uri:
+        url: https://api.ipify.org?format=json
+        return_content: yes
+      register: public_ip_response
+      ignore_errors: yes
+
+    - name: Definir IP público alternativo se a API falhar
+      set_fact:
+        public_ip_alt: "{{ ansible_default_ipv4.address | default(inventory_hostname) }}"
+      when: public_ip_response.status_code is not defined or public_ip_response.status_code != 200
+
+    - name: Criar JSON com informações
+      set_fact:
+        host_details:
+          hostname: "{{ formatted_info.hostname }}"
+          private_ip: "{{ formatted_info.private_ip }}"
+          public_ip: "{{ public_ip_response.json.ip | default(public_ip_alt) | default(inventory_hostname) }}"
+          system: "{{ formatted_info.system }}"
+
+    - name: Debug informações coletadas
+      debug:
+        var: host_details
+        verbosity: 0
+
+    - name: Mostrar informações em formato de saída simples para garantir que sejam capturadas
+      debug:
+        msg: |
+          FACTS_BEGIN
+          hostname: {{ host_details.hostname }}
+          public_ip: {{ host_details.public_ip }}
+          private_ip: {{ host_details.private_ip }}
+          system: {{ host_details.system }}
+          FACTS_END
+        verbosity: 0

@@ -1,0 +1,381 @@
+/* Estilos para execução de playbooks no módulo Ansible */
+/* execution.css */
+/* Cartão de execução */
+.execution-card {
+  background: linear-gradient(135deg, #2a2a2a 0%, #212121 100%);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  padding: 12px;
+  padding-bottom: 20px; /* Reduzir o padding desnecessário */
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid var(--black-elegant);
+  padding-bottom: 60px; /* Espaço para acomodar os botões */
+
+  overflow: visible; /* Permitir que o button-group seja visível fora do card */
+}
+
+
+/* Melhoria visual dos botões */
+.toggle-output-btn, .cancel-btn {
+  border-radius: 4px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.toggle-output-btn {
+  background: rgba(255, 214, 0, 0.2);
+  font-weight: 600;
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 214, 0, 0.3);
+}
+
+/* Ajuste para execução em linha abaixo dos outros elementos do card */
+.execution-card .progress-container {
+  margin-bottom: 20px; /* Aumenta a margem abaixo da barra de progresso */
+}
+
+
+.ansible-output {
+  margin-top: 50px; /* Espaço para os botões acima */
+  margin-bottom: 0;
+  background: #1a1a1a; /* Mesmo tom de fundo do button-group */
+  overflow-y: auto;
+}
+
+
+
+/* Script para ajustar a posição do button-group para cada card */
+/* (Este estilo será aplicado via JavaScript) */
+.button-group-positioned {
+  position: absolute !important; /* Substituirá o fixed do button-group */
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+}
+
+/* Estilização extra para o botão toggle para melhor visibilidade */
+.toggle-output-btn {
+  background: rgba(255, 214, 0, 0.15); /* Cor dourada suave */
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 214, 0, 0.1); /* Borda sutil */
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 214, 0, 0.25);
+  border-color: rgba(255, 214, 0, 0.2);
+}
+
+.execution-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.execution-card.selected {
+  background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 214, 0, 0.3);
+  transform: translateY(-1px);
+  border: none;
+}
+
+.execution-card.success::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--success-green);
+  border-radius: 3px 0 0 3px;
+}
+
+.execution-card.failed::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--error-red);
+  border-radius: 3px 0 0 3px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 214, 0, 0.1);
+}
+
+.playbook-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.3px;
+}
+
+.playbook-title svg {
+  stroke: var(--accent-gold);
+  width: 14px;
+  height: 14px;
+}
+
+.playbook-title .selected-icon {
+  display: none;
+}
+
+.execution-card.selected .playbook-title .selected-icon {
+  display: inline-block;
+}
+
+/* Status de tarefa */
+.task-status {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-status svg {
+  width: 12px;
+  height: 12px;
+}
+
+.task-status.running svg {
+  animation: spin 1.5s linear infinite;
+}
+
+.task-status.success {
+  color: var(--success-green);
+  background: rgba(76, 175, 80, 0.15);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.task-status.failed {
+  color: var(--error-red);
+  background: rgba(244, 67, 54, 0.15);
+  font-weight: 600;
+}
+
+.task-status.cancelled {
+  color: var(--warning-orange);
+  background: rgba(255, 167, 38, 0.15);
+  font-weight: 600;
+}
+
+/* Informações do host na execução - REFORMATADO PARA HORIZONTAL */
+.host-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Nova versão horizontal dos detalhes do host */
+.host-details {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.host-details p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex: 1;
+  min-width: 150px;
+  max-width: 220px;
+}
+
+.host-details p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+  min-width: auto;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.host-details p svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-tertiary);
+}
+
+/* Barra de progresso */
+.progress-container {
+  background: rgba(0, 0, 0, 0.3);
+  height: 4px;
+  border-radius: 2px;
+  margin: 10px 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent-gold) 0%, #FFD54F 50%, var(--accent-gold) 100%);
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: 200% 100%;
+  animation: progress-animation 2s infinite linear;
+}
+
+@keyframes progress-animation {
+  0% { background-position: 0% 0%; }
+  100% { background-position: -200% 0%; }
+}
+/* Button-group com fundo escuro para integrar melhor ao card */
+.button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  position: absolute; /* Posição absoluta em relação ao card */
+  top: 160px; /* Posição fixa no topo logo após os elementos iniciais do card */
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background: #1a1a1a; /* Fundo sólido escuro sem transparência */
+  border-top: 1px solid #333333; /* Borda sutil para separar do conteúdo acima */
+  border-bottom: 1px solid #333333; /* Borda sutil para separar do conteúdo abaixo */
+  padding: 10px 12px; /* Alinhado com o padding do card */
+  margin: 0;
+  width: 100%; /* Ocupa toda a largura do card */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Sombra interna sutil */
+}
+
+/* Selo de tempo para execuções */
+.execution-timestamp {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.execution-timestamp svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--text-tertiary);
+}
+
+/* Botão Cancelar */
+.cancel-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--error-red);
+  color: white;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+}
+
+.cancel-btn:hover {
+  background: #EF5350;
+  transform: translateY(-1px);
+}
+
+.cancel-btn:active {
+  transform: translateY(1px);
+}
+
+.cancel-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Botão Ver Mais/Menos - modificado para manter posição fixa */
+/* Botão Ver Mais/Menos - modificado para sticky */
+.toggle-output-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.12); /* Aumentado o contraste */
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  position: relative;
+  z-index: 15;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Adicionado sombra para destaque */
+}
+
+.toggle-output-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+
+.toggle-output-btn:active {
+  transform: translateY(1px);
+}
+
+.toggle-output-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Mensagem de cancelamento */
+.ansible-cancelled-message {
+  margin: 10px 0;
+  padding: 8px;
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 3px solid var(--warning-orange);
+  color: var(--warning-orange);
+  font-weight: 500;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

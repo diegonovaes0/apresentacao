@@ -1,0 +1,181 @@
+/* 
+LAYOUT.CSS
+Este arquivo contém o sistema de layout principal,
+estruturas de containers e definições da organização básica
+do layout da aplicação.
+*/
+
+.main-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden; /* Garante que não haja rolagem aqui */
+}
+
+  .content-area {
+    flex: 1;
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    min-height: 100vh;
+    background: var(--black-pearl);
+    z-index: 1;
+    overflow-x: hidden;
+    transform: translate3d(0, 0, 0) !important;
+    backface-visibility: hidden !important;
+    perspective: 1000px !important;
+  }
+  
+  .main-inventory {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    transform: translate3d(0, 0, 0) !important;
+    backface-visibility: hidden !important;
+    perspective: 1000px !important;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important; /* Não permitir rolagem aqui */
+    padding: 10px;
+  }
+  
+  /* Sidebar estilizada */
+  .sidebar {
+    width: 260px;
+    height: 100vh;
+    background: var(--black-rich);
+    position: fixed;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    border-right: 1px solid var(--black-elegant);
+  }
+  
+  .sidebar.collapsed {
+    width: 80px;
+  }
+  
+  .sidebar.collapsed + .content-area {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    overflow: hidden;
+  }
+  
+  .centered-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .inner-container {
+    background: var(--black-elegant);
+    border: 1px solid rgba(255, 214, 0, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: var(--shadow-sm);
+    margin-top: 8px;
+  }
+  
+  /* Header e Footer */
+  .content-header {
+    height: 56px;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--black-rich);
+    border-bottom: 1px solid var(--gray-dark);
+    position: relative;
+    z-index: 5;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .footer {
+    height: 56px;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--black-absolute);
+    border-top: 1px solid var(--gray-dark);
+    margin-top: auto;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    position: relative;
+    z-index: 5;
+  }
+  
+  /* Inventory Container */
+  .inventory-container {
+    width: 100%;
+    margin: 0 0 15px 0;
+    padding: 15px;
+    font-family: 'Inter', 'Arial', sans-serif;
+    color: var(--text-primary);
+    box-sizing: border-box;
+    background: var(--black-pearl);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    transform: translate3d(0, 0, 0) !important;
+    backface-visibility: hidden !important;
+    perspective: 1000px !important;
+  }
+  
+  .inventory-container > * {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .inventory-container > *:last-child {
+    margin-bottom: 0;
+  }
+  .main-inventory {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Permite rolagem vertical */
+    transform: translate3d(0, 0, 0) !important;
+    backface-visibility: hidden !important;
+    perspective: 1000px !important;
+  }
+  /* Estilo personalizado da barra de rolagem */
+.main-inventory::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-inventory::-webkit-scrollbar-thumb {
+  background-color: var(--accent-gold); /* Cor da barra de rolagem */
+  border-radius: 10px;
+}
+
+.main-inventory::-webkit-scrollbar-track {
+  background: var(--black-pearl); /* Cor do fundo da barra de rolagem */
+}
+.main-inventory {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Permite rolagem vertical */
+  height: calc(100vh - 100px); /* Ajuste a altura para o necessário */
+  transform: translate3d(0, 0, 0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
+}

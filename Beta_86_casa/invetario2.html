@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Inventário</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Paleta de cores Black Piano */
+        :root {
+            --black-absolute: #000000;
+            --black-rich: #030303;
+            --black-elegant: #0A0A0A;
+            --black-pearl: #121212;
+            --black-smoke: #1A1A1A;
+            --gray-dark: #2A2A2A;
+            --accent-gold: #FFD600;
+            --accent-gold-hover: #FFE033;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --text-tertiary: #808080;
+            --success-green: #2E7D32;
+            --error-red: #C62828;
+            --submenu-hover: rgba(255, 214, 0, 0.05);
+            --menu-hover: rgba(255, 214, 0, 0.1);
+            --selected-bg: #4F4F4F;
+            --selected-border: #6A6A6A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--black-pearl);
+            color: var(--text-primary);
+            padding: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Banner */
+        .header {
+            width: 100%;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, var(--black-rich) 0%, var(--black-smoke) 100%);
+            border-radius: 6px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), inset 0 0 8px rgba(255, 214, 0, 0.05);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--black-elegant);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-title svg {
+            stroke: var(--accent-gold);
+            width: 20px;
+            height: 20px;
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Card genérico */
+        .card {
+            background: var(--black-smoke);
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 12px;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--black-rich) 0%, var(--gray-dark) 100%);
+            padding: 8px 12px;
+            border-radius: 4px 4px 0 0;
+            border-bottom: 1px solid rgba(255, 214, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: var(--accent-gold);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        /* Formulário */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            font-size: 11px;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background: var(--gray-dark);
+            border: 1px solid var(--black-elegant);
+            border-radius: 4px;
+        }
+
+        .input-group-text {
+            background: var(--black-elegant);
+            color: var(--accent-gold);
+            padding: 5px 8px;
+            border: none;
+        }
+
+        .form-control, .form-select {
+            background: var(--gray-dark);
+            color: var(--text-primary);
+            border: none;
+            padding: 5px 8px;
+            font-size: 12px;
+            width: 100%;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .form-control:focus, .form-select:focus {
+            outline: none;
+            border: 1px solid var(--accent-gold);
+        }
+
+        textarea.form-control {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-text {
+            color: var(--text-secondary);
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        /* Botões */
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            background: var(--accent-gold);
+            color: var(--black-absolute);
+            transition: background 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn:hover {
+            background: var(--accent-gold-hover);
+        }
+
+        .btn.secondary {
+            background: var(--gray-dark);
+            color: var(--text-primary);
+        }
+
+        .btn.secondary:hover {
+            background: var(--menu-hover);
+        }
+
+        .btn.danger {
+            background: var(--error-red);
+            color: var(--text-primary);
+        }
+
+        .btn.danger:hover {
+            background: #d32f2f;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        /* Tabela */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 4px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--gray-dark);
+            color: var(--text-primary);
+        }
+
+        .table th {
+            background: var(--black-elegant);
+            padding: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-gold);
+            border-bottom: 1px solid var(--accent-gold);
+            text-align: left;
+        }
+
+        .table td {
+            padding: 8px;
+            font-size: 12px;
+            border-top: 1px solid var(--black-elegant);
+        }
+
+        .table tr:hover {
+            background: var(--menu-hover);
+        }
+
+        .badge {
+            padding: 3px 6px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            background: var(--black-elegant);
+            color: var(--accent-gold);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 4px;
+            justify-content: flex-end;
+        }
+
+        .btn-icon {
+            padding: 3px 6px;
+            border: 1px solid var(--accent-gold);
+            background: transparent;
+            color: var(--accent-gold);
+            border-radius: 4px;
+        }
+
+        .btn-icon:hover {
+            background: var(--submenu-hover);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--black-smoke);
+            padding: 15px;
+            border-radius: 6px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--black-elegant);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--black-elegant);
+        }
+
+        .modal-title {
+            font-size: 14px;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .modal-body pre {
+            background: var(--black-rich);
+            color: var(--text-secondary);
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 0;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+            padding-top: 10px;
+            border-top: 1px solid var(--black-elegant);
+        }
+
+        .btn-close {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-close:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Feedback */
+        .feedback-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .feedback-message {
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: var(--black-absolute);
+            background: var(--accent-gold);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feedback-message.error {
+            background: var(--error-red);
+            color: var(--text-primary);
+        }
+
+        .feedback-message.fade-out {
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
+        }
+
+        /* Geral */
+        h3 {
+            font-size: 15px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Banner -->
+        <div class="header">
+            <div class="header-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 0-7.35 16.83l7.35-12.66 7.35 12.66A10 10 0 0 0 12 2z"/>
+                    <path d="M12 8v6"/>
+                    <circle cx="12" cy="18" r="1"/>
+                </svg>
+                Gerenciador de Inventário
+            </div>
+            <div class="header-subtitle">Gerencie seus servidores com eficiência</div>
+        </div>
+
+        <!-- Formulário -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">
+                    <i class="fas fa-plus-circle"></i>
+                    <span id="form-title">Adicionar Novo Servidor</span>
+                </span>
+            </div>
+            <div class="card-body">
+                <form id="server-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="host" class="form-label">IP do Servidor <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-network-wired"></i></span>
+                                <input type="text" id="host" class="form-control" placeholder="192.168.1.1" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="usuario" class="form-label">Usuário <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" id="usuario" class="form-control" placeholder="Nome do usuário" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="senha" class="form-label">Senha</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" id="senha" class="form-control" placeholder="Senha do servidor">
+                            </div>
+                            <small class="form-text">Opcional para chave SSH</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="os" class="form-label">Sistema Operacional <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-desktop"></i></span>
+                                <select id="os" class="form-select" required>
+                                    <option value="linux">Linux</option>
+                                    <option value="windows">Windows</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="chave" class="form-label">Chave SSH <i class="fas fa-info-circle" title="Cole o conteúdo da chave PEM"></i></label>
+                        <textarea id="chave" class="form-control" placeholder="Cole sua chave SSH aqui (opcional)"></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" id="cancel-btn" class="btn secondary" style="display: none;">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" id="submit-btn" class="btn">
+                            <i class="fas fa-save"></i> <span id="submit-text">Adicionar Servidor</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="feedback-container" class="feedback-container"></div>
+        </div>
+
+        <!-- Tabela de Servidores -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">
+                    <i class="fas fa-list"></i> Servidores Cadastrados
+                </span>
+                <button id="show-inventory-btn" class="btn">
+                    <i class="fas fa-eye"></i> Mostrar Inventário
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Host/IP</th>
+                                <th>Usuário</th>
+                                <th>Autenticação</th>
+                                <th>Sistema</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="servers-list"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal do Inventário -->
+        <div id="inventory-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title">Inventário Completo</span>
+                    <button id="close-inventory-btn" class="btn-close"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <pre id="full-inventory"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn secondary" id="close-modal-btn">Fechar</button>
+                    <button class="btn" id="copy-inventory-btn"><i class="fas fa-copy"></i> Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const serverForm = document.getElementById('server-form');
+            const hostInput = document.getElementById('host');
+            const userInput = document.getElementById('usuario');
+            const passwordInput = document.getElementById('senha');
+            const keyInput = document.getElementById('chave');
+            const osSelect = document.getElementById('os');
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const formTitle = document.getElementById('form-title');
+            const serversList = document.getElementById('servers-list');
+            const showInventoryBtn = document.getElementById('show-inventory-btn');
+            const closeInventoryBtn = document.getElementById('close-inventory-btn');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const copyInventoryBtn = document.getElementById('copy-inventory-btn');
+            const inventoryModal = document.getElementById('inventory-modal');
+            const fullInventory = document.getElementById('full-inventory');
+            const feedbackContainer = document.getElementById('feedback-container');
+
+            let editMode = false;
+            let originalHost = null;
+            let existingHosts = new Set();
+            let deleteCooldown = false;
+
+            function showFeedback(message, type = 'success') {
+                feedbackContainer.innerHTML = '';
+                const feedback = document.createElement('div');
+                feedback.className = `feedback-message ${type === 'success' ? '' : 'error'}`;
+                feedback.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                feedbackContainer.appendChild(feedback);
+                setTimeout(() => {
+                    feedback.classList.add('fade-out');
+                    setTimeout(() => feedbackContainer.innerHTML = '', 300);
+                }, 4000);
+            }
+
+            function isValidIP(ip) {
+                const ipPattern = /^((25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$/;
+                return ipPattern.test(ip);
+            }
+
+            function resetForm() {
+                serverForm.reset();
+                editMode = false;
+                originalHost = null;
+                formTitle.textContent = 'Adicionar Novo Servidor';
+                submitText.textContent = 'Adicionar Servidor';
+                cancelBtn.style.display = 'none';
+            }
+
+            async function loadServers() {
+                try {
+                    const response = await fetch('/get-inventory');
+                    if (!response.ok) throw new Error('Erro ao carregar servidores');
+                    const data = await response.json();
+                    existingHosts = new Set(data.servers.map(server => server.host));
+                    renderServers(data.servers);
+                } catch (error) {
+                    showFeedback(error.message, 'error');
+                }
+            }
+
+            function renderServers(servers) {
+                serversList.innerHTML = '';
+                servers.forEach(server => {
+                    const row = document.createElement('tr');
+                    const authType = server.ssh_key_content ? 
+                        '<i class="fas fa-key"></i> Chave SSH' : 
+                        '<i class="fas fa-lock"></i> Senha';
+                    const osBadge = server.os === 'linux' ? 
+                        '<span class="badge"><i class="fab fa-linux"></i> Linux</span>' : 
+                        '<span class="badge"><i class="fab fa-windows"></i> Windows</span>';
+                    row.innerHTML = `
+                        <td>${server.host}</td>
+                        <td>${server.ssh_user}</td>
+                        <td>${authType}</td>
+                        <td>${osBadge}</td>
+                        <td class="action-buttons">
+                            <button class="btn-icon btn-edit" data-server='${JSON.stringify(server)}'>
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-delete" data-host="${server.host}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+                    serversList.appendChild(row);
+                });
+            }
+
+            serverForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const host = hostInput.value.trim();
+                if (!isValidIP(host)) {
+                    showFeedback('IP inválido! Use o formato correto (ex: 192.168.1.1)', 'error');
+                    return;
+                }
+                if (!editMode && existingHosts.has(host)) {
+                    showFeedback('Este servidor já existe no inventário', 'error');
+                    return;
+                }
+
+                const serverData = {
+                    host,
+                    ssh_user: userInput.value.trim(),
+                    ssh_pass: passwordInput.value,
+                    ssh_key_content: keyInput.value.trim(),
+                    os: osSelect.value,
+                    original_host: originalHost
+                };
+
+                try {
+                    submitBtn.disabled = true;
+                    submitText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+
+                    const response = await fetch('/add_server', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(serverData)
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        showFeedback(data.message);
+                        resetForm();
+                        loadServers();
+                    } else {
+                        showFeedback(data.message, 'error');
+                    }
+                } catch (error) {
+                    showFeedback('Erro ao salvar servidor', 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitText.innerHTML = editMode ? 'Atualizar Servidor' : 'Adicionar Servidor';
+                }
+            });
+
+            serversList.addEventListener('click', async function(e) {
+                const editBtn = e.target.closest('.btn-edit');
+                const deleteBtn = e.target.closest('.btn-delete');
+
+                if (editBtn) {
+                    const serverData = JSON.parse(editBtn.dataset.server);
+                    hostInput.value = serverData.host;
+                    userInput.value = serverData.ssh_user;
+                    passwordInput.value = serverData.ssh_pass || '';
+                    keyInput.value = serverData.ssh_key_content || '';
+                    osSelect.value = serverData.os;
+                    editMode = true;
+                    originalHost = serverData.host;
+                    formTitle.textContent = 'Editar Servidor';
+                    submitText.textContent = 'Atualizar Servidor';
+                    cancelBtn.style.display = 'inline-flex';
+                    hostInput.focus();
+                }
+
+                if (deleteBtn && !deleteCooldown) {
+                    const host = deleteBtn.dataset.host;
+                    if (confirm(`Deseja realmente remover o servidor ${host}?`)) {
+                        deleteCooldown = true;
+                        try {
+                            const response = await fetch('/remove_server', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ host })
+                            });
+                            const data = await response.json();
+                            if (response.ok) {
+                                showFeedback(data.message);
+                                loadServers();
+                            } else {
+                                showFeedback(data.message, 'error');
+                            }
+                        } catch (error) {
+                            showFeedback('Erro ao remover servidor', 'error');
+                        } finally {
+                            setTimeout(() => deleteCooldown = false, 1000);
+                        }
+                    }
+                }
+            });
+
+            showInventoryBtn.addEventListener('click', async function() {
+                try {
+                    const response = await fetch('/show-inventory');
+                    const data = await response.json();
+                    fullInventory.textContent = data.inventory;
+                    inventoryModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                } catch (error) {
+                    showFeedback('Erro ao carregar inventário', 'error');
+                }
+            });
+
+            closeInventoryBtn.addEventListener('click', closeModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            inventoryModal.addEventListener('click', function(e) {
+                if (e.target === inventoryModal) closeModal();
+            });
+
+            function closeModal() {
+                inventoryModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            copyInventoryBtn.addEventListener('click', function() {
+                const text = fullInventory.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    showFeedback('Inventário copiado para a área de transferência!');
+                });
+            });
+
+            cancelBtn.addEventListener('click', resetForm);
+
+            loadServers();
+        });
+    </script>
+</body>
+</html>

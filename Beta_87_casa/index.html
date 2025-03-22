@@ -1,0 +1,2425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página em Manutenção</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css">
+    <style>
+           :root {
+            --black-absolute: #000000;
+            --black-rich: #030303;
+            --black-elegant: #0A0A0A;
+            --black-pearl: #121212;
+            --black-smoke: #1A1A1A;
+            --gray-dark: #2A2A2A;
+            --accent-gold: #FFD600;
+            --accent-gold-hover: #FFE033;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --submenu-hover: rgba(255, 214, 0, 0.05);
+            --menu-hover: rgba(255, 214, 0, 0.1);
+            --submenu-level-1: #2A2A2A; /* Primeiro nível - mais claro */
+            --submenu-level-2: #242424; /* Segundo nível */
+            --submenu-level-3: #1E1E1E; /* Terceiro nível - mais escuro */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            background: var(--black-pearl);
+        }
+
+/* Ajustes principais */
+.main-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: var(--black-pearl);
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+/* Content Area Adjustments */
+.content-area {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-left: 260px;
+    padding: 0;
+    width: calc(100% - 260px); /* Garante que ocupe todo o espaço restante */
+    background: var(--black-pearl);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+
+.sidebar.collapsed + .content-area {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+
+.construction-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; /* Centraliza horizontalmente */
+}
+
+
+.construction-header {
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+}
+
+
+
+        .construction-icon {
+            font-size: 4rem;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        .construction-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .construction-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .progress-loader {
+            width: 100%;
+            height: 4px;
+            background: var(--gray-dark);
+            position: relative;
+            margin: 1.5rem 0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            position: absolute;
+            height: 100%;
+            background: var(--accent-gold);
+            width: 0;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .stat strong {
+            color: var(--accent-gold);
+        }
+        .construction-grid {
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+
+
+        .info-card {
+            background: var(--black-smoke);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--gray-dark);
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-card i {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .info-card h3 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .content-area {
+                margin-left: 80px;
+                padding: 0.5rem;
+            }
+ @media (max-width: 480px) {
+            .content-area {
+                padding: 0.25rem;
+            }
+
+            .construction-content {
+                padding: 1rem;
+            }
+
+            .construction-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+            .construction-content {
+                min-height: calc(100vh - 1rem);
+                padding: 1.5rem;
+            }
+
+
+            .construction-icon {
+                font-size: 3rem;
+            }
+
+            .construction-title {
+                font-size: 1.8rem;
+            }
+
+            .construction-text {
+                font-size: 1rem;
+            }
+
+            .info-card {
+                padding: 1.2rem;
+            }
+
+            .info-card i {
+                font-size: 2rem;
+            }
+
+            .info-card h3 {
+                font-size: 1.2rem;
+            }
+
+            .info-card p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Scrollbar personalizada */
+        .construction-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .construction-content::-webkit-scrollbar-track {
+            background: var(--black-pearl);
+            border-radius: 3px;
+        }
+
+        .construction-content::-webkit-scrollbar-thumb {
+            background: var(--gray-dark);
+            border-radius: 3px;
+        }
+
+        .construction-content::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-gold);
+        }
+        .sidebar {
+    width: 260px;
+    height: 100vh;
+    background: var(--black-rich);
+    position: fixed;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    padding-bottom: 80px; /* Altura dos links sociais */
+}
+
+.menu-text, 
+    .logo-text, 
+    .menu-arrow,
+    .social-links a,
+    .docs-toggle .menu-text,
+    .docs-toggle .menu-arrow {
+        transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
+    }
+
+
+/* Ajuste da posição do botão para overlay */
+.sidebar::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 12px; /* Largura da área de sobreposição */
+    background: transparent;
+    z-index: -1;
+}
+        
+/* ... (todo o seu CSS anterior) ... */
+
+.sidebar-header {
+    position: sticky;
+    top: 0;
+    height: 56px; /* Altura fixa - importante para o alinhamento */
+    padding: 0 1.2rem;
+    display: flex;
+    align-items: center;
+    background: var(--black-rich);
+    border-bottom: 1px solid var(--gray-dark); /* Borda inferior - a linha */
+    z-index: 1;
+}
+
+
+
+/* Ajuste das transições */
+.sidebar .logo-text, 
+.sidebar .automation-icon {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estado expandido */
+.sidebar:not(.collapsed) .logo-container {
+    transform: translateX(0);
+}
+
+
+.sidebar:not(.collapsed) .logo-text {
+    opacity: 1;
+    transform: translateX(0);
+    width: auto;
+}
+
+.sidebar:not(.collapsed) .automation-icon {
+    transform: translateX(0);
+}
+
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+            background-color: var(--black-rich);
+            display: none;  /* Chrome, Safari and Opera */
+
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: var(--gray-dark);
+            border-radius: 4px;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        .sidebar-header {
+    position: relative;
+    background: var(--black-rich);
+    border-bottom: 1px solid var(--gray-dark);
+}
+
+.sidebar-header button {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--black-rich);
+    border: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s ease;
+}
+
+
+.sidebar-header button:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 214, 0, 0.5);
+}
+
+.sidebar-header button:not(:hover) {
+    transform: translateY(-50%) scale(1);
+}
+@keyframes pulseClick {
+    0% { transform: translateY(-50%) scale(1.1); }
+    50% { transform: translateY(-50%) scale(0.95); }
+    100% { transform: translateY(-50%) scale(1.1); }
+}
+
+.sidebar-header button.pulsing {
+    animation: pulseClick 0.3s ease;
+}
+
+/* Rotação do ícone */
+.sidebar-header button i {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+.sidebar.collapsed .sidebar-header button i {
+    transform: rotate(180deg);
+}
+
+
+.sidebar.collapsed .sidebar-header button i {
+    transform: rotate(180deg);
+}
+
+.sidebar.collapsed .sidebar-header button i {
+    transform: rotate(180deg);
+}
+.sidebar.collapsed .menu-header {
+   opacity: 0;
+   height: 0;
+   padding: 0;
+   transition: all 0.3s ease;
+}
+
+/* Ajuste para manter os links sociais sempre visíveis */
+.social-links {
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    transition: padding 0.3s ease,
+                flex-direction 0.3s ease;
+   background: var(--black-rich);
+    border-top: none; /* Remove a linha superior */
+}
+
+.social-links a {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    transition: transform 0.3s ease,
+                background-color 0.3s ease,
+                color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    text-decoration: none; /* Remove o sublinhado dos links */
+}
+
+.social-links a:hover {
+    color: var(--accent-gold);
+    background: var(--menu-hover);
+    transform: scale(1.1);
+}
+
+.sidebar.collapsed .social-links {
+	padding: 0.75rem;
+	flex-direction: column;
+	align-items: center; /* Importante para centralizar na vertical */
+}
+
+
+.sidebar.collapsed .social-links a {
+    width: 30px; /* Ajuste se necessário */
+    height: 30px; /* Ajuste se necessário */
+	margin: 0.25rem 0;
+
+}
+
+
+.sidebar.collapsed .social-links {
+   padding: 0.75rem;
+   flex-direction: column;
+   align-items: center;
+}
+
+.social-links a {
+   color: var(--text-secondary);
+   font-size: 1.2rem;
+   transition: all 0.3s ease;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 35px;
+   height: 35px;
+   border-radius: 50%;
+}
+
+.social-links a:hover {
+   color: var(--accent-gold);
+   background: var(--menu-hover);
+   transform: scale(1.1);
+}
+
+.sidebar.collapsed .social-links a {
+   width: 30px;
+   height: 30px;
+   margin: 0.25rem 0;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center; /* Alinhamento vertical dentro do container */
+    gap: 0.8rem;      /* Espaço entre o ícone e o texto */
+    flex-grow: 1;     /* Importante: Permite que o logo-container ocupe o espaço disponível */
+                      /*  Isso empurra o botão para a direita. */
+}
+
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+}
+/* Ícone atualizado da Automation Platform */
+/* Ícone Automato */
+.automation-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    fill: var(--accent-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+
+
+
+
+.automation-icon:hover {
+    fill: var(--accent-gold-hover);
+}
+
+
+        .logo-container i {
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .logo-text {
+    font-family: 'Geek', sans-serif;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+    transition: opacity 0.2s ease-out;
+        }
+
+        .sidebar.collapsed .logo-container {
+    padding: 0;
+    justify-content: center;
+}
+
+
+
+.sidebar.collapsed .logo-text {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+
+}
+
+
+.sidebar.collapsed .automation-icon {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+}
+
+
+
+/* Hover effects */
+.automation-icon:hover {
+    fill: var(--accent-gold-hover);
+    transform: scale(1.05);
+}
+
+        .collapsed .logo-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .menu {
+    scroll-behavior: smooth;
+}
+
+
+.menu::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
+}
+
+
+/* Ajuste na altura máxima do submenu para garantir visibilidade */
+.submenu.expanded {
+    max-height: 400px; /* Reduzido de 500px */
+}
+
+
+        .menu-header {
+            padding: 0.5rem 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        .menu-item {
+    width: 100%;
+}
+
+
+.menu-item a {
+    padding: 0.6rem 1.2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+        height: 40px;
+        font-size: 0.875rem;
+        
+
+
+        gap: 0.8rem;
+        color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+
+
+
+      /* Linha lateral dos itens */
+      .menu-item a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 1px; /* Deixa a linha mais fina */
+    background: var(--accent-gold);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+
+        /* Hover dos itens */
+.menu-item a:hover {
+    background: var(--menu-hover);
+    color: var(--accent-gold);
+}
+
+.menu-item a:hover::before {
+    opacity: 1;
+}
+
+/* Estados de hover e seleção */
+/* Estados de hover e seleção */
+.menu-item a:hover,
+.menu-item.selected > a,
+.menu-item.open > a {
+    color: var(--accent-gold);
+    background: var(--menu-hover);
+}
+
+.menu-item.selected > a::before,
+.menu-item.open > a::before {
+    opacity: 1;
+}
+
+
+
+
+        .submenu .menu-item.selected > a {
+    color: var(--accent-gold);
+    background: var(--submenu-hover);
+}
+.menu-item a,
+.docs-toggle,
+.docs-button {
+    padding: 0.6rem 1.2rem;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+      /* Ajuste nos ícones do menu */
+      .menu-icon {
+    width: 20px;
+    height: 20px;
+    min-width: 18px;
+    font-size: 1rem;
+        display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+        .menu-text {
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+
+        .collapsed .menu-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        /* Padronização dos fundos de submenu */
+.submenu {
+    background: var(--gray-dark) !important;
+    width: 100%;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 1;
+
+}
+
+.collapsed .submenu {
+        opacity: 0;
+        max-height: 0 !important;
+    }
+
+
+.submenu.closing {
+        opacity: 0;
+        max-height: 0 !important;
+    }
+.submenu .submenu {
+    background: var(--gray-dark) !important;
+}
+
+
+.submenu .menu-item > a.has-submenu {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.submenu .menu-item.open > .submenu {
+    max-height: none !important;
+    height: auto;
+}
+
+/* Ajuste para o menu arrow */
+.menu-item > a.has-submenu .menu-arrow {
+    transition: transform 0.3s ease;
+}
+
+
+.menu-item.open > a.has-submenu .menu-arrow {
+    transform: rotate(90deg);
+}
+
+/* Ajuste para padding e margins dos subitens */
+.submenu .menu-item a {
+    height: 32px;
+
+    padding: 0.5rem 1.2rem 0.5rem 2.4rem;
+    font-size: 0.8rem; /* Fonte ainda menor para submenus */
+}
+
+
+
+/* Submenu segundo nível */
+.submenu .submenu .menu-item a {
+    padding-left: 3.2rem;
+    height: 30px;
+    font-size: 0.75rem;
+}
+
+
+.submenu .submenu .submenu .menu-item a {
+    padding-left: 5.9rem; /* Mais indentado para mostrar hierarquia */
+    height: 28px;
+    font-size: 0.75rem;
+}
+
+
+
+
+        .submenu.expanded {
+            max-height: 500px;
+        }
+
+        .submenu .menu-item a {
+            padding-left: 3.5rem;
+        }
+
+        .submenu .submenu .menu-item a {
+    padding-left: 4.5rem;
+}
+
+
+.menu-arrow {
+    font-size: 0.9rem;
+    margin-left: auto;
+    transition: transform 0.3s;
+}
+
+
+        .menu-item.open > a .menu-arrow {
+            transform: rotate(90deg);
+        }
+
+        .social-links {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-dark);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+
+            justify-content: center;
+            transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    flex-direction 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+        }
+
+        .clicked {
+            animation: clickEffect 0.3s ease-out;
+        }
+
+        @keyframes clickEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+        .menu-item.selected > a {
+    color: var(--accent-gold);
+    background: var(--menu-hover);
+}
+
+.menu-item.selected > a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--accent-gold);
+}
+
+
+.menu-item a:hover {
+    color: var(--accent-gold);
+}
+
+
+/* Ajuste para as setas quando a sidebar está colapsada */
+.sidebar.collapsed .menu-arrow {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+/* Estilo para os ícones de tecnologia */
+/* Ajuste específico para tech icons */
+.tech-icon {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+
+
+/* Hover e seleção */
+.menu-item:hover .tech-icon svg {
+    fill: var(--accent-gold);
+}
+
+.menu-item.selected .tech-icon svg,
+.menu-item.open .tech-icon svg {
+    fill: var(--accent-gold);
+}
+
+/* Ajuste para manter os submenus funcionando */
+.menu-item > a.has-submenu {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.menu-item > a.has-submenu::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 1px;
+    background: var(--accent-gold);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.menu-item > a.has-submenu.selected {
+    color: var(--accent-gold);
+    background: var(--menu-hover);
+}
+
+.menu-item > a.has-submenu.selected::before {
+    opacity: 1;
+}
+
+.menu-item > a.has-submenu.selected .menu-icon,
+.menu-item > a.has-submenu.selected .tech-icon svg {
+    color: var(--accent-gold);
+    fill: var(--accent-gold);
+}
+
+.menu-item > a.has-submenu.icon-only {
+    color: var(--text-secondary);
+}
+
+.menu-item > a.has-submenu.icon-only .menu-icon,
+.menu-item > a.has-submenu.icon-only .tech-icon svg {
+    color: var(--accent-gold);
+    fill: var(--accent-gold);
+}
+
+.menu-item > a.has-submenu.icon-only .menu-text {
+    color: var(--text-secondary);
+}
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.submenu.expanded {
+    max-height: fit-content;
+}
+
+
+.ansible-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.ansible-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--text-secondary);
+}
+
+.menu-item:hover .ansible-icon svg {
+    fill: var(--accent-gold);
+}
+
+.menu-item.selected .ansible-icon svg,
+.menu-item.open .ansible-icon svg {
+    fill: var(--accent-gold);
+}
+
+.tech-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tech-icon svg {
+    width: 22px; /* Aumentado de 20px */
+    height: 22px; /* Aumentado de 20px */
+    fill: currentColor;
+}
+
+/* Ajuste específico para o Terraform que precisa ser um pouco maior */
+.terraform-icon svg {
+    width: 24px;
+    height: 24px;
+}
+/* Estilos base para documentação */
+.docs-toggle,
+.docs-button {
+    height: 36px;
+    padding: 0.6rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-transform: capitalize;
+}
+
+.docs-toggle .menu-text,
+.docs-button .menu-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-transform: capitalize;
+}
+
+/* Estilos para o toggle principal e botões internos */
+.docs-toggle.selected .menu-icon,
+.docs-button.selected .menu-icon {
+    color: var(--accent-gold);
+}
+
+.docs-toggle.full-selected,
+.docs-button.full-selected {
+    color: var(--accent-gold);
+}
+
+.docs-toggle.selected,
+.docs-toggle.full-selected,
+.docs-button.selected,
+.docs-button.full-selected {
+    background: var(--menu-hover);
+}
+
+/* Hover effects */
+.docs-toggle:hover,
+.docs-button:hover,
+.docs-content .menu-item > a:hover {
+    background: var(--menu-hover);
+}
+/* Garantindo tamanho consistente para todos os ícones */
+.menu-icon,
+.tech-icon,
+.docs-toggle .menu-icon,
+.docs-button .menu-icon {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    font-size: 1rem;
+}
+
+.docs-toggle:hover .menu-icon,
+.docs-toggle:hover .menu-text,
+.docs-button:hover .menu-icon,
+.docs-button:hover .menu-text {
+    color: var(--accent-gold);
+}
+
+/* Estilos importantes para o alinhamento dos ícones quando a sidebar está colapsada */
+.sidebar.collapsed .menu-item a,
+.sidebar.collapsed .docs-toggle,
+.sidebar.collapsed .docs-button,
+.sidebar.collapsed .social-links a {
+    padding: 0.6rem;  /* Ajuste o padding conforme necessário */
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    width: 100%; /* Ocupa toda a largura da sidebar */
+}
+.sidebar.collapsed .menu-icon,
+.sidebar.collapsed .tech-icon,
+.sidebar.collapsed .docs-toggle .menu-icon,
+.sidebar.collapsed .docs-button .menu-icon{
+    margin: 0; /* Remove margens */
+    width: auto;  /* Permite que o ícone ocupe seu tamanho natural */
+    height: auto; /* Permite que o ícone ocupe seu tamanho natural */
+    /* Garante alinhamento central, se outros estilos não estiverem interferindo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.sidebar.collapsed .docs-toggle .menu-text,
+.sidebar.collapsed .docs-toggle .menu-arrow,
+.sidebar.collapsed .docs-button .menu-text,
+.sidebar.collapsed .docs-button .menu-arrow {
+    padding: 0.6rem;
+    justify-content: center;}
+
+/* Estilos para ícones */
+.docs-toggle .menu-icon,
+.docs-button .menu-icon {
+    font-size: 1.2rem;
+    min-width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+/* Estados de hover */
+.docs-toggle:hover,
+.docs-button:hover {
+    color: var(--accent-gold);
+    background: var(--menu-hover);
+}
+
+/* Estados de seleção */
+/* Ajuste para estados selecionados */
+.docs-toggle.selected,
+.docs-button.selected,
+.docs-content .menu-item.selected > a {
+    color: var(--accent-gold);
+    background: var(--menu-hover);
+}
+
+/* Estado icon-only */
+.docs-toggle.icon-only,
+.docs-button.icon-only {
+    color: var(--text-secondary);
+}
+
+.docs-toggle.icon-only .menu-icon,
+.docs-button.icon-only .menu-icon {
+    color: var(--accent-gold);
+}
+
+/* Barra lateral quando selecionado */
+.docs-toggle.selected::before,
+.docs-button.selected::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--accent-gold);
+    opacity: 1;
+}
+
+/* Wrapper e conteúdo */
+.docs-wrapper {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.docs-wrapper.expanded {
+    max-height: calc(100vh - 280px);
+    overflow-y: auto;
+}
+
+/* Conteúdo interno */
+.docs-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Manter consistência do fundo ao expandir */
+.docs-wrapper.expanded,
+.docs-content.expanded {
+    background: var(--gray-dark) !important;
+}
+
+/* Padding para itens internos */
+.docs-content .menu-item a {
+    padding: 0.5rem 1.2rem 0.5rem 2.4rem;
+    height: 32px;
+    font-size: 0.8rem;
+}
+
+
+/* Ajuste da seta do menu */
+.menu-arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+    font-size: 1rem;
+    margin-left: auto;
+    transition: transform 0.3s;
+}
+
+
+.menu-item.open > a .menu-arrow {
+    transform: rotate(90deg);
+}
+
+.docs-toggle.open .menu-arrow,
+.docs-button.open .menu-arrow {
+    transform: rotate(90deg);
+}
+
+/* Scroll personalizado */
+.docs-wrapper::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+
+.docs-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--gray-dark);
+    border-radius: 4px;
+}
+
+/* Estilos refinados para o botão de documentação @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+/* Estilos refinados para o botão de documentação */
+/* Estilos refinados para o botão de documentação */
+/* Estilos refinados do botão de documentação */
+/* Estilos base do botão */
+/* Ajuste do botão documentação para alinhar com os outros */
+.docs-toggle {
+    border: none;
+    background: transparent;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: inherit;
+}
+
+/* Linha lateral */
+.docs-toggle::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background: transparent;
+    transition: background-color 0.3s ease;
+}
+
+/* Container do ícone */
+.docs-toggle .menu-icon {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estado base da pasta */
+.docs-toggle .folder-closed,
+.docs-toggle .folder-open {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    color: var(--text-secondary);
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.docs-toggle .folder-closed {
+    opacity: 1;
+}
+
+.docs-toggle .folder-open {
+    opacity: 0;
+}
+
+/* Texto e seta */
+.docs-toggle .menu-text {
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+.docs-toggle .menu-arrow {
+    margin-left: auto;
+    color: var(--text-secondary);
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover */
+.docs-toggle:hover {
+    background: rgba(255, 214, 0, 0.03);
+}
+
+.docs-toggle:hover::before {
+    background-color: var(--accent-gold);
+}
+
+.docs-toggle:hover .folder-closed,
+.docs-toggle:hover .menu-text,
+.docs-toggle:hover .menu-arrow {
+    color: var(--accent-gold);
+}
+
+/* Estado selecionado total */
+.docs-toggle.selected {
+    background: var(--menu-hover);
+}
+
+.docs-toggle.selected::before {
+    background-color: var(--accent-gold);
+}
+
+.docs-toggle.selected .folder-closed {
+    opacity: 0;
+}
+
+.docs-toggle.selected .folder-open {
+    opacity: 1;
+    color: var(--accent-gold);
+}
+
+.docs-toggle.selected .menu-text,
+.docs-toggle.selected .menu-arrow {
+    color: var(--accent-gold);
+}
+
+.docs-toggle.selected .menu-arrow {
+    transform: rotate(90deg);
+}
+
+/* Estado ícone-only (quando subitem selecionado) */
+.docs-toggle.icon-only .folder-closed {
+    opacity: 0;
+}
+
+.docs-toggle.icon-only .folder-open {
+    opacity: 1;
+    color: var(--accent-gold);
+}
+
+.docs-toggle.icon-only .menu-text {
+    color: var(--text-secondary);
+}
+
+.docs-toggle.icon-only .menu-arrow {
+    color: var(--text-secondary);
+    transform: rotate(90deg);
+}
+
+/* Sidebar colapsada */
+.sidebar.collapsed .docs-toggle {
+    padding: 0.75rem;
+    justify-content: center;
+}
+
+.sidebar.collapsed .docs-toggle .menu-text,
+.sidebar.collapsed .docs-toggle .menu-arrow {
+    display: none;
+}
+
+/* Wrapper de conteúdo */
+.docs-wrapper {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.docs-wrapper.expanded {
+    max-height: 1000px;
+}
+
+
+/* Primeiro nível de submenu */
+.submenu,
+.docs-wrapper {
+    background: var(--submenu-level-1) !important;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+}
+
+/* Segundo nível de submenu */
+.submenu .submenu,
+.docs-content,
+.docs-section .docs-content {
+    background: var(--submenu-level-2) !important;
+}
+
+/* Terceiro nível de submenu */
+.submenu .submenu .submenu,
+.docs-content .submenu,
+.docs-section .docs-content .submenu {
+    background: var(--submenu-level-3) !important;
+}
+
+/* Estados de hover e seleção */
+.menu-item a:hover,
+.docs-toggle:hover,
+.docs-button:hover,
+.menu-item.selected > a,
+.docs-toggle.selected,
+.docs-button.selected {
+    color: var(--accent-gold);
+    background: var(--menu-hover);
+}
+
+/* Mantém as hierarquias quando expandido */
+.docs-wrapper.expanded {
+    background: var(--submenu-level-1) !important;
+}
+
+.docs-content.expanded {
+    background: var(--submenu-level-2) !important;
+}
+
+/* Barra lateral dourada para itens selecionados */
+.menu-item.selected > a::before,
+.docs-toggle.selected::before,
+.docs-button.selected::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--accent-gold);
+}
+
+
+
+
+
+.tech-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+.tech-icon svg {
+    width: 18px; /* Reduzido de 22px */
+    height: 18px; /* Reduzido de 22px */
+    fill: currentColor;
+    transition: fill 0.3s ease;
+}
+
+.menu-item:hover .tech-icon svg {
+    fill: var(--accent-gold);
+}
+ .docs-wrapper {
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 1;
+    }
+
+    .docs-wrapper.closing {
+        opacity: 0;
+        max-height: 0 !important;
+    }
+
+    .sidebar.collapsed .menu-arrow,
+.sidebar.collapsed .menu-text,
+.sidebar.collapsed .logo-text {
+  display: none; /* Oculta completamente, melhor que usar opacity/visibility */
+}
+   /* Footer ajustado */
+/* Footer ajustado */
+.footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background: var(--black-absolute);
+    border-top: 1px solid var(--gray-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem; /* Mantenha este tamanho, mas verifique se é adequado */
+    z-index: 10;
+    /* Removida a altura fixa.  Usaremos padding para controlar o espaçamento */
+    /* height: 40px;  REMOVIDO */
+    padding: 0.5rem 1.5rem; /* Adiciona padding vertical e horizontal */
+}
+
+
+
+
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap; /* Evita que o texto quebre para a próxima linha */
+}
+
+.footer-left i {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    white-space: nowrap; /* Evita que o texto quebre */
+}
+
+.footer-version {
+    padding: 0.2rem 0.6rem;
+    background: var(--gray-dark);
+    border-radius: 12px;
+    font-size: 0.7rem;
+    /* Remova line-height se estiver causando problemas com a centralização vertical */
+    /* line-height: 1;  Remova ou ajuste se necessário */
+}
+
+@media (max-width: 768px) {
+    .content-area {
+        margin-left: 80px;
+    }
+    
+    .construction-title {
+        font-size: 2rem;
+    }
+    
+    .construction-text {
+        font-size: 1rem;
+    }
+    
+    .footer {
+        padding: 0.5rem 1rem;
+    }
+    
+    .footer-right {
+        justify-content: center;
+    }
+}
+
+
+
+/* Estilos para o cabeçalho */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;  <-- Remova ou ajuste este padding */
+     Use padding superior e inferior IGUAIS aos do .sidebar-header */
+    padding: 0 1.5rem; /* Mesma largura horizontal. Superior e inferior serão ajustados. */
+    height: 56px;          /*  <<-- Altura IGUAL a .sidebar-header */
+    background-color: var(--black-rich);
+    border-bottom: 1px solid var(--gray-dark); /* Borda inferior IGUAL */
+    color: var(--text-secondary);
+    width: 100%;
+}
+
+
+/* Estilos para os breadcrumbs */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-item {
+    font-size: 0.9rem; /* Tamanho da fonte */
+    cursor: pointer;    /* Cursor de link */
+    transition: color 0.2s ease; /* Transição suave de cor */
+}
+.breadcrumb-item:not(.active){
+    color: var(--text-primary);
+}
+
+
+.breadcrumb-item.active {
+    color: var(--accent-gold); /* Cor do item ativo */
+    font-weight: bold;
+    cursor: default; /* Sem cursor de link no item ativo */
+}
+
+.breadcrumb-item:hover:not(.active) {
+    color: var(--accent-gold-hover); /* Cor no hover (exceto no item ativo) */
+    text-decoration: underline;
+}
+
+.separator {
+    margin: 0 0.5rem; /* Espaçamento entre os itens */
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* Estilos para a área de informações do usuário */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Espaço entre os elementos */
+}
+
+.username {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin-right: 0.5rem; /* Espaço entre o nome de usuário e os botões */
+    white-space: nowrap;
+}
+
+.settings-button, .logout-button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.1rem; /* Tamanho do ícone */
+    cursor: pointer;
+    padding: 0.3rem;    /* Espaçamento interno para os botões */
+    border-radius: 4px; /* Borda arredondada */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: flex; /* Para centralizar os ícones */
+    align-items: center;
+    justify-content: center;
+    width: 30px; /* Largura e altura fixas para os botões */
+    height: 30px;
+}
+
+.settings-button:hover, .logout-button:hover {
+    background-color: var(--menu-hover);
+    color: var(--accent-gold);
+}
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .content-header {
+        padding: 0.75rem 1rem; /* Padding menor em telas menores */
+        flex-direction: column;  /* Empilha os elementos em telas menores */
+        align-items: flex-start; /* Alinha à esquerda em telas menores */
+        gap: 0.5rem; /* Espaço entre breadcrumbs e user-info */
+    }
+     .user-info{
+        width: 100%;
+        justify-content: flex-end;
+     }
+    .username {
+        font-size: 0.8rem; /* Fonte menor em telas menores */
+    }
+    .breadcrumbs{
+        width: 100%;
+    }
+}
+
+
+
+</style>
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automato Sidebar</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css">
+</head>
+<body>
+    <div class="main-container">
+
+    <aside class="sidebar">
+        <!-- Header -->
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <svg class="automation-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M256 32l192 96v256l-192 96-192-96V128l192-96zM96 161.6v188.8L256 432l160-81.6V161.6L256 80 96 161.6z"/>
+                    <path d="M256 432V80M96 161.6l160 81.6 160-81.6M416 350.4L256 268.8 96 350.4"/>
+                    <circle cx="256" cy="80" r="16"/>
+                    <circle cx="256" cy="432" r="16"/>
+                    <circle cx="96" cy="161.6" r="16"/>
+                    <circle cx="416" cy="161.6" r="16"/>
+                    <circle cx="96" cy="350.4" r="16"/>
+                    <circle cx="416" cy="350.4" r="16"/>
+                    <circle cx="256" cy="256" r="32"/>
+                </svg>
+                <span class="logo-text">Automato</span>
+            </div>
+            <button id="sidebar-toggle">
+                <i class="ri-arrow-left-s-line"></i>
+            </button>
+        </div>
+        
+
+        <!-- Menu Principal -->
+        <nav class="menu">
+            <div class="menu-header">Principal</div>
+            
+            <!-- Dashboard -->
+            <div class="menu-item">
+                <a href="#">
+                    <span class="menu-icon"><i class="ri-dashboard-fill"></i></span>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+            </div>
+
+          <!-- Python Section -->
+<div class="menu-item">
+    <a href="#" class="has-submenu">
+        <span class="menu-icon tech-icon python-icon">
+            <svg viewBox="0 0 256 255" xmlns="http://www.w3.org/2000/svg">
+                <path d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072zM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13z"/>
+                <path d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.518 33.897zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13z"/>
+            </svg>
+        </span>
+        <span class="menu-text">Python</span>
+        <i class="ri-arrow-right-s-line menu-arrow"></i>
+    </a>
+    <div class="submenu">
+        <div class="menu-item">
+            <a href="#" class="has-submenu">
+                <span class="menu-icon"><i class="ri-braces-fill"></i></span>
+                <span class="menu-text">Scripts</span>
+                <i class="ri-arrow-right-s-line menu-arrow"></i>
+            </a>
+            <div class="submenu">
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-chrome-fill"></i></span>
+                        <span class="menu-text">Automação Web</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-server-fill"></i></span>
+                        <span class="menu-text">Processamento</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-terminal-window-fill"></i></span>
+                        <span class="menu-text">APIs</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="menu-item">
+            <a href="#">
+                <span class="menu-icon"><i class="ri-code-box-fill"></i></span>
+                <span class="menu-text">Módulos</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="#">
+                
+                <span class="menu-icon"><i class="ri-ubuntu-fill"></i></span>
+                <span class="menu-text">Bibliotecas</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Linux Distributions Section -->
+
+<!-- Ansible Section -->
+<div class="menu-item">
+    <a href="#" class="has-submenu">
+        <span class="menu-icon tech-icon ansible-icon">
+            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+            <svg fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.156 15.297l6.25 4.927-4.141-10.214zM16 0c-8.839 0-16 7.161-16 16s7.161 16 16 16c8.839 0 16-7.161 16-16s-7.161-16-16-16zM23.729 23.073c-0.016 0.63-0.536 1.125-1.167 1.109-0.313 0-0.552-0.12-0.885-0.391l-8.255-6.667-2.771 6.938h-2.396l6.995-16.807c0.167-0.422 0.568-0.693 1.021-0.677 0.432-0.016 0.839 0.25 0.99 0.677l6.365 15.323c0.057 0.151 0.104 0.313 0.104 0.464 0 0.010 0 0.010 0 0.031z"/>
+            </svg>
+        </span>
+        <span class="menu-text">Ansible</span>
+        <i class="ri-arrow-right-s-line menu-arrow"></i>
+    </a>
+    <div class="submenu">
+        <div class="menu-item">
+            <a href="#">
+                <span class="menu-icon"><i class="ri-book-2-fill"></i></span>
+                <span class="menu-text">Playbooks</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="#" class="has-submenu">
+                <span class="menu-icon"><i class="ri-braces-fill"></i></span>
+                <span class="menu-text">Scripts</span>
+                <i class="ri-arrow-right-s-line menu-arrow"></i>
+            </a>
+            <div class="submenu">
+                <div class="menu-item">
+                    <a href="#" class="has-submenu">
+                        <span class="menu-icon tech-icon windows-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88">
+                                <path fill="currentColor" d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.026 45.7zm4.326-39.025L87.314 0v41.527l-47.318.376zm47.329 39.349l-.011 41.34-47.318-6.677-.066-34.739z"/>
+                            </svg>
+                        </span>
+                        <span class="menu-text">Windows</span>
+                        <i class="ri-arrow-right-s-line menu-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <div class="menu-item">
+                            <a href="#">
+                                <span class="menu-icon"><i class="ri-settings-5-fill"></i></span>
+                                <span class="menu-text">Baseline</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="#">
+                                <span class="menu-icon"><i class="ri-terminal-box-fill"></i></span>
+                                <span class="menu-text">Agents</span>
+                            </a>
+                        </div>                    
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <a href="#" class="has-submenu">
+                        <span class="menu-icon tech-icon linux-icon">
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                            <svg fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <title>linux</title>
+                            <path d="M14.923 8.080c-0.025 0.072-0.141 0.061-0.207 0.082-0.059 0.031-0.107 0.085-0.175 0.085-0.062 0-0.162-0.025-0.17-0.085-0.012-0.082 0.11-0.166 0.187-0.166 0.050-0.024 0.108-0.037 0.169-0.037 0.056 0 0.109 0.011 0.157 0.032l-0.003-0.001c0.022 0.009 0.038 0.030 0.038 0.055 0 0.003-0 0.005-0.001 0.008l0-0v0.025h0.004zM15.611 8.080v-0.027c-0.008-0.025 0.016-0.052 0.036-0.062 0.046-0.020 0.1-0.032 0.157-0.032 0.061 0 0.119 0.014 0.17 0.038l-0.002-0.001c0.079 0 0.2 0.084 0.187 0.169-0.007 0.061-0.106 0.082-0.169 0.082-0.069 0-0.115-0.054-0.176-0.085-0.065-0.023-0.182-0.010-0.204-0.081zM16.963 10.058c-0.532 0.337-1.161 0.574-1.835 0.666l-0.024 0.003c-0.606-0.035-1.157-0.248-1.607-0.588l0.007 0.005c-0.192-0.167-0.35-0.335-0.466-0.419-0.205-0.167-0.18-0.416-0.092-0.416 0.136 0.020 0.161 0.167 0.249 0.25 0.12 0.082 0.269 0.25 0.45 0.416 0.397 0.328 0.899 0.541 1.45 0.583l0.009 0.001c0.654-0.057 1.249-0.267 1.763-0.592l-0.016 0.010c0.244-0.169 0.556-0.417 0.81-0.584 0.195-0.17 0.186-0.334 0.349-0.334 0.16 0.020 0.043 0.167-0.184 0.415-0.246 0.188-0.527 0.381-0.818 0.56l-0.044 0.025zM8.017 21.397h0.012c0.069 0 0.137 0.007 0.203 0.019l-0.007-0.001c0.544 0.14 0.992 0.478 1.273 0.931l0.005 0.009 1.137 2.079 0.004 0.004c0.457 0.773 0.948 1.442 1.497 2.059l-0.011-0.013c0.49 0.52 0.82 1.196 0.909 1.946l0.002 0.016v0.008c-0.012 0.817-0.613 1.491-1.396 1.616l-0.009 0.001c-0.2 0.031-0.432 0.048-0.667 0.048-0.857 0-1.659-0.233-2.347-0.64l0.021 0.012c-1.053-0.441-2.275-0.714-3.555-0.752l-0.015-0c-0.372-0.025-0.696-0.215-0.901-0.496l-0.002-0.003c-0.054-0.174-0.085-0.374-0.085-0.582 0-0.35 0.088-0.679 0.244-0.966l-0.005 0.011v-0.005l0.003-0.004c0.041-0.188 0.065-0.405 0.065-0.627 0-0.274-0.036-0.539-0.104-0.791l0.005 0.021c-0.041-0.15-0.065-0.323-0.065-0.502 0-0.242 0.043-0.473 0.123-0.687l-0.004 0.014c0.2-0.417 0.495-0.5 0.862-0.666 0.438-0.133 0.819-0.334 1.151-0.593l-0.008 0.006h0.002v-0.003c0.32-0.335 0.556-0.751 0.835-1.047 0.195-0.249 0.492-0.41 0.827-0.42l0.002-0zM21.531 21.336c-0.001 0.017-0.001 0.038-0.001 0.059 0 0.743 0.449 1.381 1.091 1.658l0.012 0.005c0.048 0.003 0.104 0.005 0.16 0.005 0.831 0 1.575-0.371 2.075-0.957l0.003-0.004 0.264-0.012c0.053-0.008 0.114-0.012 0.176-0.012 0.341 0 0.652 0.132 0.883 0.348l-0.001-0.001 0.004 0.004c0.249 0.301 0.422 0.673 0.487 1.082l0.002 0.013c0.055 0.505 0.238 0.96 0.517 1.34l-0.005-0.008c0.416 0.356 0.705 0.85 0.793 1.411l0.002 0.013 0.004-0.009v0.022l-0.004-0.015c-0.019 0.327-0.231 0.495-0.622 0.744-1.184 0.497-2.201 1.158-3.077 1.968l0.007-0.006c-0.608 0.792-1.501 1.339-2.523 1.486l-0.021 0.002c-0.074 0.010-0.16 0.016-0.247 0.016-0.768 0-1.428-0.464-1.716-1.126l-0.005-0.012-0.006-0.004c-0.093-0.286-0.146-0.615-0.146-0.956 0-0.416 0.079-0.813 0.224-1.178l-0.008 0.022c0.234-0.668 0.435-1.466 0.568-2.288l0.011-0.083c0.016-0.812 0.104-1.593 0.258-2.35l-0.014 0.083c0.085-0.518 0.381-0.954 0.794-1.225l0.007-0.004 0.056-0.027zM18.8 10.142c0.6 2.147 1.339 4.002 2.247 5.757l-0.079-0.167c0.613 1.090 1.090 2.355 1.363 3.695l0.014 0.084c0.009-0 0.020-0 0.031-0 0.217 0 0.427 0.029 0.627 0.084l-0.017-0.004c0.11-0.395 0.173-0.848 0.173-1.316 0-1.426-0.587-2.716-1.533-3.639l-0.001-0.001c-0.275-0.25-0.29-0.419-0.154-0.419 0.971 0.91 1.689 2.078 2.045 3.394l0.012 0.051c0.089 0.329 0.14 0.707 0.14 1.097 0 0.351-0.041 0.693-0.119 1.020l0.006-0.030c0.074 0.038 0.16 0.067 0.251 0.083l0.006 0.001c1.29 0.667 1.766 1.172 1.537 1.921v-0.054c-0.075-0.004-0.15 0-0.225 0h-0.020c0.189-0.584-0.227-1.031-1.331-1.53-1.143-0.5-2.057-0.42-2.212 0.581-0.011 0.049-0.019 0.106-0.022 0.165l-0 0.003c-0.073 0.030-0.16 0.058-0.25 0.078l-0.011 0.002c-0.508 0.336-0.87 0.859-0.989 1.469l-0.002 0.014c-0.148 0.695-0.241 1.5-0.256 2.323l-0 0.012v0.004c-0.091 0.637-0.23 1.207-0.418 1.753l0.020-0.066c-0.983 0.804-2.251 1.29-3.634 1.29-1.13 0-2.184-0.325-3.073-0.887l0.024 0.014c-0.146-0.253-0.313-0.472-0.503-0.667l0.001 0.001c-0.097-0.16-0.211-0.297-0.342-0.415l-0.002-0.001c0.207-0 0.407-0.031 0.596-0.088l-0.015 0.004c0.18-0.085 0.318-0.232 0.391-0.412l0.002-0.005c0.018-0.093 0.029-0.199 0.029-0.308 0-0.445-0.175-0.848-0.461-1.146l0.001 0.001c-0.619-0.761-1.359-1.395-2.196-1.88l-0.038-0.020c-0.671-0.388-1.179-0.995-1.43-1.722l-0.007-0.022c-0.093-0.318-0.147-0.684-0.147-1.062 0-0.353 0.047-0.695 0.134-1.021l-0.006 0.027c0.377-1.314 0.921-2.461 1.62-3.496l-0.028 0.043c0.134-0.081 0.046 0.169-0.51 1.217-0.474 0.713-0.757 1.59-0.757 2.533 0 0.84 0.224 1.627 0.616 2.306l-0.012-0.022c0.052-1.309 0.345-2.537 0.834-3.659l-0.025 0.065c1.055-1.902 1.854-4.111 2.275-6.452l0.020-0.131c0.060 0.045 0.271 0.169 0.361 0.252 0.272 0.166 0.475 0.416 0.737 0.581 0.267 0.26 0.633 0.42 1.035 0.42 0.021 0 0.042-0 0.063-0.001l-0.003 0c0.049 0.004 0.094 0.008 0.137 0.008 0.459-0.009 0.887-0.132 1.259-0.342l-0.013 0.007c0.362-0.167 0.65-0.417 0.925-0.5h0.006c0.535-0.145 0.983-0.454 1.3-0.869l0.004-0.006zM15.301 7.465c0.003 0 0.006-0 0.009-0 0.569 0 1.094 0.187 1.517 0.503l-0.007-0.005c0.378 0.234 0.814 0.433 1.275 0.574l0.040 0.010h0.004c0.246 0.11 0.449 0.281 0.594 0.494l0.003 0.005v-0.164c0.046 0.092 0.074 0.201 0.074 0.316 0 0.098-0.020 0.191-0.055 0.276l0.002-0.005c-0.288 0.507-0.755 0.884-1.313 1.048l-0.016 0.004v0.002c-0.335 0.169-0.626 0.416-0.968 0.581-0.35 0.21-0.771 0.334-1.222 0.334-0.015 0-0.030-0-0.045-0l0.002 0c-0.022 0.001-0.048 0.002-0.074 0.002-0.174 0-0.342-0.031-0.496-0.089l0.010 0.003c-0.159-0.087-0.29-0.169-0.417-0.257l0.014 0.010c-0.227-0.199-0.477-0.39-0.739-0.565l-0.026-0.016v-0.006h-0.006c-0.375-0.199-0.67-0.504-0.852-0.876l-0.005-0.012c-0.027-0.067-0.042-0.145-0.042-0.226 0-0.218 0.112-0.41 0.281-0.522l0.002-0.001c0.28-0.169 0.475-0.339 0.604-0.42 0.13-0.092 0.179-0.127 0.22-0.164h0.002v-0.004c0.268-0.339 0.623-0.599 1.032-0.746l0.016-0.005c0.174-0.050 0.374-0.079 0.581-0.081h0.001zM13.589 5.333h0.045c0.188 0.004 0.361 0.067 0.501 0.17l-0.002-0.002c0.179 0.159 0.325 0.352 0.425 0.57l0.004 0.011c0.113 0.245 0.183 0.53 0.191 0.83l0 0.003v0.005c0.004 0.046 0.006 0.099 0.006 0.152 0 0.063-0.003 0.126-0.009 0.188l0.001-0.008v0.1c-0.037 0.009-0.070 0.022-0.104 0.030-0.191 0.079-0.352 0.163-0.505 0.258l0.014-0.008c0.008-0.055 0.012-0.118 0.012-0.182 0-0.053-0.003-0.106-0.009-0.158l0.001 0.006v-0.019c-0.018-0.154-0.054-0.295-0.107-0.428l0.004 0.011c-0.041-0.132-0.113-0.244-0.207-0.333l-0-0c-0.055-0.050-0.128-0.081-0.209-0.081-0.007 0-0.014 0-0.021 0.001l0.001-0h-0.026c-0.103 0.011-0.189 0.075-0.232 0.163l-0.001 0.002c-0.077 0.093-0.13 0.208-0.15 0.334l-0 0.004c-0.023 0.086-0.035 0.185-0.035 0.287 0 0.044 0.002 0.088 0.007 0.131l-0-0.005v0.019c0.016 0.154 0.052 0.296 0.104 0.428l-0.004-0.011c0.042 0.132 0.113 0.245 0.207 0.335l0 0c0.012 0.012 0.026 0.022 0.042 0.030l0.001 0c-0.083 0.053-0.155 0.109-0.221 0.171l0.001-0.001c-0.045 0.040-0.1 0.070-0.161 0.084l-0.003 0.001c-0.123-0.147-0.237-0.312-0.335-0.486l-0.008-0.016c-0.113-0.245-0.183-0.529-0.194-0.83l-0-0.004c-0.004-0.048-0.006-0.104-0.006-0.161 0-0.241 0.039-0.473 0.11-0.69l-0.004 0.016c0.074-0.258 0.195-0.481 0.356-0.671l-0.002 0.003c0.127-0.15 0.313-0.245 0.522-0.25h0.001zM17.291 5.259h0.016c0.001 0 0.002 0 0.004 0 0.275 0 0.527 0.093 0.729 0.249l-0.003-0.002c0.229 0.177 0.413 0.4 0.542 0.655l0.005 0.011c0.121 0.266 0.196 0.575 0.207 0.901l0 0.004c0-0.025 0.007-0.050 0.007-0.075v0.131l-0.005-0.026-0.005-0.030c-0.003 0.32-0.071 0.622-0.193 0.897l0.006-0.014c-0.062 0.163-0.152 0.303-0.266 0.419l0-0c-0.030-0.018-0.067-0.035-0.104-0.050l-0.006-0.002c-0.135-0.042-0.253-0.099-0.36-0.169l0.005 0.003c-0.077-0.032-0.169-0.060-0.264-0.081l-0.011-0.002c0.081-0.076 0.156-0.157 0.225-0.243l0.004-0.005c0.063-0.148 0.102-0.319 0.11-0.499l0-0.003v-0.025c0-0.008 0-0.016 0-0.025 0-0.17-0.028-0.333-0.080-0.485l0.003 0.011c-0.063-0.159-0.14-0.296-0.232-0.421l0.004 0.005c-0.087-0.088-0.202-0.148-0.331-0.165l-0.003-0h-0.020c-0.001 0-0.003-0-0.004-0-0.132 0-0.25 0.065-0.322 0.164l-0.001 0.001c-0.116 0.113-0.204 0.253-0.254 0.41l-0.002 0.007c-0.063 0.147-0.104 0.318-0.112 0.496l-0 0.003v0.024c0.002 0.12 0.011 0.236 0.027 0.349l-0.002-0.015c-0.241-0.084-0.547-0.169-0.759-0.252-0.012-0.073-0.020-0.159-0.022-0.247l-0-0.003v-0.025c-0.001-0.020-0.001-0.043-0.001-0.066 0-0.324 0.069-0.631 0.194-0.908l-0.006 0.014c0.106-0.279 0.293-0.508 0.532-0.663l0.005-0.003c0.204-0.156 0.462-0.25 0.742-0.25h0zM16.63 1.004c-0.194 0-0.394 0.010-0.6 0.026-5.281 0.416-3.88 6.007-3.961 7.87-0.050 1.426-0.534 2.729-1.325 3.792l0.013-0.018c-1.407 1.602-2.555 3.474-3.351 5.523l-0.043 0.127c-0.258 0.685-0.408 1.476-0.408 2.302 0 0.285 0.018 0.566 0.052 0.841l-0.003-0.033c-0.056 0.046-0.103 0.102-0.136 0.166l-0.001 0.003c-0.325 0.335-0.562 0.75-0.829 1.048-0.283 0.217-0.615 0.388-0.975 0.494l-0.021 0.005c-0.464 0.139-0.842 0.442-1.075 0.841l-0.005 0.009c-0.104 0.212-0.165 0.461-0.165 0.725 0 0.010 0 0.019 0 0.029l-0-0.001c0.002 0.238 0.026 0.469 0.073 0.693l-0.004-0.023c0.056 0.219 0.088 0.471 0.088 0.73 0 0.17-0.014 0.337-0.041 0.5l0.002-0.018c-0.167 0.313-0.264 0.685-0.264 1.080 0 0.278 0.048 0.544 0.137 0.791l-0.005-0.016c0.273 0.388 0.686 0.662 1.164 0.749l0.011 0.002c1.274 0.107 2.451 0.373 3.561 0.78l-0.094-0.030c0.698 0.415 1.539 0.66 2.436 0.66 0.294 0 0.582-0.026 0.862-0.077l-0.029 0.004c0.667-0.151 1.211-0.586 1.504-1.169l0.006-0.013c0.734-0.004 1.537-0.336 2.824-0.417 0.873-0.072 1.967 0.334 3.22 0.25 0.037 0.159 0.086 0.298 0.148 0.429l-0.006-0.013 0.004 0.004c0.384 0.804 1.19 1.35 2.124 1.35 0.081 0 0.161-0.004 0.24-0.012l-0.010 0.001c1.151-0.17 2.139-0.768 2.813-1.623l0.007-0.009c0.843-0.768 1.827-1.401 2.905-1.853l0.067-0.025c0.432-0.191 0.742-0.585 0.81-1.059l0.001-0.007c-0.059-0.694-0.392-1.299-0.888-1.716l-0.004-0.003v-0.121l-0.004-0.004c-0.214-0.33-0.364-0.722-0.421-1.142l-0.002-0.015c-0.053-0.513-0.278-0.966-0.615-1.307l0 0h-0.004c-0.074-0.067-0.154-0.084-0.235-0.169-0.066-0.047-0.148-0.076-0.237-0.080l-0.001-0c0.195-0.602 0.308-1.294 0.308-2.013 0-0.94-0.193-1.835-0.541-2.647l0.017 0.044c-0.704-1.672-1.619-3.111-2.732-4.369l0.014 0.017c-1.105-1.082-1.828-2.551-1.948-4.187l-0.001-0.021c0.033-2.689 0.295-7.664-4.429-7.671z"></path>
+                            </svg>
+                        </span>
+                        <span class="menu-text">Linux</span>
+                        <i class="ri-arrow-right-s-line menu-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <div class="menu-item">
+                            <a href="#">
+                                <span class="menu-icon"><i class="ri-settings-5-fill"></i></span>
+                                <span class="menu-text">Baseline</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="#">
+                                <span class="menu-icon"><i class="ri-terminal-box-fill"></i></span>
+                                <span class="menu-text">Agents</span>
+                            </a>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-item">
+            <a href="#">
+                <span class="menu-icon"><i class="ri-list-check"></i></span>
+                <span class="menu-text">Inventário</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="#">
+                <span class="menu-icon"><i class="ri-cloud-fill"></i></span>
+                <span class="menu-text">Ansible OCI</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- Terraform Section -->
+<div class="menu-item">
+    <a href="#" class="has-submenu">
+        <span class="menu-icon tech-icon terraform-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M21 5.4v6.4L15.4 15V8.7L21 5.4m-6.2 4.1V15l-5.6-3.2V5.4l5.6 4.1m0 6.8v6.4l-5.6-3.2v-6.4l5.6 3.2M8.6 5.4v6.4L3 8.7V2.2l5.6 3.2Z"/>
+            </svg>
+        </span>
+        <span class="menu-text">Terraform</span>
+        <i class="ri-arrow-right-s-line menu-arrow"></i>
+    </a>
+    <div class="submenu">
+        <div class="menu-item">
+            <a href="{{ url_for('ansible_core_ansible') }}" class="has-submenu">
+                <span class="menu-icon"><i class="ri-code-box-fill"></i></span>
+                <span class="menu-text">Módulos</span>
+            </a>
+        </div>
+
+        <div class="menu-item">
+            <a href="#">
+                <span class="menu-icon"><i class="ri-database-2-fill"></i></span>
+                <span class="menu-text">Estados</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="#">
+                <span class="menu-icon"><i class="ri-tools-fill"></i></span>
+                <span class="menu-text">Workspaces</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<!-- Seção de Documentação -->
+<div class="menu">
+    <button class="docs-toggle">
+        <span class="menu-icon">
+            <i class="ri-folder-line folder-closed"></i>
+            <i class="ri-folder-open-line folder-open"></i>
+        </span>
+        <span class="menu-text">Documentação</span>
+        <i class="ri-arrow-right-s-line menu-arrow"></i>
+    </button>
+    
+    <div class="docs-wrapper">
+        <!-- Python Docs -->
+        <div class="docs-section">
+            <button class="docs-button">
+                <span class="menu-icon"><i class="ri-file-text-line"></i></span>
+                <span class="menu-text">Python Docs</span>
+                <i class="ri-arrow-right-s-line menu-arrow"></i>
+            </button>
+            <div class="docs-content">
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-rocket-line"></i></span>
+                        <span class="menu-text">Guia Rápido</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-book-read-line"></i></span>
+                        <span class="menu-text">API Reference</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-code-box-line"></i></span>
+                        <span class="menu-text">Exemplos</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ansible Docs -->
+        <div class="docs-section">
+            <button class="docs-button">
+                <span class="menu-icon"><i class="ri-file-text-line"></i></span>
+                <span class="menu-text">Ansible Docs</span>
+                <i class="ri-arrow-right-s-line menu-arrow"></i>
+            </button>
+            <div class="docs-content">
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-book-open-line"></i></span>
+                        <span class="menu-text">Guia de Uso</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-tools-line"></i></span>
+                        <span class="menu-text">Módulos</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-star-line"></i></span>
+                        <span class="menu-text">Best Practices</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terraform Docs -->
+        <div class="docs-section">
+            <button class="docs-button">
+                <span class="menu-icon"><i class="ri-file-text-line"></i></span>
+                <span class="menu-text">Terraform Docs</span>
+                <i class="ri-arrow-right-s-line menu-arrow"></i>
+            </button>
+            <div class="docs-content">
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-settings-4-line"></i></span>
+                        <span class="menu-text">Configuração</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-cloud-line"></i></span>
+                        <span class="menu-text">Providers</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="#">
+                        <span class="menu-icon"><i class="ri-server-line"></i></span>
+                        <span class="menu-text">Recursos</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <!-- Social Links -->
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="ri-github-fill"></i></a>
+            <a href="#" target="_blank"><i class="ri-gitlab-fill"></i></a>
+            <a href="#" target="_blank"><i class="ri-linkedin-box-fill"></i></a>
+            <a href="#" target="_blank"><i class="ri-discord-fill"></i></a>
+        </div>
+    </aside>
+    <main class="content-area">
+        <header class="content-header">
+            <div class="breadcrumbs">
+                <span class="breadcrumb-item">Ansible</span>
+                <i class="ri-arrow-right-s-line separator"></i>
+                <span class="breadcrumb-item">Script</span>
+                <i class="ri-arrow-right-s-line separator"></i>
+                <span class="breadcrumb-item active">Baseline</span>
+            </div>
+
+            <div class="user-info">
+                <span class="username">Usuário Logado</span>
+                <button class="settings-button" aria-label="Configurações"><i class="ri-settings-4-line"></i></button>
+                <button class="logout-button" aria-label="Sair"><i class="ri-logout-box-r-line"></i></button>
+            </div>
+        </header>
+
+        <div class="construction-content">
+            <div class="construction-header">
+                <div class="construction-icon">
+                    <i class="ri-tools-fill"></i>
+                </div>
+                <h1 class="construction-title">Página em Desenvolvimento</h1>
+                <p class="construction-text">
+                    Esta seção está atualmente em desenvolvimento. Nossa equipe está
+                    trabalhando para trazer novas funcionalidades e melhorias para sua experiência.
+                </p>
+                <div class="progress-loader">
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
+
+            <div class="construction-grid">
+                <div class="info-card">
+                    <i class="ri-time-line"></i>
+                    <h3>Em Breve</h3>
+                    <p>Novas funcionalidades serão implementadas para melhorar sua experiência de automação</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-left">
+                <i class="ri-code-s-slash-fill"></i>
+                <span>Desenvolvido por Diego Novaes</span>
+            </div>
+            <div class="footer-right">
+                <span>Automato Platform</span>
+                <div class="footer-version">v1.0.0-beta</div>
+            </div>
+        </footer>
+    </main>
+</div>
+
+<script>
+    // ... (Seu JavaScript aqui) ...
+</script>
+</body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+    
+        // Função para atualizar visibilidade dos elementos
+        function updateElementsVisibility(isCollapsed) {
+            const elements = document.querySelectorAll('.menu-text, .logo-text, .menu-arrow');
+            elements.forEach(el => {
+                el.style.opacity = isCollapsed ? '0' : '1';
+                el.style.visibility = isCollapsed ? 'hidden' : 'visible';
+            });
+        }
+    
+        // Scroll helper
+        function scrollToElement(element) {
+            const menu = document.querySelector('.menu');
+            if (!menu) return;
+    
+            const elementRect = element.getBoundingClientRect();
+            const menuRect = menu.getBoundingClientRect();
+            
+            const isBelow = elementRect.bottom > menuRect.bottom;
+            const isAbove = elementRect.top < menuRect.top;
+    
+            if (isBelow || isAbove) {
+                menu.scrollTo({
+                    top: element.offsetTop - menuRect.height / 2,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    
+        // Fechar todos os menus
+        function closeAllMenus() {
+            document.querySelectorAll('.menu-item.open, .menu-item.selected').forEach(item => {
+                item.classList.remove('open', 'selected');
+                const submenu = item.querySelector('.submenu');
+                if (submenu) {
+                    submenu.style.maxHeight = '0px';
+                }
+                const link = item.querySelector('a.has-submenu');
+                if (link) {
+                    link.classList.remove('selected', 'icon-only');
+                }
+            });
+    
+            closeAllDocs();
+        }
+    
+        // Fechar documentação
+        function closeAllDocs() {
+            const docsToggle = document.querySelector('.docs-toggle');
+            const docsWrapper = document.querySelector('.docs-wrapper');
+            
+            if (docsToggle && docsWrapper) {
+                docsToggle.classList.remove('open', 'selected', 'icon-only');
+                docsWrapper.classList.remove('expanded');
+                docsWrapper.style.maxHeight = '0px';
+            }
+    
+            document.querySelectorAll('.docs-button').forEach(btn => {
+                btn.classList.remove('open', 'selected');
+                const content = btn.nextElementSibling;
+                if (content) {
+                    content.classList.remove('expanded');
+                    content.style.maxHeight = '0px';
+                }
+            });
+        }
+    
+        // Abrir menus pais
+        function openParentMenus(element) {
+            let current = element;
+            while (current) {
+                if (current.classList.contains('menu-item')) {
+                    current.classList.add('open');
+                    const submenu = current.querySelector('.submenu');
+                    if (submenu) {
+                        submenu.style.maxHeight = `${submenu.scrollHeight}px`;
+                        updateParentSubmenusHeight(submenu);
+                    }
+                }
+                current = current.parentElement.closest('.menu-item');
+            }
+        }
+    
+        // Atualizar altura dos submenus pais
+        function updateParentSubmenusHeight(element) {
+            let parent = element.parentElement.closest('.menu-item');
+            while (parent) {
+                const parentSubmenu = parent.querySelector('.submenu');
+                if (parentSubmenu) {
+                    const totalHeight = Array.from(parentSubmenu.children)
+                        .reduce((height, child) => height + (child.offsetHeight || 0), 0);
+                    parentSubmenu.style.maxHeight = `${totalHeight}px`;
+                }
+                parent = parent.parentElement.closest('.menu-item');
+            }
+        }
+    
+        // Toggle da Sidebar com animação melhorada
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                const isCollapsing = !sidebar.classList.contains('collapsed');
+                
+                if (isCollapsing) {
+                    // Primeiro esconde os textos
+                    document.querySelectorAll('.menu-text, .logo-text, .menu-arrow').forEach(el => {
+                        el.style.opacity = '0';
+                        el.style.visibility = 'hidden';
+                    });
+                    
+                    // Depois colapsa a sidebar
+                    setTimeout(() => {
+                        sidebar.classList.add('collapsed');
+                        const arrow = sidebarToggle.querySelector('i');
+                        arrow.style.transform = 'rotate(180deg)';
+                    }, 200);
+                } else {
+                    // Primeiro expande a sidebar
+                    sidebar.classList.remove('collapsed');
+                    const arrow = sidebarToggle.querySelector('i');
+                    arrow.style.transform = 'rotate(0deg)';
+                    
+                    // Depois mostra os textos
+                    setTimeout(() => {
+                        document.querySelectorAll('.menu-text, .logo-text, .menu-arrow').forEach(el => {
+                            el.style.opacity = '1';
+                            el.style.visibility = 'visible';
+                        });
+                    }, 200);
+                }
+            });
+        }
+    
+        // Observer para detectar mudanças na classe collapsed
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    const isCollapsed = sidebar.classList.contains('collapsed');
+                    updateElementsVisibility(isCollapsed);
+                }
+            });
+        });
+    
+        // Inicia o observer
+        observer.observe(sidebar, {
+            attributes: true
+        });
+    
+        // Handler para itens com submenu
+        document.querySelectorAll('a.has-submenu').forEach(menuLink => {
+            menuLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+    
+                if (sidebar.classList.contains('collapsed')) return;
+    
+                const menuItem = this.parentElement;
+                const wasOpen = menuItem.classList.contains('open');
+                const submenu = menuItem.querySelector('.submenu');
+    
+                if (wasOpen) {
+                    closeAllMenus();
+                    return;
+                }
+    
+                closeAllMenus();
+    
+                menuItem.classList.add('open');
+                this.classList.add('selected');
+                
+                if (submenu) {
+                    submenu.style.maxHeight = `${submenu.scrollHeight}px`;
+                    openParentMenus(menuItem);
+                    setTimeout(() => scrollToElement(submenu), 150);
+                }
+            });
+        });
+    
+        // Handler para itens finais do menu
+        document.querySelectorAll('.menu-item > a:not(.has-submenu)').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+    
+                if (sidebar.classList.contains('collapsed')) return;
+    
+                closeAllMenus();
+    
+                const menuItem = this.parentElement;
+                menuItem.classList.add('selected');
+                openParentMenus(menuItem);
+    
+                const mainMenuItem = menuItem.closest('.menu > .menu-item');
+                if (mainMenuItem) {
+                    mainMenuItem.classList.add('open');
+                    const mainMenuLink = mainMenuItem.querySelector('a.has-submenu');
+                    if (mainMenuLink) {
+                        mainMenuLink.classList.add('icon-only');
+                    }
+                }
+    
+                setTimeout(() => scrollToElement(menuItem), 150);
+            });
+        });
+    
+        // Handler da Documentação
+        const docsToggle = document.querySelector('.docs-toggle');
+        const docsWrapper = document.querySelector('.docs-wrapper');
+        
+        if (docsToggle && docsWrapper) {
+            docsToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (sidebar.classList.contains('collapsed')) return;
+    
+                const wasOpen = this.classList.contains('open');
+    
+                document.querySelectorAll('.menu-item.open, .menu-item.selected').forEach(item => {
+                    item.classList.remove('open', 'selected');
+                    const submenu = item.querySelector('.submenu');
+                    if (submenu) {
+                        submenu.style.maxHeight = '0px';
+                    }
+                    const link = item.querySelector('a.has-submenu');
+                    if (link) {
+                        link.classList.remove('selected', 'icon-only');
+                    }
+                });
+    
+                if (wasOpen) {
+                    closeAllDocs();
+                } else {
+                    this.classList.add('open', 'selected');
+                    docsWrapper.style.maxHeight = 'calc(100vh - 280px)';
+                    docsWrapper.classList.add('expanded');
+                    setTimeout(() => scrollToElement(docsWrapper), 150);
+                }
+            });
+        }
+    
+        // Handler para botões de documentação
+        document.querySelectorAll('.docs-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+    
+                if (sidebar.classList.contains('collapsed')) return;
+    
+                const content = this.nextElementSibling;
+                const wasOpen = this.classList.contains('open');
+    
+                document.querySelectorAll('.docs-button').forEach(btn => {
+                    if (btn !== this) {
+                        btn.classList.remove('open', 'selected');
+                        const btnContent = btn.nextElementSibling;
+                        if (btnContent) {
+                            btnContent.classList.remove('expanded');
+                            btnContent.style.maxHeight = '0px';
+                        }
+                    }
+                });
+    
+                this.classList.toggle('open', !wasOpen);
+                this.classList.toggle('selected', !wasOpen);
+                
+                if (content) {
+                    content.classList.toggle('expanded', !wasOpen);
+                    content.style.maxHeight = !wasOpen ? `${content.scrollHeight}px` : '0px';
+                    
+                    if (!wasOpen) {
+                        setTimeout(() => scrollToElement(content), 150);
+                    }
+                }
+    
+                if (docsToggle) {
+                    docsToggle.classList.remove('selected');
+                    docsToggle.classList.add('icon-only');
+                }
+            });
+    
+            // Handler para itens de conteúdo da documentação
+            const docContent = button.nextElementSibling;
+            if (docContent) {
+                const menuItems = docContent.querySelectorAll('.menu-item > a');
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+    
+                        if (sidebar.classList.contains('collapsed')) return;
+    
+                        document.querySelectorAll('.docs-content .menu-item').forEach(mi => {
+                            mi.classList.remove('selected');
+                        });
+    
+                        this.parentElement.classList.add('selected');
+    
+                        const parentButton = this.closest('.docs-content').previousElementSibling;
+                        if (parentButton) {
+                            parentButton.classList.remove('selected');
+                            parentButton.classList.add('icon-only', 'open');
+                            
+                            const parentContent = this.closest('.docs-content');
+                            parentContent.classList.add('expanded');
+                            parentContent.style.maxHeight = `${parentContent.scrollHeight}px`;
+                        }
+    
+                        if (docsToggle) {
+                            docsToggle.classList.remove('selected');
+                            docsToggle.classList.add('icon-only', 'open');
+                            docsWrapper.classList.add('expanded');
+                            docsWrapper.style.maxHeight = 'calc(100vh - 280px)';
+                        }
+    
+                        setTimeout(() => scrollToElement(this.parentElement), 150);
+                    });
+                });
+            }
+        });
+    
+        // Previne que cliques no submenu fechem o menu pai
+        document.querySelectorAll('.submenu, .docs-wrapper, .docs-content').forEach(submenu => {
+            submenu.addEventListener('click', (e) => e.stopPropagation());
+        });
+    });
+        </script>

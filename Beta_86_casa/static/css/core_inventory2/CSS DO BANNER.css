@@ -1,0 +1,67 @@
+/* Variáveis necessárias para o banner */
+:root {
+  /* Paleta Black Piano */
+  --black-rich: #030303;
+  --black-smoke: #1A1A1A;
+  --black-elegant: #0A0A0A;
+  --accent-gold: #FFD600;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+
+  /* Sombras */
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5);
+
+  /* Gradientes */
+  --gradient-piano: linear-gradient(135deg, var(--black-rich) 0%, var(--black-smoke) 80%, var(--black-elegant) 100%);
+  --gradient-shine: linear-gradient(90deg, transparent 0%, rgba(255, 214, 0, 0.15) 50%, transparent 100%);
+}
+
+/* Estilo do banner Gerenciador de Inventário */
+.header.inventory-banner {
+  padding: 20px;
+  background: var(--gradient-piano);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--black-elegant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+}
+
+/* Reflexo brilhante no banner */
+.header.inventory-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-shine);
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+/* Título do banner */
+.header.inventory-banner .header-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+/* Subtítulo do banner (opcional) */
+.header.inventory-banner .header-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: 6px;
+  font-family: 'Inter', 'Arial', sans-serif;
+}

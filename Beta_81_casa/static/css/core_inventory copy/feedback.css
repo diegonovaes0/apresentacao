@@ -1,0 +1,81 @@
+/* Estilos para mensagens de feedback e notificações - sem animações */
+/* feedback.css*/
+
+.feedback-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1100;
+    pointer-events: none;
+    width: 90%;
+    max-width: 500px;
+}
+
+.feedback-message,
+.inventory-feedback-message {
+    padding: 16px 20px;
+    border-radius: 6px;
+    color: var(--black-absolute);
+    background: var(--accent-gold);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+    pointer-events: auto;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    justify-content: center;
+}
+
+.feedback-message svg,
+.inventory-feedback-message i {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.feedback-message.success,
+.inventory-feedback-message {
+    background: var(--success-green);
+    color: white;
+}
+
+.feedback-message.error,
+.inventory-feedback-message.error {
+    background: var(--error-red);
+    color: white;
+}
+
+.feedback-message.warning {
+    background: #FF9800;
+    color: var(--black-absolute);
+}
+
+.feedback-message.info {
+    background: #2196F3;
+    color: white;
+}
+
+/* Estilos específicos para as mensagens de inventário */
+.inventory-feedback-message {
+    display: flex;
+    align-items: center;
+    background: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.inventory-feedback-message.error {
+    background: #F44336;
+}
+
+.inventory-feedback-message i {
+    margin-right: 15px;
+    font-size: 24px;
+}

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Gerenciador de Playbooks Ansible - Automato Platform
+{% endblock %}
+<style>
+    
+</style>
+
+{% block content %}
+    <!-- Container principal do módulo Ansible -->
+    <div class="ansible-container">
+        <!-- [CABEÇALHO MANTIDO IGUAL] -->
+        <div class="ansible-header">
+            <div class="ansible-header-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 0-7.35 16.83l7.35-12.66 7.35 12.66A10 10 0 0 0 12 2z"/>
+                    <path d="M12 8v6"/>
+                    <circle cx="12" cy="12" r="1"/>
+                </svg>
+                Gerenciador de Playbooks Ansible
+            </div>
+            <div class="ansible-header-subtitle">Controle e Automação Simplificados</div>
+            <div class="ansible-progress-container"></div>
+        </div>
+
+        <!-- [CONTAINER DE HOSTS MANTIDO IGUAL] -->
+        <div class="ansible-hosts-container" id="hosts-list"></div>
+
+        <!-- [LAYOUT PRINCIPAL MANTIDO IGUAL] -->
+        <div class="ansible-layout">
+            <div class="ansible-playbooks">
+                <!-- [FILTROS MANTIDOS IGUAIS] -->
+                <div class="ansible-filters">
+                    <div class="ansible-filter-group">
+                        <select id="os-filter" class="ansible-select">
+                            <option value="linux" selected>Linux</option>
+                            <option value="windows">Windows</option>
+                        </select>
+                    </div>
+                    <div class="ansible-filter-group">
+                        <select id="category-filter" class="ansible-select">
+                            <option value="configuracoes">Configurações</option>
+                            <option value="baseline">Baseline</option>
+                            <option value="agentes">Agentes</option>
+                            <option value="seguranca">Segurança</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="ansible-heading">Playbooks Disponíveis</h3>
+
+                <!-- Painel de Ações com Botão Executar e Orbitais Reescritos -->
+                <div class="ansible-automation-panel">
+                    <div class="automation-core">
+                        <button id="execute-selected" class="ansible-core-btn" onclick="executePlaybooks()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--ansible-white)" stroke-width="2">
+                                <path d="M5 3l14 9-14 9V3z"/>
+                            </svg>
+                            <span>Iniciar Automação</span>
+                        </button>
+                        <div id="execution-status" class="automation-status">1 host(s) e 2 playbook(s) selecionados</div>
+                    </div>
+                    <div class="ansible-orbitals">
+                        <button id="refresh" class="ansible-orbital-btn" title="Atualizar" onclick="refreshPlaybooks()">
+                            <i class="ri-restart-line"></i>
+                            <span class="orbital-label">Atualizar Hosts</span>
+                        </button>
+                        <button id="select-all-playbooks" class="ansible-orbital-btn" title="Selecionar Todos" onclick="selectAllPlaybooks()">
+                            <i class="ri-checkbox-circle-line"></i>
+                            <span class="orbital-label">Selecionar Todos</span>
+                        </button>
+                        <button id="select-all-hosts-btn" class="ansible-orbital-btn ansible-cancel" title="Selecionar Todos os Hosts" onclick="cancelAll()">
+                            <i class="ri-checkbox-multiple-line"></i>
+                            <span class="orbital-label">Selecionar Todos os Hosts</span>
+                        </button>
+                        <button id="cancel-all" class="ansible-orbital-btn ansible-cancel" title="Cancelar Tudo" onclick="cancelAll()">
+                            <i class="ri-close-circle-line"></i>
+                            <span class="orbital-label">Cancelar Todos</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="playbooks" class="ansible-playbooks-list"></div>
+            </div>
+
+            <!-- Seção de Execução com o novo botão -->
+            <div class="ansible-execution">
+                <div class="ansible-execution-header">
+                    <h3 class="ansible-heading">Execução de Playbooks</h3>
+                  
+                </div>
+                <div id="running-playbooks" class="ansible-executions-list">
+                    <!-- Lista de playbooks em execução -->
+                </div>
+            </div>
+        </div>
+
+        <!-- [DEBUG MANTIDO IGUAL] -->
+        <div id="debug-info" class="ansible-debug">
+            <div id="debug-toggle" class="ansible-debug-toggle">
+                Mostrar Debug
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </div>
+            <div id="baseline-configurator-container"></div>
+            <pre id="debug-output" class="ansible-debug-output"></pre>
+        </div>
+    </div>
+
+   <!-- Adicionar ao final da página, antes do fechamento do </body> -->
+<script>
+    // Script de inicialização para garantir persistência dos cards do Ansible
+    document.addEventListener('DOMContentLoaded', function() {
+      // Verifica se as funções de persistência foram carregadas
+      if (typeof setupCardPersistence === 'function') {
+        setupCardPersistence();
+      } else {
+        console.warn('As funções de persistência não foram carregadas corretamente.');
+      }
+      
+      // Verifica se as funções de atualização de host foram carregadas
+      if (typeof setupHostUpdateService === 'function') {
+        setupHostUpdateService();
+      } else {
+        console.warn('As funções de atualização de host não foram carregadas corretamente.');
+      }
+      
+      // Sobrescreve a função executeSelectedPlaybooks se existir uma versão melhorada
+      if (typeof executeSelectedPlaybooksEnhanced === 'function') {
+        window.executeSelectedPlaybooks = executeSelectedPlaybooksEnhanced;
+      }
+      
+      console.log('Sistema de persistência inicializado. Os cards de execução não irão mais desaparecer ao trocar de tela.');
+    });
+  </script>
+{% endblock %}

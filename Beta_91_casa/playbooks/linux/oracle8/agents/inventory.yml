@@ -1,0 +1,26 @@
+# Arquivo de Inventário Ansible (YAML)
+# Gerado automaticamente pela Automato Platform
+
+all:
+  children:
+    linux:
+      hosts:
+        
+        159.112.178.167:
+          ansible_user: opc
+          ansible_ssh_private_key_file: /home/APRESENTACAO/ansible_automato/Beta_80_casa/inventory/ssh_keys/key_146_235_44_240
+          python_interpreters:
+            py39: /usr/bin/python3.9
+          ansible_python_interpreter: /usr/bin/python3.9
+          os_distribution: oracle
+          os_version: '9'
+      vars:
+        ansible_connection: ssh
+        ansible_port: 22
+    windows:
+      hosts: {}
+      vars:
+        ansible_connection: winrm
+        ansible_port: 5986
+        ansible_winrm_transport: ntlm
+        ansible_winrm_server_cert_validation: ignore

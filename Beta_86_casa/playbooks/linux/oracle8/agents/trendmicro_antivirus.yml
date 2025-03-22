@@ -1,0 +1,107 @@
+---
+# Playbook: Trend Micro Antivírus para Oracle Linux 8
+# Descrição: Instala e configura o agente Trend Micro em servidores Oracle Linux 8
+# Categoria: agentes
+# OS: linux
+# Versão: 1.1.0
+
+- name: 🟡Instalação do Agente Antivírus Trend Micro🟡
+  hosts: all
+  become: yes
+  vars:
+    # Estas variáveis serão substituídas pelos valores configurados na interface
+    custom_script: false  # Definido pela interface se usar script personalizado 
+    script_filename: "antivirus.sh"  # Nome do script a usar ou carregar
+    script_content: ""  # Conteúdo do script personalizado se necessário
+    temp_dir: "/tmp/trend-micro-install"
+    install_dir: "/opt/ds_agent"
+    log_file: "/var/log/trend_micro_install.log"
+    
+  tasks:
+    - name: 🟡Verificar se o Trend Micro já está instalado🟡
+      stat:
+        path: /opt/ds_agent/dsa_control
+      register: agent_installed
+      
+    - name: 🟡Criar diretório temporário para instalação🟡
+      file:
+        path: "{{ temp_dir }}"
+        state: directory
+        mode: '0755'
+      when: not agent_installed.stat.exists
+      
+    # Fluxo para script pré-definido
+    - name: 🟡Copiar script pré-definido para o servidor🟡
+      copy:
+        src: "/arquivos/linux/antivirus/{{ script_filename }}"
+        dest: "{{ temp_dir }}/install.sh"
+        mode: '0755'
+      when: not agent_installed.stat.exists and not custom_script
+      ignore_errors: yes
+      
+    # Fluxo para script personalizado
+    - name: 🟡Criar script personalizado no servidor🟡
+      copy:
+        content: "{{ script_content }}"
+        dest: "{{ temp_dir }}/install.sh"
+        mode: '0755'
+      when: not agent_installed.stat.exists and custom_script and script_content != ""
+      
+    # Método alternativo caso o script não seja encontrado
+    - name: 🟡Método alternativo - Copiar script padrão🟡
+      copy:
+        src: /home/opc/agents/linux/antivirus.sh
+        dest: "{{ temp_dir }}/install.sh"
+        mode: '0755'
+      when: not agent_installed.stat.exists
+      ignore_errors: yes
+      
+    - name: 🟡Iniciar instalação do Trend Micro Antivírus🟡
+      shell: "{{ temp_dir }}/install.sh > {{ log_file }} 2>&1"
+      args:
+        chdir: "{{ temp_dir }}"
+      when: not agent_installed.stat.exists
+      register: install_result
+      async: 1800
+      poll: 0
+      
+    - name: 🟡Aguardar a conclusão da instalação🟡
+      async_status:
+        jid: "{{ install_result.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 60
+      delay: 30
+      when: not agent_installed.stat.exists and install_result.ansible_job_id is defined
+      
+    - name: 🟡Verificar se a instalação foi concluída com sucesso🟡
+      command: ls -la /opt/ds_agent/
+      register: install_check
+      changed_when: false
+      ignore_errors: yes
+      when: not agent_installed.stat.exists
+      
+    - name: 🟡Verificar se o serviço está ativo🟡
+      systemd:
+        name: ds_agent
+        state: started
+        enabled: yes
+      ignore_errors: yes
+      when: not agent_installed.stat.exists
+      
+    - name: 🟡Limpar arquivos temporários🟡
+      file:
+        path: "{{ temp_dir }}"
+        state: absent
+      ignore_errors: yes
+      when: not agent_installed.stat.exists
+      
+    - name: 🟡Status da instalação (já instalado)🟡
+      debug:
+        msg: "Trend Micro Antivírus já está instalado em {{ ansible_hostname }}"
+      when: agent_installed.stat.exists
+
+    - name: 🟡Status da instalação (instalado agora)🟡
+      debug:
+        msg: "Trend Micro Antivírus foi instalado com sucesso em {{ ansible_hostname }}"
+      when: not agent_installed.stat.exists and (job_result.finished is defined and job_result.finished)

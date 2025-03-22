@@ -1,0 +1,58 @@
+/* 
+BADGES.CSS
+Este arquivo contém os estilos para badges, indicadores
+de status e outros elementos visuais de marcação.
+*/
+
+.inventory-badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    background-color: #2a2a2a;
+    color: var(--accent-gold);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .inventory-badge.success {
+    background-color: #2a2a2a;
+    color: var(--accent-gold);
+  }
+  
+  .inventory-badge.error {
+    background-color: #2a2a2a;
+    color: var(--accent-gold);
+  }
+  
+  .inventory-badge.pending {
+    background-color: #2a2a2a;
+    color: var(--accent-gold);
+  }
+  
+  .inventory-badge i {
+    font-size: 14px;
+  }
+  
+  .inventory-badge .fa-linux {
+    color: #4CAF50;
+  }
+  
+  .inventory-badge .fa-windows {
+    color: #2196F3;
+  }
+  
+  td .fa-key, td .fa-lock {
+    margin-right: 6px;
+  }
+  
+  td .fa-key {
+    color: #9C27B0;
+  }
+  
+  td .fa-lock {
+    color: #FFC107;
+  }

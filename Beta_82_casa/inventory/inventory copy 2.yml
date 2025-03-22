@@ -1,0 +1,23 @@
+# Arquivo de Inventário Ansible (YAML)
+# Gerado automaticamente pela Automato Platform
+
+all:
+  children:
+    linux:
+      hosts:
+        127.0.0.1:
+          ansible_user: opc
+          ansible_ssh_pass: opc
+        10.120.165.26:
+          ansible_user: ubuntu
+          ansible_ssh_pass: ubuntu
+      vars:
+        ansible_connection: ssh
+        ansible_port: 22
+    windows:
+      hosts: {}
+      vars:
+        ansible_connection: winrm
+        ansible_port: 5986
+        ansible_winrm_transport: ntlm
+        ansible_winrm_server_cert_validation: ignore

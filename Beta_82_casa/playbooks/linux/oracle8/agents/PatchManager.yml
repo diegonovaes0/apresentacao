@@ -1,0 +1,85 @@
+---
+# Playbook: PatchManager para Linux
+# Descrição: Instala e configura o PatchManager em sistemas Linux
+# Versão: 1.0.0
+# Data: 2025-03-13
+# Autor: Claude
+
+- name: Instalação do PatchManager para Linux
+  hosts: all
+  become: yes
+  vars:
+    agent_file: "UEMS_LinuxAgent.bin"
+    temp_dir: "/tmp/patchmanager"
+    install_dir: "/opt/patchmanager"
+    
+  tasks:
+    - name: Verificar se o PatchManager já está instalado
+      stat:
+        path: /opt/ManageEngine/UEMS/bin/uems_agent
+      register: agent_installed
+      
+    - name: Criar diretório de instalação do PatchManager
+      file:
+        path: "{{ temp_dir }}"
+        state: directory
+        mode: '0755'
+      when: not agent_installed.stat.exists
+      
+    - name: Copiar o instalador PatchManager para o servidor
+      copy:
+        src: "/home/opc/agents/linux/patchmanager/{{ agent_file }}"
+        dest: "{{ temp_dir }}/{{ agent_file }}"
+        mode: '0755'
+      when: not agent_installed.stat.exists
+      
+    - name: Instalar dependências necessárias
+      package:
+        name: 
+          - glibc
+          - libstdc++
+        state: present
+      when: not agent_installed.stat.exists
+      ignore_errors: yes
+      
+    - name: Executar instalador PatchManager
+      shell: "./{{ agent_file }} -i silent"
+      args:
+        chdir: "{{ temp_dir }}"
+      when: not agent_installed.stat.exists
+      register: install_result
+      async: 600
+      poll: 0
+      
+    - name: Aguardar instalação do PatchManager
+      async_status:
+        jid: "{{ install_result.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 30
+      delay: 10
+      when: not agent_installed.stat.exists
+      
+    - name: Verificar status do serviço PatchManager
+      service:
+        name: uemsagent
+        state: started
+        enabled: yes
+      when: not agent_installed.stat.exists
+      ignore_errors: yes
+      
+    - name: Limpar arquivos temporários
+      file:
+        path: "{{ temp_dir }}"
+        state: absent
+      when: not agent_installed.stat.exists
+      
+    - name: Exibir status da instalação do PatchManager
+      debug:
+        msg: "PatchManager já está instalado em {{ ansible_hostname }}"
+      when: agent_installed.stat.exists
+
+    - name: Exibir status da instalação do PatchManager
+      debug:
+        msg: "PatchManager foi instalado com sucesso em {{ ansible_hostname }}"
+      when: not agent_installed.stat.exists and job_result.finished is defined and job_result.finished

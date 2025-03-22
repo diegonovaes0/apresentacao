@@ -1,0 +1,47 @@
+# Arquivo de Inventário Ansible (YAML)
+# Gerado automaticamente pela Automato Platform
+
+all:
+  children:
+    linux:
+      hosts:
+        127.0.0.1:
+          ansible_user: opc
+          ansible_ssh_pass: opc
+          ansible_become_pass: opc
+          ansible_become: true
+          ansible_become_method: sudo
+          python_interpreters:
+            py310: /usr/bin/python3.10
+          ansible_python_interpreter: /usr/bin/python3.10
+          os_distribution: ubuntu
+          os_version: '22.04'
+        10.120.165.15:
+          ansible_user: ubuntu
+          ansible_ssh_pass: '1'
+          ansible_become_pass: '1'
+          ansible_become: true
+          ansible_become_method: sudo
+          python_interpreters:
+            py310: /usr/bin/python3.10
+          ansible_python_interpreter: /usr/bin/python3.10
+          os_distribution: ubuntu
+          os_version: '22.04'
+        146.235.44.240:
+          ansible_user: opc
+          ansible_ssh_private_key_file: /home/APRESENTACAO/ansible_automato/Beta_80_casa/inventory/ssh_keys/key_146_235_44_240
+          python_interpreters:
+            py39: /usr/bin/python3.9
+          ansible_python_interpreter: /usr/bin/python3.9
+          os_distribution: oracle
+          os_version: '9'
+      vars:
+        ansible_connection: ssh
+        ansible_port: 22
+    windows:
+      hosts: {}
+      vars:
+        ansible_connection: winrm
+        ansible_port: 5986
+        ansible_winrm_transport: ntlm
+        ansible_winrm_server_cert_validation: ignore

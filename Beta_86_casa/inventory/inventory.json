@@ -1,0 +1,64 @@
+{
+  "servers": [
+    {
+      "host": "64.181.166.159",
+      "ssh_user": "opc",
+      "ssh_pass": "",
+      "ssh_key_content": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAugEmT6O2f0XY3Jbd7K0afdtABer6eDkhd/2VZqnU620O/k0t\nymqvTNwm90yNzxcMWTjTZRbRioSX4/Yc8wR5tM9b6jg8Ejt4k04fhHv+FDLbXd5j\nVdncoVmkaMbJXakJrVASqfcvNksJt6IyVnZR+f3FsauO3eipt8OXBEwLj6+lvfRs\n0G5fC7iivyQOJfSTxcGEm7+oc9W+4EwQyzLZLT+dkexWePWuVRQXKJvNyhLbEk+m\nYWRrj3JvRhwe+kF/rpI3qTPSIQBbBMa9vZAXPqOpQJuUW+c7tXT5UdXPEFeii9zT\ndLU8m2V1LGGJWwt0bioyG8qqW9/fWH/ZvbUw2QIDAQABAoIBABAJBhZeyt6DRSA0\nPebX4AUqXAU+lg/7/eGIKiN2//D5Xo3oFariAmGWB6Jxdja8mg8NjfTksBUY2/bW\nOnXtZHgk2bvSFASu3ZTWavNrFJMFdOGtaMMnlGSRE7JIM+coCdpoASnnsklkE+8B\ns8T+L5BFk0/fNkJ1er8pxJjFXQhKkmWTKFOXuP/9yLMBcyZwFMmKZ+XAPwWQydYI\nEFlq/crLVtv5gNhRD9Hu/XePMku1qik3298vKFH/HUnEkrY4dhPLkR9H3mG5XmRl\n7grDwvIT/qLTZ4rJs3FkPdoLHQNIAhVS4cfJBdAOV+GnP8Dvf2azPTT3scUlnhRn\naQLeXfECgYEA+JtogdKLDcBIeS6VbtJ1MdywQqHeT7MlKIvNDt1Arqc0KfJ33Q+C\nxdHlKOIhBzRGBpqkttUubuAuVPBP2Bro0vKEGTQnOawxBQu6nHSB/DwaRZ6DwOM7\nyS99PPKLghCPtwW6h7KflZ8P5zavncdoABIFFxyjVwalLIOsptKz2ZECgYEAv4kp\nXarkuUGR94RlUIe8bbD8k3//y2LU389Ay66Y8gZxmQYkGHSA1FaJxxLYpLsgaskU\nMbSAi7CN/1i7gdNNiZcUqhm5z6VvGKH2aXH6xtAV+/+obJzpt2zofqbZSxKSlvng\nS86lAtJBkGJPbK/cghX2rW/ypY0AJZXiF83KfskCgYAilJto03x8IS7zjENE8wlS\nMjxiSFnABE864JdZZfVFVgSvgQajPTEXiyaxFSM6+U50RLZ8qBKZYZ2QOw0gJj4U\neZ9eUh7Sqtz2srb2ZE5gY4vT+0SgY/tA9NYa0DIPmXYkIyvbDEGeck2n/7dV3xLc\nT6VdnaIqzMXU90vguJZDwQKBgCAkbnKvmQ6VuF8nMrFe9foad2hxVIXXIg4lA6Sq\nujPzbODXLPuFoZEArMJhoUWTuY7yC5eDyQaoLEwrodvZj+uFFQyuoIX+JzSlCWsM\nm579kJLnhmYjtvz3I9UNPu3gQgVgDYnrNbnRevs15EpDAOg7s1fLr5akoN+t1XFV\nMaQxAoGAU1Yr9uM9oNW7b9+qBFVL7tAY6uFLtLuN1M+57MKMUkAlrMoUaPu9W/04\n26qZoQijt7eks3bodwWDz/RKHLaWjUSVDQ9/KgHESVw697626ZeJQYVoVOKtf6Hy\n9kNE2w8vjUj7SHWoWl18nuR5ZnQItQbQNmNjfWMqYTAdZRqoN5w=\n-----END RSA PRIVATE KEY-----",
+      "os": "linux",
+      "os_distribution": "oracle",
+      "os_version": "9",
+      "windows_password": ""
+    },
+    {
+      "host": "64.181.170.171",
+      "ssh_user": "opc",
+      "ssh_pass": "",
+      "ssh_key_content": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAugEmT6O2f0XY3Jbd7K0afdtABer6eDkhd/2VZqnU620O/k0t\nymqvTNwm90yNzxcMWTjTZRbRioSX4/Yc8wR5tM9b6jg8Ejt4k04fhHv+FDLbXd5j\nVdncoVmkaMbJXakJrVASqfcvNksJt6IyVnZR+f3FsauO3eipt8OXBEwLj6+lvfRs\n0G5fC7iivyQOJfSTxcGEm7+oc9W+4EwQyzLZLT+dkexWePWuVRQXKJvNyhLbEk+m\nYWRrj3JvRhwe+kF/rpI3qTPSIQBbBMa9vZAXPqOpQJuUW+c7tXT5UdXPEFeii9zT\ndLU8m2V1LGGJWwt0bioyG8qqW9/fWH/ZvbUw2QIDAQABAoIBABAJBhZeyt6DRSA0\nPebX4AUqXAU+lg/7/eGIKiN2//D5Xo3oFariAmGWB6Jxdja8mg8NjfTksBUY2/bW\nOnXtZHgk2bvSFASu3ZTWavNrFJMFdOGtaMMnlGSRE7JIM+coCdpoASnnsklkE+8B\ns8T+L5BFk0/fNkJ1er8pxJjFXQhKkmWTKFOXuP/9yLMBcyZwFMmKZ+XAPwWQydYI\nEFlq/crLVtv5gNhRD9Hu/XePMku1qik3298vKFH/HUnEkrY4dhPLkR9H3mG5XmRl\n7grDwvIT/qLTZ4rJs3FkPdoLHQNIAhVS4cfJBdAOV+GnP8Dvf2azPTT3scUlnhRn\naQLeXfECgYEA+JtogdKLDcBIeS6VbtJ1MdywQqHeT7MlKIvNDt1Arqc0KfJ33Q+C\nxdHlKOIhBzRGBpqkttUubuAuVPBP2Bro0vKEGTQnOawxBQu6nHSB/DwaRZ6DwOM7\nyS99PPKLghCPtwW6h7KflZ8P5zavncdoABIFFxyjVwalLIOsptKz2ZECgYEAv4kp\nXarkuUGR94RlUIe8bbD8k3//y2LU389Ay66Y8gZxmQYkGHSA1FaJxxLYpLsgaskU\nMbSAi7CN/1i7gdNNiZcUqhm5z6VvGKH2aXH6xtAV+/+obJzpt2zofqbZSxKSlvng\nS86lAtJBkGJPbK/cghX2rW/ypY0AJZXiF83KfskCgYAilJto03x8IS7zjENE8wlS\nMjxiSFnABE864JdZZfVFVgSvgQajPTEXiyaxFSM6+U50RLZ8qBKZYZ2QOw0gJj4U\neZ9eUh7Sqtz2srb2ZE5gY4vT+0SgY/tA9NYa0DIPmXYkIyvbDEGeck2n/7dV3xLc\nT6VdnaIqzMXU90vguJZDwQKBgCAkbnKvmQ6VuF8nMrFe9foad2hxVIXXIg4lA6Sq\nujPzbODXLPuFoZEArMJhoUWTuY7yC5eDyQaoLEwrodvZj+uFFQyuoIX+JzSlCWsM\nm579kJLnhmYjtvz3I9UNPu3gQgVgDYnrNbnRevs15EpDAOg7s1fLr5akoN+t1XFV\nMaQxAoGAU1Yr9uM9oNW7b9+qBFVL7tAY6uFLtLuN1M+57MKMUkAlrMoUaPu9W/04\n26qZoQijt7eks3bodwWDz/RKHLaWjUSVDQ9/KgHESVw697626ZeJQYVoVOKtf6Hy\n9kNE2w8vjUj7SHWoWl18nuR5ZnQItQbQNmNjfWMqYTAdZRqoN5w=\n-----END RSA PRIVATE KEY-----",
+      "os": "linux",
+      "os_distribution": "oracle",
+      "os_version": "9",
+      "windows_password": ""
+    },
+    {
+      "host": "136.248.126.236",
+      "ssh_user": "opc",
+      "ssh_pass": "",
+      "ssh_key_content": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAugEmT6O2f0XY3Jbd7K0afdtABer6eDkhd/2VZqnU620O/k0t\nymqvTNwm90yNzxcMWTjTZRbRioSX4/Yc8wR5tM9b6jg8Ejt4k04fhHv+FDLbXd5j\nVdncoVmkaMbJXakJrVASqfcvNksJt6IyVnZR+f3FsauO3eipt8OXBEwLj6+lvfRs\n0G5fC7iivyQOJfSTxcGEm7+oc9W+4EwQyzLZLT+dkexWePWuVRQXKJvNyhLbEk+m\nYWRrj3JvRhwe+kF/rpI3qTPSIQBbBMa9vZAXPqOpQJuUW+c7tXT5UdXPEFeii9zT\ndLU8m2V1LGGJWwt0bioyG8qqW9/fWH/ZvbUw2QIDAQABAoIBABAJBhZeyt6DRSA0\nPebX4AUqXAU+lg/7/eGIKiN2//D5Xo3oFariAmGWB6Jxdja8mg8NjfTksBUY2/bW\nOnXtZHgk2bvSFASu3ZTWavNrFJMFdOGtaMMnlGSRE7JIM+coCdpoASnnsklkE+8B\ns8T+L5BFk0/fNkJ1er8pxJjFXQhKkmWTKFOXuP/9yLMBcyZwFMmKZ+XAPwWQydYI\nEFlq/crLVtv5gNhRD9Hu/XePMku1qik3298vKFH/HUnEkrY4dhPLkR9H3mG5XmRl\n7grDwvIT/qLTZ4rJs3FkPdoLHQNIAhVS4cfJBdAOV+GnP8Dvf2azPTT3scUlnhRn\naQLeXfECgYEA+JtogdKLDcBIeS6VbtJ1MdywQqHeT7MlKIvNDt1Arqc0KfJ33Q+C\nxdHlKOIhBzRGBpqkttUubuAuVPBP2Bro0vKEGTQnOawxBQu6nHSB/DwaRZ6DwOM7\nyS99PPKLghCPtwW6h7KflZ8P5zavncdoABIFFxyjVwalLIOsptKz2ZECgYEAv4kp\nXarkuUGR94RlUIe8bbD8k3//y2LU389Ay66Y8gZxmQYkGHSA1FaJxxLYpLsgaskU\nMbSAi7CN/1i7gdNNiZcUqhm5z6VvGKH2aXH6xtAV+/+obJzpt2zofqbZSxKSlvng\nS86lAtJBkGJPbK/cghX2rW/ypY0AJZXiF83KfskCgYAilJto03x8IS7zjENE8wlS\nMjxiSFnABE864JdZZfVFVgSvgQajPTEXiyaxFSM6+U50RLZ8qBKZYZ2QOw0gJj4U\neZ9eUh7Sqtz2srb2ZE5gY4vT+0SgY/tA9NYa0DIPmXYkIyvbDEGeck2n/7dV3xLc\nT6VdnaIqzMXU90vguJZDwQKBgCAkbnKvmQ6VuF8nMrFe9foad2hxVIXXIg4lA6Sq\nujPzbODXLPuFoZEArMJhoUWTuY7yC5eDyQaoLEwrodvZj+uFFQyuoIX+JzSlCWsM\nm579kJLnhmYjtvz3I9UNPu3gQgVgDYnrNbnRevs15EpDAOg7s1fLr5akoN+t1XFV\nMaQxAoGAU1Yr9uM9oNW7b9+qBFVL7tAY6uFLtLuN1M+57MKMUkAlrMoUaPu9W/04\n26qZoQijt7eks3bodwWDz/RKHLaWjUSVDQ9/KgHESVw697626ZeJQYVoVOKtf6Hy\n9kNE2w8vjUj7SHWoWl18nuR5ZnQItQbQNmNjfWMqYTAdZRqoN5w=\n-----END RSA PRIVATE KEY-----",
+      "os": "linux",
+      "os_distribution": "oracle",
+      "os_version": "9",
+      "windows_password": ""
+    },
+    {
+      "host": "127.0.0.1",
+      "ssh_user": "ubuntu",
+      "ssh_pass": "ubuntu",
+      "ssh_key_content": "",
+      "os": "linux",
+      "os_distribution": "ubuntu",
+      "os_version": "22.04",
+      "windows_password": ""
+    },
+    {
+      "host": "164.152.61.250",
+      "ssh_user": "opc",
+      "ssh_pass": "",
+      "ssh_key_content": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAugEmT6O2f0XY3Jbd7K0afdtABer6eDkhd/2VZqnU620O/k0t\nymqvTNwm90yNzxcMWTjTZRbRioSX4/Yc8wR5tM9b6jg8Ejt4k04fhHv+FDLbXd5j\nVdncoVmkaMbJXakJrVASqfcvNksJt6IyVnZR+f3FsauO3eipt8OXBEwLj6+lvfRs\n0G5fC7iivyQOJfSTxcGEm7+oc9W+4EwQyzLZLT+dkexWePWuVRQXKJvNyhLbEk+m\nYWRrj3JvRhwe+kF/rpI3qTPSIQBbBMa9vZAXPqOpQJuUW+c7tXT5UdXPEFeii9zT\ndLU8m2V1LGGJWwt0bioyG8qqW9/fWH/ZvbUw2QIDAQABAoIBABAJBhZeyt6DRSA0\nPebX4AUqXAU+lg/7/eGIKiN2//D5Xo3oFariAmGWB6Jxdja8mg8NjfTksBUY2/bW\nOnXtZHgk2bvSFASu3ZTWavNrFJMFdOGtaMMnlGSRE7JIM+coCdpoASnnsklkE+8B\ns8T+L5BFk0/fNkJ1er8pxJjFXQhKkmWTKFOXuP/9yLMBcyZwFMmKZ+XAPwWQydYI\nEFlq/crLVtv5gNhRD9Hu/XePMku1qik3298vKFH/HUnEkrY4dhPLkR9H3mG5XmRl\n7grDwvIT/qLTZ4rJs3FkPdoLHQNIAhVS4cfJBdAOV+GnP8Dvf2azPTT3scUlnhRn\naQLeXfECgYEA+JtogdKLDcBIeS6VbtJ1MdywQqHeT7MlKIvNDt1Arqc0KfJ33Q+C\nxdHlKOIhBzRGBpqkttUubuAuVPBP2Bro0vKEGTQnOawxBQu6nHSB/DwaRZ6DwOM7\nyS99PPKLghCPtwW6h7KflZ8P5zavncdoABIFFxyjVwalLIOsptKz2ZECgYEAv4kp\nXarkuUGR94RlUIe8bbD8k3//y2LU389Ay66Y8gZxmQYkGHSA1FaJxxLYpLsgaskU\nMbSAi7CN/1i7gdNNiZcUqhm5z6VvGKH2aXH6xtAV+/+obJzpt2zofqbZSxKSlvng\nS86lAtJBkGJPbK/cghX2rW/ypY0AJZXiF83KfskCgYAilJto03x8IS7zjENE8wlS\nMjxiSFnABE864JdZZfVFVgSvgQajPTEXiyaxFSM6+U50RLZ8qBKZYZ2QOw0gJj4U\neZ9eUh7Sqtz2srb2ZE5gY4vT+0SgY/tA9NYa0DIPmXYkIyvbDEGeck2n/7dV3xLc\nT6VdnaIqzMXU90vguJZDwQKBgCAkbnKvmQ6VuF8nMrFe9foad2hxVIXXIg4lA6Sq\nujPzbODXLPuFoZEArMJhoUWTuY7yC5eDyQaoLEwrodvZj+uFFQyuoIX+JzSlCWsM\nm579kJLnhmYjtvz3I9UNPu3gQgVgDYnrNbnRevs15EpDAOg7s1fLr5akoN+t1XFV\nMaQxAoGAU1Yr9uM9oNW7b9+qBFVL7tAY6uFLtLuN1M+57MKMUkAlrMoUaPu9W/04\n26qZoQijt7eks3bodwWDz/RKHLaWjUSVDQ9/KgHESVw697626ZeJQYVoVOKtf6Hy\n9kNE2w8vjUj7SHWoWl18nuR5ZnQItQbQNmNjfWMqYTAdZRqoN5w=\n-----END RSA PRIVATE KEY-----",
+      "os": "linux",
+      "os_distribution": "oracle",
+      "os_version": "9",
+      "windows_password": ""
+    },
+    {
+      "host": "144.22.222.19",
+      "ssh_user": "opc",
+      "ssh_pass": "",
+      "ssh_key_content": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAugEmT6O2f0XY3Jbd7K0afdtABer6eDkhd/2VZqnU620O/k0t\nymqvTNwm90yNzxcMWTjTZRbRioSX4/Yc8wR5tM9b6jg8Ejt4k04fhHv+FDLbXd5j\nVdncoVmkaMbJXakJrVASqfcvNksJt6IyVnZR+f3FsauO3eipt8OXBEwLj6+lvfRs\n0G5fC7iivyQOJfSTxcGEm7+oc9W+4EwQyzLZLT+dkexWePWuVRQXKJvNyhLbEk+m\nYWRrj3JvRhwe+kF/rpI3qTPSIQBbBMa9vZAXPqOpQJuUW+c7tXT5UdXPEFeii9zT\ndLU8m2V1LGGJWwt0bioyG8qqW9/fWH/ZvbUw2QIDAQABAoIBABAJBhZeyt6DRSA0\nPebX4AUqXAU+lg/7/eGIKiN2//D5Xo3oFariAmGWB6Jxdja8mg8NjfTksBUY2/bW\nOnXtZHgk2bvSFASu3ZTWavNrFJMFdOGtaMMnlGSRE7JIM+coCdpoASnnsklkE+8B\ns8T+L5BFk0/fNkJ1er8pxJjFXQhKkmWTKFOXuP/9yLMBcyZwFMmKZ+XAPwWQydYI\nEFlq/crLVtv5gNhRD9Hu/XePMku1qik3298vKFH/HUnEkrY4dhPLkR9H3mG5XmRl\n7grDwvIT/qLTZ4rJs3FkPdoLHQNIAhVS4cfJBdAOV+GnP8Dvf2azPTT3scUlnhRn\naQLeXfECgYEA+JtogdKLDcBIeS6VbtJ1MdywQqHeT7MlKIvNDt1Arqc0KfJ33Q+C\nxdHlKOIhBzRGBpqkttUubuAuVPBP2Bro0vKEGTQnOawxBQu6nHSB/DwaRZ6DwOM7\nyS99PPKLghCPtwW6h7KflZ8P5zavncdoABIFFxyjVwalLIOsptKz2ZECgYEAv4kp\nXarkuUGR94RlUIe8bbD8k3//y2LU389Ay66Y8gZxmQYkGHSA1FaJxxLYpLsgaskU\nMbSAi7CN/1i7gdNNiZcUqhm5z6VvGKH2aXH6xtAV+/+obJzpt2zofqbZSxKSlvng\nS86lAtJBkGJPbK/cghX2rW/ypY0AJZXiF83KfskCgYAilJto03x8IS7zjENE8wlS\nMjxiSFnABE864JdZZfVFVgSvgQajPTEXiyaxFSM6+U50RLZ8qBKZYZ2QOw0gJj4U\neZ9eUh7Sqtz2srb2ZE5gY4vT+0SgY/tA9NYa0DIPmXYkIyvbDEGeck2n/7dV3xLc\nT6VdnaIqzMXU90vguJZDwQKBgCAkbnKvmQ6VuF8nMrFe9foad2hxVIXXIg4lA6Sq\nujPzbODXLPuFoZEArMJhoUWTuY7yC5eDyQaoLEwrodvZj+uFFQyuoIX+JzSlCWsM\nm579kJLnhmYjtvz3I9UNPu3gQgVgDYnrNbnRevs15EpDAOg7s1fLr5akoN+t1XFV\nMaQxAoGAU1Yr9uM9oNW7b9+qBFVL7tAY6uFLtLuN1M+57MKMUkAlrMoUaPu9W/04\n26qZoQijt7eks3bodwWDz/RKHLaWjUSVDQ9/KgHESVw697626ZeJQYVoVOKtf6Hy\n9kNE2w8vjUj7SHWoWl18nuR5ZnQItQbQNmNjfWMqYTAdZRqoN5w=\n-----END RSA PRIVATE KEY-----",
+      "os": "linux",
+      "os_distribution": "oracle",
+      "os_version": "9",
+      "windows_password": ""
+    }
+  ]
+}

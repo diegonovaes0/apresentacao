@@ -1,0 +1,202 @@
+- name: Install and Configure Site24x7 Windows Agent
+  hosts: windows
+  gather_facts: true
+  vars:
+    installer_url: "https://staticdownloads.site24x7.com/server/Site24x7WindowsAgent.msi"
+    download_path: "C:\\Temp\\Site24x7WindowsAgent.msi"
+    log_path: "C:\\Temp\\site24x7_install.log"
+    agent_bin_path: "C:\\Program Files (x86)\\Site24x7\\WinAgent\\monitoring\\bin"
+    # Substitua pelo Device Key do seu portal Site24x7
+    device_key: "us_0216ce8dbb4b1913045cc79ee1370c74"
+  tasks:
+    # === FASE 1: INSTALAÇÃO BÁSICA (código original sem modificação) ===
+    - name: Ensure Temp directory exists
+      win_file:
+        path: C:\\Temp
+        state: directory
+      tags: 24x7
+    - name: Download Site24x7 Agent
+      win_get_url:
+        url: "{{ installer_url }}"
+        dest: "{{ download_path }}"
+        validate_certs: yes
+        force: yes
+      tags: 24x7
+    - name: Stop Site24x7 services if running
+      win_service:
+        name: "{{ item }}"
+        state: stopped
+      ignore_errors: yes
+      with_items:
+        - Site24x7WindowsAgent
+        - Site24x7WindowsAgentTrayIcon
+      tags: 24x7
+    - name: Uninstall existing Site24x7 Agent
+      win_package:
+        path: "{{ download_path }}"
+        state: absent
+        arguments: /qn
+      ignore_errors: yes
+      tags: 24x7
+    - name: Wait after uninstallation
+      win_wait_for:
+        timeout: 30
+      tags: 24x7
+    - name: Remove remaining files and folders
+      win_file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "C:\\Program Files (x86)\\Site24x7"
+        - "{{ agent_bin_path }}\\config.dat"
+        - "{{ agent_bin_path }}\\agentconfig.txt"
+      ignore_errors: yes
+      tags: 24x7
+    - name: Install Site24x7 Agent with parameters
+      win_package:
+        path: "{{ download_path }}"
+        state: present
+        arguments: >-
+          EDITA1={{ device_key }}
+          ENABLESILENT=YES
+          REBOOT=ReallySuppress
+          /qn
+      register: install_result
+      tags: 24x7
+    - name: Wait for installation
+      win_wait_for:
+        timeout: 60
+      tags: 24x7
+    # === FASE 2: CONFIGURAÇÃO DO MÓDULO DE AUTOMAÇÃO ===
+    
+    # Verificar se a instalação criou a estrutura de diretórios
+    - name: Verificar se a instalação foi bem-sucedida
+      win_stat:
+        path: "C:\\Program Files (x86)\\Site24x7\\WinAgent"
+      register: install_dir
+      tags: 24x7
+    # Configurar AUTOMATION no registro Windows
+    - name: Configurar módulo de automação no registro
+      win_regedit:
+        path: HKLM:\SOFTWARE\Wow6432Node\ManageEngine\Site24x7WindowsAgent
+        name: "{{ item.name }}"
+        data: "{{ item.value }}"
+        type: "{{ item.type }}"
+        state: present
+      with_items:
+        - { name: 'AUTOMATION', value: '1', type: 'string' }
+        - { name: 'CHECKBOXA1', value: '1', type: 'string' }
+        - { name: 'CHECKBOXA2', value: '1', type: 'string' }
+        - { name: 'CHECKBOXA3', value: '1', type: 'string' }
+      when: install_dir.stat.exists
+      ignore_errors: yes
+      tags: 24x7
+    # Criar ou modificar arquivo de configuração específico para automação
+    - name: Configurar arquivo de automação
+      win_shell: |
+        # Criar diretório de configuração se não existir
+        if (-not (Test-Path "C:\Program Files (x86)\Site24x7\WinAgent\config")) {
+          New-Item -Path "C:\Program Files (x86)\Site24x7\WinAgent\config" -ItemType Directory -Force | Out-Null
+        }
+        
+        # Criar arquivo de configuração de automação
+        @"
+        AUTOMATION=1
+        ENABLED=true
+        "@ | Out-File -FilePath "C:\Program Files (x86)\Site24x7\WinAgent\config\automation.conf" -Encoding ASCII -Force
+        
+        # Verificar se há arquivos de configuração existentes para modificar
+        $configFiles = Get-ChildItem -Path "C:\Program Files (x86)\Site24x7\WinAgent" -Filter "*.txt" -Recurse
+        foreach ($file in $configFiles) {
+          $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
+          if ($content) {
+            $modified = $false
+            
+            if ($content -match "AUTOMATION=0") {
+              $content = $content -replace "AUTOMATION=0", "AUTOMATION=1"
+              $modified = $true
+            } elseif ($content -notmatch "AUTOMATION=1") {
+              $content += "`nAUTOMATION=1"
+              $modified = $true
+            }
+            
+            if ($modified) {
+              Set-Content -Path $file.FullName -Value $content -Force
+              Write-Output "Modificado arquivo: $($file.FullName)"
+            }
+          }
+        }
+      when: install_dir.stat.exists
+      ignore_errors: yes
+      tags: 24x7
+    - name: Ensure Site24x7 services are running
+      win_service:
+        name: "{{ item }}"
+        state: started
+        start_mode: auto
+      ignore_errors: yes
+      with_items:
+        - Site24x7WindowsAgent
+        - Site24x7WindowsAgentTrayIcon
+        - "Site24x7 Windows Agent"
+        - "Site24x7 Agent Helper"
+        - "Site24x7 Plugin Agent"
+      tags: 24x7
+    - name: Run RestartAgentService if needed
+      win_shell: |
+        $restartTool = "{{ agent_bin_path }}\\RestartAgentService.exe"
+        if (Test-Path $restartTool) {
+          Write-Output "Reiniciando serviços do Site24x7..."
+          Set-Location "{{ agent_bin_path }}"
+          .\RestartAgentService.exe
+        } else {
+          Write-Output "Ferramenta RestartAgentService.exe não encontrada em $restartTool"
+          
+          # Método alternativo: parar e iniciar serviços
+          Get-Service | Where-Object {$_.Name -like "*Site24x7*"} | ForEach-Object {
+            try {
+              Write-Output "Reiniciando serviço: $($_.Name)"
+              Restart-Service -Name $_.Name -Force -ErrorAction SilentlyContinue
+            } catch {
+              Write-Output "Erro ao reiniciar serviço $($_.Name): $($_.Exception.Message)"
+            }
+          }
+        }
+      ignore_errors: yes
+      tags: 24x7
+    - name: Wait for service restart
+      win_wait_for:
+        timeout: 30
+      tags: 24x7
+    - name: Verificar status dos serviços após reinício
+      win_shell: |
+        Get-Service | Where-Object {$_.Name -like "*Site24x7*"} | 
+        Select-Object Name, DisplayName, Status
+      register: services_status
+      ignore_errors: yes
+      tags: 24x7
+    - name: Exibir status dos serviços
+      debug:
+        var: services_status.stdout_lines
+      ignore_errors: yes
+      tags: 24x7
+    - name: Cleanup installation files
+      win_file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ download_path }}"
+        - "{{ log_path }}"
+      tags: 24x7
+    # Tentar abrir a interface
+    - name: Abrir a interface do Site24x7
+      win_shell: |
+        $trayIcon = "C:\Program Files (x86)\Site24x7\WinAgent\monitoring\bin\Site24x7WindowsAgentTrayIcon.exe"
+        if (Test-Path $trayIcon) {
+          Start-Process -FilePath $trayIcon -WindowStyle Normal
+          Write-Output "Interface do Site24x7 iniciada"
+        } else {
+          Write-Output "Executável da interface não encontrado em $trayIcon"
+        }
+      ignore_errors: yes
+      tags: site24x7  

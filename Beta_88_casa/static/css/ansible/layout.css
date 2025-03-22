@@ -1,0 +1,389 @@
+/* layout.css */
+
+/* Usando suas cores definidas */
+:root {
+  /* Cores base do inventário */
+  --black-absolute: #000000;
+  --black-rich: #030303;
+  --black-elegant: #0A0A0A;
+  --black-pearl: #121212;
+  --black-smoke: #1A1A1A;
+  --gray-dark: #2A2A2A;
+  
+  /* Cores de acento */
+  --accent-gold: #FFD600;
+  --accent-gold-hover: #FFE033;
+  
+  /* Texto */
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+  --text-tertiary: #808080;
+  
+  /* Estados e mensagens */
+  --success-green: #2E7D32;
+  --error-red: #C62828;
+  --warning-orange: #FF9800;
+  
+  /* Sombras */
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-dark: rgba(0, 0, 0, 0.8);
+  --shadow-subtle: rgba(0, 0, 0, 0.4);
+  
+  /* Outras variáveis */
+  --bg-primary: var(--black-rich);
+  --bg-secondary: var(--black-smoke);
+  --bg-tertiary: var(--black-elegant);
+  --bg-dark: var(--black-absolute);
+  --text-dark: var(--black-absolute);
+  --text-light: var(--text-primary);
+  --border-color: var(--gray-dark);
+}
+
+/* Container principal */
+.ansible-container {
+width: 100%;
+padding: 20px;
+font-family: 'Inter', 'Arial', sans-serif;
+color: var(--text-primary);
+box-sizing: border-box;
+background: var(--black-pearl);
+border-radius: 10px;
+box-shadow: var(--shadow-md);
+min-height: calc(100vh - 56px); /* Ajuste para o footer */
+}
+
+/* Reset de estilos básicos */
+.ansible-container * {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+/* Layout de duas colunas - Sem rolagem */
+.ansible-layout {
+display: flex;
+gap: 20px;
+width: 100%;
+margin-bottom: 20px;
+flex-wrap: wrap; /* Permite adaptação em telas menores */
+}
+
+/* Seção de playbooks - Sem barra de rolagem */
+.ansible-playbooks {
+flex: 0 0 35%;
+min-width: 320px;
+background: var(--black-smoke);
+padding: 16px;
+border-radius: 8px;
+border: 1px solid var(--black-elegant);
+box-shadow: var(--shadow-md);
+position: relative;
+/* Sem overflow-y ou max-height para evitar rolagem */
+}
+
+/* Seção de execução - Sem barra de rolagem */
+.ansible-execution {
+flex: 1;
+background: var(--black-smoke);
+padding: 16px;
+border-radius: 8px;
+border: 1px solid var(--black-elegant);
+box-shadow: var(--shadow-md);
+/* Sem overflow-y ou max-height para evitar rolagem */
+}
+
+/* Área de saída ajustada para expansão completa */
+.ansible-output.manual-toggle.visible {
+font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+background: var(--black-pearl);
+color: var(--text-secondary);
+padding: 20px;
+font-size: 16px;
+line-height: 1.8;
+white-space: pre-wrap;
+display: block;
+border-top: 1px solid var(--gray-dark);
+box-shadow: inset 0 5px 10px var(--shadow-subtle);
+position: relative;
+z-index: 5;
+width: 100%;
+height: auto; /* Expande conforme o conteúdo */
+}
+
+/* Estilos para o cabeçalho fixo */
+.ansible-fixed-header {
+position: sticky;
+top: 0;
+z-index: 100;
+background: var(--bg-primary);
+padding: 10px 20px;
+border-bottom: 1px solid var(--border-color);
+box-shadow: 0 2px 5px var(--shadow-subtle);
+transition: padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ansible-fixed-header.scrolled {
+padding: 5px 20px;
+box-shadow: 0 3px 10px var(--shadow-dark);
+}
+
+.ansible-fixed-content {
+display: flex;
+justify-content: space-between;
+align-items: center;
+max-width: 100%;
+padding: 0;
+}
+
+/* Contador de seleção */
+.ansible-selection-counter {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 8px 12px;
+background: var(--bg-secondary);
+border-radius: 6px;
+border: 1px solid var(--border-color);
+}
+
+.ansible-counter-item {
+display: flex;
+align-items: center;
+gap: 5px;
+font-size: 14px;
+color: var(--text-secondary);
+}
+
+.ansible-counter-badge {
+padding: 3px 8px;
+border-radius: 12px;
+font-size: 12px;
+font-weight: bold;
+background: var(--accent-gold);
+color: var(--text-dark);
+}
+
+.ansible-counter-badge.empty {
+background: var(--error-red);
+color: var(--text-primary);
+}
+
+/* Ações fixas */
+.ansible-actions-fixed {
+display: flex;
+gap: 10px;
+}
+
+/* Filtro avançado */
+.ansible-advanced-filter {
+display: flex;
+gap: 12px;
+padding: 10px;
+background: var(--bg-tertiary);
+border-radius: 6px;
+border: 1px solid var(--border-color);
+margin-top: 10px;
+flex-wrap: nowrap;
+overflow-x: auto;
+}
+
+.ansible-filter-group {
+flex: 1;
+min-width: 180px;
+}
+
+.filter-label {
+display: block;
+font-size: 12px;
+margin-bottom: 4px;
+color: var(--text-secondary);
+}
+
+.ansible-select-container {
+position: relative;
+}
+
+.ansible-select-container::after {
+content: "";
+position: absolute;
+right: 10px;
+top: 50%;
+transform: translateY(-50%);
+border-left: 5px solid transparent;
+border-right: 5px solid transparent;
+border-top: 5px solid var(--accent-gold);
+pointer-events: none;
+}
+
+.ansible-select {
+width: 100%;
+padding: 8px 30px 8px 10px;
+border-radius: 4px;
+border: 1px solid var(--border-color);
+background: var(--bg-secondary);
+color: var(--text-primary);
+font-size: 14px;
+appearance: none;
+transition: border-color 0.2s ease;
+}
+
+.ansible-select:focus {
+outline: none;
+border-color: var(--accent-gold);
+box-shadow: 0 0 0 2px rgba(255, 214, 0, 0.2);
+}
+
+/* Contador de playbooks */
+.playbooks-counter {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px 15px;
+background: var(--bg-secondary);
+border-radius: 6px;
+margin-bottom: 15px;
+font-size: 14px;
+color: var(--text-secondary);
+}
+
+.playbooks-counter .count {
+font-weight: bold;
+color: var(--text-primary);
+}
+
+/* Tooltip para o contador */
+.ansible-counter-tooltip {
+position: relative;
+cursor: help;
+}
+
+.ansible-counter-tooltip:hover::after {
+content: attr(data-tooltip);
+position: absolute;
+top: 100%;
+left: 50%;
+transform: translateX(-50%);
+padding: 5px 10px;
+border-radius: 4px;
+background: var(--bg-dark);
+color: var(--text-light);
+font-size: 12px;
+white-space: nowrap;
+z-index: 10;
+margin-top: 5px;
+}
+
+/* Modal Site24x7 */
+.device-key-modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.75);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+.device-key-tabs {
+display: flex;
+border-bottom: 1px solid var(--border-color);
+margin-bottom: 20px;
+}
+
+.device-key-tab {
+padding: 10px 15px;
+cursor: pointer;
+color: var(--text-secondary);
+background: transparent;
+border: none;
+border-bottom: 2px solid transparent;
+transition: all 0.2s ease;
+}
+
+.device-key-tab.active {
+color: var(--accent-gold);
+border-bottom-color: var(--accent-gold);
+font-weight: bold;
+}
+
+.device-key-panel {
+display: none;
+}
+
+.device-key-panel.active {
+display: block;
+}
+
+.device-key-cards {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 12px;
+margin-bottom: 20px;
+}
+
+.device-key-card {
+border: 1px solid var(--border-color);
+border-radius: 6px;
+padding: 15px;
+cursor: pointer;
+transition: transform 0.2s ease, border-color 0.2s ease;
+background: var(--bg-secondary);
+}
+
+.device-key-card:hover {
+transform: translateY(-2px);
+border-color: var(--accent-gold);
+box-shadow: 0 2px 8px var(--shadow-subtle);
+}
+
+.device-key-card.selected {
+border-color: var(--accent-gold);
+background: rgba(255, 214, 0, 0.1);
+}
+
+.device-key-card h4 {
+margin: 0 0 10px 0;
+color: var(--text-primary);
+}
+
+.device-key-card .key-value {
+font-family: monospace;
+background: var(--bg-tertiary);
+padding: 5px 8px;
+border-radius: 4px;
+font-size: 12px;
+color: var(--text-secondary);
+}
+
+.device-key-card .key-region {
+margin-top: 10px;
+font-size: 12px;
+color: var(--text-tertiary);
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+.ansible-layout {
+  flex-direction: column;
+}
+
+.ansible-playbooks,
+.ansible-execution {
+  flex: 1 1 100%;
+  width: 100%;
+  margin-bottom: 12px;
+}
+}
+
+@media (max-width: 768px) {
+.ansible-container {
+  padding: 10px;
+}
+
+.ansible-fixed-header {
+  padding: 5px 10px;
+}
+}

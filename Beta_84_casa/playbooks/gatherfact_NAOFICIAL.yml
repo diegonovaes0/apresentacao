@@ -1,0 +1,32 @@
+- name: Coletar Informações do Host
+  hosts: all
+  connection: local
+  gather_facts: yes
+
+  tasks:
+    - name: Coletar informações básicas do sistema
+      ansible.builtin.setup:
+      register: ansible_facts
+
+    - name: Formatar informações do sistema
+      ansible.builtin.set_fact:
+        system_info: "{{ ansible_distribution }} {{ ansible_distribution_version }} ({{ ansible_os_family }})"
+
+    - name: Obter IP Público
+      ansible.builtin.uri:
+        url: https://api.ipify.org
+        return_content: yes
+      register: public_ip
+      ignore_errors: yes
+
+    - name: Criar JSON com informações
+      ansible.builtin.set_fact:
+        host_details:
+          hostname: "{{ ansible_hostname }}"
+          private_ip: "{{ ansible_default_ipv4.address | default('N/A') }}"
+          public_ip: "{{ public_ip.content | default('N/A') }}"
+          system: "{{ system_info }}"
+
+    - name: Debug informações coletadas
+      ansible.builtin.debug:
+        var: host_details

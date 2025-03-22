@@ -1,0 +1,11 @@
+---
+all:
+  children:   
+    windows:
+      hosts:
+        137.131.161.91:
+          ansible_user: _admin-skyone
+          ansible_password: '7Po9$06xQ00ANB'
+      vars:
+        ansible_connection: winrm
+        ansible_winrm_server_cert_validation: ignore

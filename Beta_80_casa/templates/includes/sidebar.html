@@ -1,0 +1,264 @@
+<body>
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+    </div>
+    <aside class="sidebar">
+        <!-- Sidebar Header -->
+        <header class="sidebar-header">
+            <div class="logo-container">
+                <svg class="automation-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M256 32l192 96v256l-192 96-192-96V128l192-96zM96 161.6v188.8L256 432l160-81.6V161.6L256 80 96 161.6z"/>
+                    <path d="M256 432V80M96 161.6l160 81.6 160-81.6M416 350.4L256 268.8 96 350.4"/>
+                    <circle cx="256" cy="80" r="16"/>
+                    <circle cx="256" cy="432" r="16"/>
+                    <circle cx="96" cy="161.6" r="16"/>
+                    <circle cx="416" cy="161.6" r="16"/>
+                    <circle cx="96" cy="350.4" r="16"/>
+                    <circle cx="416" cy="350.4" r="16"/>
+                    <circle cx="256" cy="256" r="32"/>
+                </svg>
+                <span class="logo-text">Automato</span>
+            </div>
+            <button id="sidebar-toggle" aria-label="Toggle Sidebar">
+                <i class="ri-arrow-left-s-line"></i>
+            </button>
+        </header>
+
+        <!-- Main Navigation -->
+        <nav class="menu">
+            <!-- Principal Section -->
+            <h2 class="menu-header"></h2>
+            <div class="menu-item">
+                <a href="{{ url_for('module_page', module='dashboard', submodule='dashboard') }}">
+                    <span class="menu-icon"><i class="ri-dashboard-fill"></i></span>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+            </div>
+
+            <!-- Service Delivery Section -->
+            <h2 class="menu-header service-delivery">Service Delivery</h2>
+
+            <!-- Ansible -->
+            <div class="menu-item">
+                <a href="#" class="has-submenu" aria-expanded="false">
+                    <span class="menu-icon tech-icon ansible-icon">
+                        <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.156 15.297l6.25 4.927-4.141-10.214zM16 0c-8.839 0-16 7.161-16 16s7.161 16 16 16c8.839 0 16-7.161 16-16s-7.161-16-16-16zM23.729 23.073c-0.016 0.63-0.536 1.125-1.167 1.109-0.313 0-0.552-0.12-0.885-0.391l-8.255-6.667-2.771 6.938h-2.396l6.995-16.807c0.167-0.422 0.568-0.693 1.021-0.677 0.432-0.016 0.839 0.25 0.99 0.677l6.365 15.323c0.057 0.151 0.104 0.313 0.104 0.464 0 0.010 0 0.010 0 0.031z"/>
+                        </svg>
+                    </span>
+                    <span class="menu-text">Ansible</span>
+                    <i class="ri-arrow-right-s-line menu-arrow"></i>
+                </a>
+                <div class="submenu">
+                    <div class="menu-item">
+                        <a href="{{ url_for('module_page', module='inventory', submodule='core_inventory') }}">
+                            <span class="menu-icon"><i class="ri-list-check"></i></span>
+                            <span class="menu-text">Inventário</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{ url_for('module_page', module='ansible', submodule='playbooks') }}">
+                            <span class="menu-icon"><i class="ri-book-2-fill"></i></span>
+                            <span class="menu-text">Playbooks</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Terraform -->
+            <div class="menu-item">
+                <a href="#" class="has-submenu" aria-expanded="false">
+                    <span class="menu-icon tech-icon terraform-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M21 5.4v6.4L15.4 15V8.7L21 5.4m-6.2 4.1V15l-5.6-3.2V5.4l5.6 4.1m0 6.8v6.4l-5.6-3.2v-6.4l5.6 3.2M8.6 5.4v6.4L3 8.7V2.2l5.6 3.2Z"/>
+                        </svg>
+                    </span>
+                    <span class="menu-text">Terraform</span>
+                    <i class="ri-arrow-right-s-line menu-arrow"></i>
+                </a>
+                <div class="submenu">
+                    <div class="menu-item">
+                        <a href="{{ url_for('module_page', module='terraform', submodule='modules') }}">
+                            <span class="menu-icon"><i class="ri-code-box-fill"></i></span>
+                            <span class="menu-text">Módulos</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{ url_for('module_page', module='terraform', submodule='states') }}">
+                            <span class="menu-icon"><i class="ri-database-2-fill"></i></span>
+                            <span class="menu-text">Estados</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{ url_for('module_page', module='terraform', submodule='workspaces') }}">
+                            <span class="menu-icon"><i class="ri-tools-fill"></i></span>
+                            <span class="menu-text">Workspaces</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Python -->
+            <div class="menu-item">
+                <a href="#" class="has-submenu" aria-expanded="false">
+                    <span class="menu-icon tech-icon python-icon">
+                        <svg viewBox="0 0 256 255" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072zM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13z"/>
+                            <path d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.518 33.897zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13z"/>
+                        </svg>
+                    </span>
+                    <span class="menu-text">Python</span>
+                    <i class="ri-arrow-right-s-line menu-arrow"></i>
+                </a>
+                <div class="submenu">
+                    <div class="menu-item">
+                        <a href="#" class="has-submenu" aria-expanded="false">
+                            <span class="menu-icon"><i class="ri-braces-fill"></i></span>
+                            <span class="menu-text">Scripts</span>
+                            <i class="ri-arrow-right-s-line menu-arrow"></i>
+                        </a>
+                        <div class="submenu">
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='python', submodule='scripts_automation_web') }}">
+                                    <span class="menu-icon"><i class="ri-chrome-fill"></i></span>
+                                    <span class="menu-text">Automação Web</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='python', submodule='scripts_processing') }}">
+                                    <span class="menu-icon"><i class="ri-server-fill"></i></span>
+                                    <span class="menu-text">Processamento</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='python', submodule='scripts_apis') }}">
+                                    <span class="menu-icon"><i class="ri-terminal-window-fill"></i></span>
+                                    <span class="menu-text">APIs</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{ url_for('module_page', module='python', submodule='modules') }}">
+                            <span class="menu-icon"><i class="ri-code-box-fill"></i></span>
+                            <span class="menu-text">Módulos</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{ url_for('module_page', module='python', submodule='libraries') }}">
+                            <span class="menu-icon"><i class="ri-ubuntu-fill"></i></span>
+                            <span class="menu-text">Bibliotecas</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentação -->
+            <div class="menu-item">
+                <a href="#" class="has-submenu" aria-expanded="false">
+                    <span class="menu-icon">
+                        <i class="ri-file-text-fill"></i>
+                    </span>
+                    <span class="menu-text">Documentação</span>
+                    <i class="ri-arrow-right-s-line menu-arrow"></i>
+                </a>
+                <div class="submenu">
+                    <!-- Python Docs -->
+                    <div class="menu-item">
+                        <a href="#" class="has-submenu" aria-expanded="false">
+                            <span class="menu-icon"><i class="ri-file-text-line"></i></span>
+                            <span class="menu-text">Python Docs</span>
+                            <i class="ri-arrow-right-s-line menu-arrow"></i>
+                        </a>
+                        <div class="submenu">
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='python', submodule='docs_quick_start') }}">
+                                    <span class="menu-icon"><i class="ri-rocket-line"></i></span>
+                                    <span class="menu-text">Guia Rápido</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='python', submodule='docs_api_reference') }}">
+                                    <span class="menu-icon"><i class="ri-book-read-line"></i></span>
+                                    <span class="menu-text">API Reference</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='python', submodule='docs_examples') }}">
+                                    <span class="menu-icon"><i class="ri-code-box-line"></i></span>
+                                    <span class="menu-text">Exemplos</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ansible Docs -->
+                    <div class="menu-item">
+                        <a href="#" class="has-submenu" aria-expanded="false">
+                            <span class="menu-icon"><i class="ri-file-text-line"></i></span>
+                            <span class="menu-text">Ansible Docs</span>
+                            <i class="ri-arrow-right-s-line menu-arrow"></i>
+                        </a>
+                        <div class="submenu">
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='ansible', submodule='docs_usage_guide') }}">
+                                    <span class="menu-icon"><i class="ri-book-open-line"></i></span>
+                                    <span class="menu-text">Guia de Uso</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='ansible', submodule='docs_modules') }}">
+                                    <span class="menu-icon"><i class="ri-tools-line"></i></span>
+                                    <span class="menu-text">Módulos</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='ansible', submodule='docs_best_practices') }}">
+                                    <span class="menu-icon"><i class="ri-star-line"></i></span>
+                                    <span class="menu-text">Best Practices</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terraform Docs -->
+                    <div class="menu-item">
+                        <a href="#" class="has-submenu" aria-expanded="false">
+                            <span class="menu-icon"><i class="ri-file-text-line"></i></span>
+                            <span class="menu-text">Terraform Docs</span>
+                            <i class="ri-arrow-right-s-line menu-arrow"></i>
+                        </a>
+                        <div class="submenu">
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='terraform', submodule='docs_configuration') }}">
+                                    <span class="menu-icon"><i class="ri-settings-4-line"></i></span>
+                                    <span class="menu-text">Configuração</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='terraform', submodule='docs_providers') }}">
+                                    <span class="menu-icon"><i class="ri-cloud-line"></i></span>
+                                    <span class="menu-text">Providers</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ url_for('module_page', module='terraform', submodule='docs_resources') }}">
+                                    <span class="menu-icon"><i class="ri-server-line"></i></span>
+                                    <span class="menu-text">Recursos</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="social-links">
+                <a href="#" target="_blank" aria-label="GitHub"><i class="ri-github-fill"></i></a>
+                <a href="#" target="_blank" aria-label="GitLab"><i class="ri-gitlab-fill"></i></a>
+                <a href="#" target="_blank" aria-label="LinkedIn"><i class="ri-linkedin-box-fill"></i></a>
+                <a href="#" target="_blank" aria-label="Discord"><i class="ri-discord-fill"></i></a>
+            </div>
+        </nav>
+    </aside>
+</body>

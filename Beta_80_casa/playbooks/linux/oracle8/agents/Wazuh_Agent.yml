@@ -1,0 +1,87 @@
+---
+# Playbook: Wazuh Agent para Linux
+# Descrição: Instala e configura o agente Wazuh em sistemas Linux
+# Versão: 1.0.0
+# Data: 2025-03-13
+# Autor: Claude
+
+- name: Instalação do Wazuh Agent para Linux
+  hosts: all
+  become: yes
+  vars:
+    wazuh_manager: "opensiem-server.skyinone.net"
+    wazuh_agent_group: "Skyone-Oper"
+    wazuh_registration_password: "1ff5a>3154020f#ddc8a3983b62e02283@60bcfb314"
+    wazuh_agent_version: "4.8.2-1"
+    
+  tasks:
+    - name: Verificar se o Wazuh Agent já está instalado
+      stat:
+        path: /var/ossec/bin/ossec-control
+      register: wazuh_installed
+      
+    - name: Detectar a distribuição Linux
+      setup:
+        gather_subset: 
+          - distribution
+      when: not wazuh_installed.stat.exists
+      
+    - name: Definir URL para CentOS/RHEL/Oracle
+      set_fact:
+        wazuh_repo_url: "https://packages.wazuh.com/4.x/yum/wazuh-agent-{{ wazuh_agent_version }}.x86_64.rpm"
+      when: not wazuh_installed.stat.exists and (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' or ansible_distribution == 'OracleLinux')
+      
+    - name: Definir URL para Ubuntu/Debian
+      set_fact:
+        wazuh_repo_url: "https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_{{ wazuh_agent_version }}_amd64.deb"
+      when: not wazuh_installed.stat.exists and (ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian')
+      
+    - name: Baixar e instalar o pacote Wazuh Agent para CentOS/RHEL/Oracle
+      yum:
+        name: "{{ wazuh_repo_url }}"
+        state: present
+        disable_gpg_check: yes
+      when: not wazuh_installed.stat.exists and (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' or ansible_distribution == 'OracleLinux')
+      
+    - name: Baixar o pacote Wazuh Agent para Ubuntu/Debian
+      get_url:
+        url: "{{ wazuh_repo_url }}"
+        dest: "/tmp/wazuh-agent.deb"
+      when: not wazuh_installed.stat.exists and (ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian')
+      
+    - name: Instalar o pacote Wazuh Agent para Ubuntu/Debian
+      apt:
+        deb: "/tmp/wazuh-agent.deb"
+        state: present
+      when: not wazuh_installed.stat.exists and (ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian')
+      
+    - name: Configurar o Wazuh Manager no agent.conf
+      lineinfile:
+        path: /var/ossec/etc/ossec.conf
+        regexp: '<server-ip>.*</server-ip>'
+        line: "  <server-ip>{{ wazuh_manager }}</server-ip>"
+        state: present
+      when: not wazuh_installed.stat.exists
+      
+    - name: Registrar o Wazuh Agent com o gerenciador
+      shell: >
+        /var/ossec/bin/agent-auth -m {{ wazuh_manager }} -P {{ wazuh_registration_password }} -G {{ wazuh_agent_group }}
+      args:
+        creates: /var/ossec/etc/client.keys
+      when: not wazuh_installed.stat.exists
+      
+    - name: Iniciar o serviço Wazuh Agent
+      systemd:
+        name: wazuh-agent
+        state: started
+        enabled: yes
+      
+    - name: Verificar status do Wazuh Agent
+      shell: /var/ossec/bin/ossec-control status
+      register: wazuh_status
+      changed_when: false
+      ignore_errors: yes
+      
+    - name: Exibir status do Wazuh Agent
+      debug:
+        msg: "Wazuh Agent está {{ 'ativo' if 'running' in wazuh_status.stdout else 'inativo' }} em {{ ansible_hostname }}"

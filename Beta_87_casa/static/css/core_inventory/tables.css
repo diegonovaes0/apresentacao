@@ -1,0 +1,102 @@
+/* 
+TABLES.CSS
+Este arquivo contém os estilos para tabelas e elementos relacionados
+a visualização de dados tabulares na aplicação.
+*/
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid var(--black-elegant);
+  background: var(--black-elegant);
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 0.2s ease !important;
+  transform: none !important;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-primary);
+}
+
+.table th {
+  background: linear-gradient(135deg, var(--black-rich) 0%, var(--black-elegant) 100%);
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-gold);
+  border-bottom: 1px solid rgba(255, 214, 0, 0.2);
+  text-align: left;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  box-shadow: 0 1px 0 rgba(255, 214, 0, 0.1);
+}
+
+.table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  border-top: 1px solid var(--black-elegant);
+  vertical-align: middle;
+  color: var(--accent-gold);
+  background: var(--black-smoke);
+}
+
+.table tr {
+  background: var(--black-elegant);
+}
+
+.table tr:nth-child(odd) {
+  background: rgba(25, 25, 25, 0.95);
+}
+
+.table tr:hover {
+  background: var(--black-smoke);
+}
+/* Adicionar ao final do arquivo tables.css */
+
+/* Ajustes específicos para tabela de servidores */
+#servers-list td {
+  font-size: 13px;
+  padding: 10px 16px;
+}
+
+.host-cell {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.user-cell {
+  color: var(--text-secondary);
+}
+
+.os-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-cell {
+  color: var(--text-secondary);
+}
+
+.auth-cell .fa-key,
+.auth-cell .fa-lock {
+  margin-right: 6px;
+}
+
+.auth-cell .fa-key {
+  color: #9C27B0;
+}
+
+.auth-cell .fa-lock {
+  color: #FFC107;
+}
+
+/* Status da célula */
+.status-cell {
+  text-align: center;
+}

@@ -1,0 +1,71 @@
+---
+# Playbook para instalação do Site24x7 Agent em servidores Linux RHEL 8/9
+# Recebe device_key_input como parâmetro
+# Atualizada em 02/03/2025
+
+- name: Instalação do Site24x7 Agent para Linux
+  hosts: all
+  become: yes
+  vars:
+    device_key_input: "{{ device_key | default('us_dbbaa0d164ea2cf1caddc8ba13a4dd43') }}"
+    site24x7_install_path: "/tmp/site24x7"
+    site24x7_script_path: "/tmp/site24x7/Site24x7_Linux_64bit.install"
+    site24x7_log_file: "/var/log/site24x7_install.log"
+  
+  tasks:
+    - name: Verificar se o Site24x7 Agent já está instalado
+      stat:
+        path: /opt/site24x7/monagent/bin/monagent
+      register: site24x7_check
+    
+    - name: Criar diretório de instalação do Site24x7
+      file:
+        path: "{{ site24x7_install_path }}"
+        state: directory
+        mode: '0755'
+      when: not site24x7_check.stat.exists
+    
+    - name: Download do script de instalação do Site24x7
+      get_url:
+        url: https://staticdownloads.site24x7.com/server/Site24x7_Linux_64bit.install
+        dest: "{{ site24x7_script_path }}"
+        mode: '0755'
+      when: not site24x7_check.stat.exists
+    
+    - name: Instalar Site24x7 Agent
+      shell: "{{ site24x7_script_path }} -i -key={{ device_key_input }} -installer=ansible > {{ site24x7_log_file }} 2>&1"
+      args:
+        creates: /opt/site24x7/monagent/bin/monagent
+      when: not site24x7_check.stat.exists
+      register: site24x7_install
+      async: 600
+      poll: 0
+    
+    - name: Aguardar instalação do Site24x7 Agent
+      async_status:
+        jid: "{{ site24x7_install.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 30
+      delay: 10
+      when: not site24x7_check.stat.exists and site24x7_install.ansible_job_id is defined
+    
+    - name: Verificar status do serviço Site24x7 Agent
+      systemd:
+        name: site24x7monagent
+        state: started
+        enabled: yes
+      register: site24x7_service
+      ignore_errors: yes
+      when: not site24x7_check.stat.exists
+    
+    - name: Limpar arquivos temporários do Site24x7
+      file:
+        path: "{{ site24x7_install_path }}"
+        state: absent
+      when: not site24x7_check.stat.exists
+    
+    - name: Exibir status da instalação do Site24x7
+      debug:
+        msg: "Site24x7 Agent foi instalado e está em execução com a chave {{ device_key_input[:4] }}...{{ device_key_input[-4:] }}"
+      when: site24x7_service is defined and site24x7_service.status is defined

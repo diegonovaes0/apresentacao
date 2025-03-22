@@ -1,0 +1,29 @@
+/* variables.css */
+:root {
+  /* Cores base do inventário */
+  --black-absolute: #000000;
+  --black-rich: #030303;
+  --black-elegant: #0A0A0A;
+  --black-pearl: #121212;
+  --black-smoke: #1A1A1A;
+  --gray-dark: #2A2A2A;
+  
+  /* Cores de acento */
+  --accent-gold: #FFD600;
+  --accent-gold-hover: #FFE033;
+  
+  /* Texto */
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+  --text-tertiary: #808080;
+  
+  /* Estados e mensagens */
+  --success-green: #2E7D32;
+  --error-red: #C62828;
+  --warning-orange: #FF9800; /* Ajustado para combinar com inventário */
+  
+  /* Gradientes */
+  --gradient-header: linear-gradient(135deg, var(--black-rich) 0%, var(--black-smoke) 100%);
+  --gradient-card: linear-gradient(135deg, var(--black-smoke) 0%, rgba(25, 25, 25, 0.95) 100%);
+  --gradient-card-header: linear-gradient(135deg, var(--black-rich) 0%, var(--gray-dark) 100%);
+}

@@ -1,0 +1,347 @@
+---
+- name: Configuração do sistema Ubuntu 24.04 LTS
+  hosts: all
+  become: yes
+  vars_prompt:
+    - name: new_hostname
+      prompt: "Hostname da máquina"
+      private: no
+
+  vars:
+    # Gerar uma senha única para o usuário 'parceiro' e 'root'
+    parceiro_password: "{{ lookup('pipe', 'tr -dc A-Za-z0-9 < /dev/urandom | head -c 12') + lookup('pipe', 'tr -dc @#%*-_ < /dev/urandom | head -c 1') + lookup('pipe', 'tr -dc A-Za-z0-9 < /dev/urandom | head -c 2') + lookup('pipe', 'tr -dc @#%*-_ < /dev/urandom | head -c 1') }}"
+    root_password: "{{ lookup('pipe', 'tr -dc A-Za-z0-9 < /dev/urandom | head -c 12') + lookup('pipe', 'tr -dc @#%*-_ < /dev/urandom | head -c 1') + lookup('pipe', 'tr -dc A-Za-z0-9 < /dev/urandom | head -c 2') + lookup('pipe', 'tr -dc @#%*-_ < /dev/urandom | head -c 1') }}"
+    log_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}"
+    ansible_python_interpreter: /usr/bin/python3
+
+ 
+
+  tasks:
+
+    - name: Verificar se é Ubuntu 24.04
+      fail:
+        msg: "Este playbook é apenas para Ubuntu 24.04"
+      when: ansible_distribution != 'Ubuntu' or ansible_distribution_version != '24.04'
+
+
+    - name: Definir o timestamp atual para logs
+      ansible.builtin.set_fact:
+          log_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}"
+    
+    - name: Definir fuso horário para America/Sao_Paulo
+      file:
+        src: /usr/share/zoneinfo/America/Sao_Paulo
+        dest: /etc/localtime
+        state: link
+        force: yes
+      tags: timezone
+      ignore_errors: yes
+
+
+    - name: Desativar UFW (firewall) em Ubuntu 20.04.6, 22.04 LTS ou 24.04 LTS
+      service:
+        name: ufw
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+
+    - name: Parar e desativar iptables e ip6tables em Ubuntu 20.04.6, 22.04 LTS ou 24.04 LTS
+      service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: no
+      loop:
+        - iptables
+        - ip6tables
+      ignore_errors: yes
+
+    - name: Limpar todas as regras de iptables em Ubuntu 20.04.6, 22.04 LTS ou 24.04 LTS
+      command: iptables -F
+      ignore_errors: yes
+
+    - name: Salvar as regras do iptables em Ubuntu 20.04.6, 22.04 LTS ou 24.04 LTS
+      command: netfilter-persistent save
+      ignore_errors: yes
+
+    - name: Desabilitar IPv6 em Ubuntu 20.04.6, 22.04 LTS ou 24.04 LTS
+      lineinfile:
+        path: /etc/sysctl.conf
+        line: "{{ item }}"
+        state: present
+      loop:
+        - "net.ipv6.conf.all.disable_ipv6 = 1"
+        - "net.ipv6.conf.default.disable_ipv6 = 1"
+        - "net.ipv6.conf.lo.disable_ipv6 = 1"
+      notify:
+        - Aplicar configurações do sysctl em Ubuntu 20.04.6, 22.04 LTS ou 24.04 LTS
+      ignore_errors: yes
+
+    - name: Aplicar configurações do sysctl
+      command: sysctl -p
+      ignore_errors: yes
+
+
+    - name: Verificar o estado do IPv6 no sistema
+      command: cat /proc/sys/net/ipv6/conf/all/disable_ipv6
+      register: ipv6_status
+      ignore_errors: yes
+
+
+    - name: Exibir o estado do IPv6
+      debug:
+        msg: "O valor de disable_ipv6 é: {{ ipv6_status.stdout }}"
+  
+
+    - name: Alterar o hostname da máquina
+      ansible.builtin.hostname:
+        name: "{{ new_hostname }}"
+      tags: hostname
+      ignore_errors: yes
+
+    - name: Atualizar /etc/hosts com o novo hostname
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.0\.1\s'
+        line: "127.0.0.1   {{ new_hostname }} localhost"
+        state: present
+      tags: hostname
+      ignore_errors: yes
+
+    - name: Instalar pacotes básicos essenciais
+      apt:
+        name:
+          - wget
+          - vim
+          - gdisk
+        state: present
+        update_cache: yes
+      tags: install
+      ignore_errors: yes
+
+    - name: Atualizar o sistema
+      apt:
+        upgrade: dist
+      tags: update
+      ignore_errors: yes
+
+
+          # Tarefa para configurar o SSH
+    - name: Habilitar PasswordAuthentication
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication yes'
+        state: present
+   
+
+    - name: Habilitar PubkeyAuthentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PubkeyAuthentication'
+        line: 'PubkeyAuthentication yes'
+        state: present
+
+    - name: Habilitar KbdInteractiveAuthentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^KbdInteractiveAuthentication'
+        line: 'KbdInteractiveAuthentication yes'
+        state: present
+
+    - name: Permitir login do root
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin yes'
+        state: present
+
+  
+
+    - name: Reiniciar o serviço SSH para aplicar as mudanças (múltiplas abordagens)
+      block:
+        # Opção 1: Usando o módulo 'service' com nome 'sshd'
+        - name: Reiniciar serviço usando 'service' (sshd)
+          service:
+            name: sshd
+            state: restarted
+          ignore_errors: true  # Ignorar caso 'sshd' não seja encontrado
+
+        # Opção 2: Usando o módulo 'service' com nome 'ssh'
+        - name: Reiniciar serviço usando 'service' (ssh)
+          service:
+            name: ssh
+            state: restarted
+          ignore_errors: true  # Ignorar caso 'ssh' não seja encontrado
+
+
+        # Opção 4: Usando 'shell' com flexibilidade para ambos os nomes
+        - name: Reiniciar serviço usando 'shell'
+          shell: |
+            systemctl restart ssh || systemctl restart sshd || service ssh restart || service sshd restart
+          ignore_errors: true
+      become: yes 
+
+
+
+
+    - name: Adicionar linha no arquivo /etc/sudoers para o usuário parceiro
+      lineinfile:
+        path: /etc/sudoers
+        line: 'parceiro    ALL=(ALL)       ALL'
+        state: present
+        create: yes
+        validate: 'visudo -cf %s'
+      tags: visudo_line
+      ignore_errors: yes
+
+    - name: Garantir que o diretório temporário /tmp/logs exista no nó remoto
+      file:
+        path: /tmp/logs
+        state: directory
+        mode: '0777'
+        owner: root
+        group: root
+      become: yes
+
+    - name: Gerar IP público da máquina alvo
+      command: curl -s http://api.ipify.org
+      register: target_public_ip
+      changed_when: False
+
+    - name: Mostrar o IP público da máquina alvo
+      debug:
+        msg: "O IP público da máquina alvo é: {{ target_public_ip.stdout }}"
+
+- name: Trocar senha dos usuários no Ubuntu 24.04
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Gerar uma senha aleatória para o usuário "parceiro"
+      ansible.builtin.set_fact:
+        parceiro_password: "{{ lookup('password', '/dev/null', length=16) }}"
+
+    - name: Gerar uma senha aleatória para o usuário "root"
+      ansible.builtin.set_fact:
+        root_password: "{{ lookup('password', '/dev/null', length=16) }}"
+
+    - name: Gerar o hash da senha do usuário "parceiro"
+      ansible.builtin.command:
+        cmd: "openssl passwd -6 '{{ parceiro_password }}'"
+      register: parceiro_hash_output
+
+    - name: Verificar o hash da senha do parceiro
+      ansible.builtin.debug:
+        msg: "Hash do parceiro: {{ parceiro_hash_output.stdout }}"
+
+    - name: Armazenar o hash da senha do usuário "parceiro"
+      ansible.builtin.set_fact:
+        parceiro_password_hash: "{{ parceiro_hash_output.stdout }}"
+
+    - name: Gerar o hash da senha do usuário "root"
+      ansible.builtin.command:
+        cmd: "openssl passwd -6 '{{ root_password }}'"
+      register: root_hash_output
+
+    - name: Verificar o hash da senha do root
+      ansible.builtin.debug:
+        msg: "Hash do root: {{ root_hash_output.stdout }}"
+
+    - name: Armazenar o hash da senha do usuário "root"
+      ansible.builtin.set_fact:
+        root_password_hash: "{{ root_hash_output.stdout }}"
+
+    - name: Alterar a senha do usuário "parceiro"
+      ansible.builtin.user:
+        name: parceiro
+        password: "{{ parceiro_password_hash }}"
+
+    - name: Alterar a senha do usuário "root"
+      ansible.builtin.user:
+        name: root
+        password: "{{ root_password_hash }}"
+
+    - name: Configurar SSH para aceitar senhas
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication yes' }
+        - { regexp: '^#?ChallengeResponseAuthentication', line: 'ChallengeResponseAuthentication yes' }
+        - { regexp: '^#?UsePAM', line: 'UsePAM yes' }
+
+    - name: Reiniciar o serviço SSH
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
+
+    - name: Mostrar a senha gerada para o usuário "parceiro"
+      ansible.builtin.debug:
+        msg: "A senha do usuário 'parceiro' é: {{ parceiro_password }}"
+
+    - name: Mostrar a senha gerada para o usuário "root"
+      ansible.builtin.debug:
+        msg: "A senha do usuário 'root' é: {{ root_password }}"
+  
+    - name: Exportar informações para um arquivo de log no nó remoto
+      copy:
+        content: |
+          Timestamp: {{ log_timestamp }}
+          Hostname: {{ ansible_facts.hostname | default('Hostname not found') }}
+          IP Address: {{ ansible_facts['default_ipv4'].address | default('IP not found') }}
+          Public IP: {{ target_public_ip.stdout | default('Public IP not found') }}
+          Parceiro User: parceiro
+          Parceiro Password: {{ parceiro_password }}
+          Root Password: {{ root_password }}
+        dest: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+      become: yes
+
+    - name: Verificar se o arquivo de log foi criado no nó remoto
+      stat:
+        path: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+      register: log_file
+
+    
+  
+
+    - name: Garantir que o diretório de logs exista no nó controlador
+      file:
+        path: /home/ubuntu/logs
+        state: directory
+        mode: '0777'
+      become: yes
+
+    - name: Trazer o arquivo de log para o nó controlador
+      fetch:
+        src: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+        dest: "/home/ubuntu/logs/"
+        flat: yes
+      when: log_file.stat.exists
+      become: yes
+
+    - name: Remover o arquivo de log do nó remoto
+      file:
+        path: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+        state: absent
+      when: log_file.stat.exists
+      become: yes
+
+  handlers:
+    - name: Reiniciar SSH
+      service:
+        name: ssh
+        state: restarted
+      become: yes
+
+    - name: Reiniciar a máquina para aplicar alterações
+      reboot:
+        msg: "Reiniciando a máquina para aplicar alterações"
+        connect_timeout: 5
+        reboot_timeout: 600
+      become: yes
+
+    - name: Aplicar configurações do sysctl em Ubuntu 20.04.6, 22.04 LTS ou 24.04 LTS
+      command: sysctl -p
+    

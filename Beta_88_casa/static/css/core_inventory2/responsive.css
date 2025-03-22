@@ -1,0 +1,95 @@
+/* 
+RESPONSIVE.CSS
+Este arquivo contém regras específicas para adaptação 
+do layout em diferentes tamanhos de tela e dispositivos.
+*/
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 1000;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .content-area {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+  
+  .card {
+    margin-bottom: 12px;
+  }
+  
+  .card-header {
+    padding: 10px 12px;
+  }
+  
+  .card-body {
+    padding: 12px;
+  }
+  
+  .card-footer {
+    padding: 10px 12px;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  .form-control, .form-select {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+  
+  .header {
+    padding: 12px;
+    min-height: 60px;
+  }
+  
+  .header-title {
+    font-size: 18px;
+    gap: 8px;
+  }
+  
+  .header-title svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .header-subtitle {
+    font-size: 10px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 1rem auto;
+  }
+  
+  .modal-header, 
+  .modal-body, 
+  .modal-footer {
+    padding: 12px;
+  }
+  
+  .modal-body pre {
+    font-size: 12px;
+    padding: 12px;
+  }
+}
+
+@media (min-width: 769px) {
+  .sidebar ~ .content-area .inventory-container,
+  .sidebar ~ .content-area .centered-container {
+    max-width: calc(100% - 30px);
+    margin: 0 auto;
+  }
+}

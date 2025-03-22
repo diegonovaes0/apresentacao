@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Gerenciador de Playbooks Ansible - Automato Platform
+{% endblock %}
+
+{% block content %}
+    <!-- Container principal do módulo Ansible -->
+    <div class="ansible-container">
+        <!-- Cabeçalho do módulo -->
+        <div class="ansible-header">
+            <div class="ansible-header-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 0-7.35 16.83l7.35-12.66 7.35 12.66A10 10 0 0 0 12 2z"/>
+                    <path d="M12 8v6"/>
+                    <circle cx="12" cy="18" r="1"/>
+                </svg>
+                Gerenciador de Playbooks Ansible
+            </div>
+            <div class="ansible-header-subtitle">Controle e Automação Simplificados</div>
+            <div class="ansible-progress-container"></div>
+        </div>
+
+        <!-- Botão para selecionar todos os hosts -->
+        <button id="select-all-hosts-btn" class="ansible-button ansible-primary">Selecionar Todos os Hosts</button>
+        
+        <!-- Container para a lista de hosts -->
+        <div class="ansible-hosts-container" id="hosts-list"></div>
+
+        <!-- Layout principal com duas colunas -->
+        <div class="ansible-layout">
+            <!-- Seção de playbooks -->
+            <div class="ansible-playbooks">
+                <!-- Filtros para os playbooks -->
+                <div class="ansible-filters">
+                    <div class="ansible-filter-group">
+                        <select id="os-filter" class="ansible-select">
+                            <option value="linux" selected>Linux</option>
+                            <option value="windows">Windows</option>
+                        </select>
+                    </div>
+                    <div class="ansible-filter-group">
+                        <select id="category-filter" class="ansible-select">
+                            <option value="configuracoes">Configurações</option>
+                            <option value="baseline">Baseline</option>
+                            <option value="agentes">Agentes</option>
+                            <option value="seguranca">Segurança</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Título da seção de playbooks -->
+                <h3 class="ansible-heading">Playbooks Disponíveis</h3>
+                
+                <!-- Botões de ação para playbooks - Layout criativo -->
+                <div class="ansible-actions">
+                    <!-- Botão Executar destacado no centro -->
+                    <div class="action-hero">
+                        <button id="execute-selected" class="ansible-button execute-hero" onclick="executePlaybooks()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 3l14 9-14 9V3z"/>
+                            </svg>
+                            Executar Playbooks
+                        </button>
+                        <div id="execution-status" class="status-bar">1 host(s) e 2 playbook(s) selecionados</div>
+                    </div>
+                    
+                    <!-- Ações secundárias em um círculo ao redor -->
+                    <div class="action-circle">
+                        <button id="refresh" class="ansible-button action-secondary" title="Atualizar lista" onclick="refreshPlaybooks()">
+                            <i class="ri-refresh-line"></i>
+                        </button>
+                        <button id="select-all-playbooks" class="ansible-button action-secondary" title="Selecionar todos os playbooks" onclick="selectAllPlaybooks()">
+                            <i class="ri-checkbox-multiple-line"></i>
+                        </button>
+                        <button id="cancel-all" class="ansible-button action-secondary cancel-btn" title="Cancelar todas as execuções" onclick="cancelAll()">
+                            <i class="ri-close-circle-line"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lista de playbooks -->
+                <div id="playbooks" class="ansible-playbooks-list"></div>
+            </div>
+
+            <!-- Seção de execução de playbooks -->
+            <div class="ansible-execution">
+                <h3 class="ansible-heading">Execução de Playbooks</h3>
+                <div id="running-playbooks" class="ansible-executions-list"></div>
+            </div>
+        </div>
+        
+        <!-- Área de debug -->
+        <div id="debug-info" class="ansible-debug">
+            <div id="debug-toggle" class="ansible-debug-toggle">
+                Mostrar Debug
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </div>
+            <div id="baseline-configurator-container"></div>
+            <pre id="debug-output" class="ansible-debug-output"></pre>
+        </div>
+    </div>
+
+    <!-- CSS incorporado -->
+    <style>
+        /* Container principal das ações */
+        .ansible-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 15px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.1));
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Botão principal (Executar) */
+        .action-hero {
+            text-align: center;
+        }
+
+        .execute-hero {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            background: var(--accent-gold);
+            color: var(--black-absolute);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 50px;
+            min-width: 200px;
+            box-shadow: 0 4px 16px rgba(255, 214, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .execute-hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .execute-hero:hover::after {
+            opacity: 1;
+        }
+
+        .execute-hero:hover {
+            background: #FFD54F;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 214, 0, 0.5);
+        }
+
+        .execute-hero:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(255, 214, 0, 0.3);
+        }
+
+        .execute-hero svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--black-absolute);
+            stroke-width: 2;
+        }
+
+        /* Barra de status abaixo do botão Executar */
+        .status-bar {
+            font-size: 14px;
+            color: var(--accent-gold);
+            margin-top: 10px;
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .status-bar.success {
+            color: var(--success-green);
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .status-bar.error {
+            color: var(--error-red);
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        /* Círculo de ações secundárias */
+        .action-circle {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-secondary {
+            padding: 10px;
+            border: 1px solid var(--gray-dark);
+            border-radius: 50%;
+            background: var(--black-smoke);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-secondary:hover {
+            background: var(--gray-dark);
+            border-color: var(--accent-gold);
+            transform: rotate(10deg) scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-secondary:active {
+            transform: scale(0.95);
+        }
+
+        .action-secondary i {
+            font-size: 18px;
+        }
+
+        .cancel-btn {
+            border-color: var(--error-red);
+            color: var(--text-secondary);
+        }
+
+        .cancel-btn:hover {
+            background: rgba(244, 67, 54, 0.1);
+            color: var(--error-red);
+            border-color: var(--error-red);
+        }
+
+        /* Botão Selecionar Todos os Hosts */
+        .ansible-button.ansible-primary {
+            padding: 8px 16px;
+            border-radius: 4px;
+            background: var(--black-smoke);
+            color: var(--text-primary);
+            border: 1px solid var(--gray-dark);
+            margin-bottom: 15px;
+        }
+
+        .ansible-button.ansible-primary:hover {
+            background: var(--gray-dark);
+            border-color: var(--accent-gold);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .ansible-actions {
+                padding: 10px;
+            }
+            .execute-hero {
+                width: 100%;
+                min-width: unset;
+            }
+            .action-circle {
+                gap: 15px;
+            }
+            .action-secondary {
+                width: 36px;
+                height: 36px;
+            }
+            .status-bar {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+
+    <!-- JavaScript incorporado -->
+    <script>
+        function executePlaybooks() {
+            const status = document.getElementById('execution-status');
+            status.textContent = 'Executando playbooks...';
+            status.classList.add('success');
+            setTimeout(() => {
+                status.textContent = 'Execução concluída!';
+            }, 2000);
+        }
+
+        function refreshPlaybooks() {
+            alert('Atualizando lista de playbooks...');
+        }
+
+        function selectAllPlaybooks() {
+            const status = document.getElementById('execution-status');
+            status.textContent = 'Todos os playbooks selecionados!';
+            status.classList.remove('error');
+            status.classList.add('success');
+        }
+
+        function cancelAll() {
+            const status = document.getElementById('execution-status');
+            status.textContent = 'Todas as execuções canceladas.';
+            status.classList.remove('success');
+            status.classList.add('error');
+        }
+    </script>
+{% endblock %}

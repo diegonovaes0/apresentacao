@@ -1,0 +1,51 @@
+---
+- name: Importar playbook do PatchManager (Windows)
+  import_playbook: playbooks/windows/agents/patchmanager.yml
+  tags: patchmanager-windows
+
+- name: Importar playbook do Antivirus (Windows)
+  import_playbook: playbooks/windows/security/antivirus.yml
+  tags: antivirus-windows
+
+- name: Importar playbook do Windows Manager
+  import_playbook: playbooks/windows/agents/windowsmanager.yml
+  tags: windowsmanager-windows
+
+- name: Importar playbook do Wazuh (Windows)
+  import_playbook: playbooks/windows/security/wazuh.yml
+  tags: wazuh-windows
+
+- name: Importar playbook do Site24x7 (Windows)
+  import_playbook: playbooks/windows/agents/site24x7.yml
+  tags: site24x7-windows
+
+# Adicione aqui as referências às suas playbooks Linux existentes
+# Exemplo:
+# - name: Importar playbook do PatchManager (Linux)
+#   import_playbook: playbooks/linux/agents/patchmanager.yml
+#   tags: patchmanager-linux
+
+- name: Limpeza Final - Remover pasta de instalação (Windows)
+  hosts: windows
+  tasks:
+    - name: Check if folder exists
+      win_stat:
+        path: C:\Users\_admin-skyone\Desktop\Agents_Skyone
+      register: folder_check
+
+    - name: Remove Agents_Skyone folder and contents
+      win_file:
+        path: C:\Users\_admin-skyone\Desktop\Agents_Skyone
+        state: absent
+      when: folder_check.stat.exists
+      register: removal_result
+
+    - name: Display removal status
+      debug:
+        msg: "Pasta removida com sucesso"
+      when: removal_result.changed
+
+    - name: Display if folder didn't exist
+      debug:
+        msg: "Pasta não encontrada"
+      when: not folder_check.stat.exists

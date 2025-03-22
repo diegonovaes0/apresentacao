@@ -1,0 +1,237 @@
+
+:root {
+    --ansible-dark: #1a1a1a; /* Fundo escuro metálico */
+    --ansible-gray: #3c3c3c; /* Cinza secundário */
+    --ansible-white: #f0f0f0; /* Texto claro */
+    --black-absolute: #000000;
+    --black-rich: #030303;
+    --black-elegant: #0A0A0A;
+    --black-pearl: #121212;
+    --black-smoke: #1A1A1A;
+    --gray-dark: #2A2A2A;
+    --accent-gold: #FFD600;
+    --accent-gold-hover: #FFE033;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --text-tertiary: #808080;
+    --success-green: #2E7D32;
+    --error-red: #C62828;
+    --warning-orange: #FF9800;
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --shadow-dark: rgba(0, 0, 0, 0.8);
+    --shadow-subtle: rgba(0, 0, 0, 0.4);
+}
+
+/* Painel de Automação */
+.ansible-automation-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    background: var(--ansible-dark);
+    border-radius: 12px;
+    box-shadow: 
+        0 8px 25px var(--shadow-dark),
+        inset 0 2px 5px rgba(255, 255, 255, 0.05);
+    margin: 25px 0;
+}
+
+/* Botão Core - Executar */
+#execute-selected {
+    padding: 16px 35px;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-hover) 100%);
+    color: var(--black-absolute);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 
+        0 6px 20px var(--shadow-dark),
+        0 10px 30px var(--shadow-subtle),
+        inset 0 1px 3px rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+#execute-selected::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.25);
+    transition: left 0.5s ease;
+}
+
+#execute-selected:hover::after {
+    left: 100%;
+}
+
+#execute-selected:hover {
+    background: linear-gradient(135deg, var(--accent-gold-hover), var(--accent-gold));
+    box-shadow: 
+        0 10px 30px var(--shadow-dark),
+        0 15px 40px var(--shadow-subtle),
+        inset 0 2px 5px rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+}
+
+#execute-selected.running {
+    animation: pulse 1.5s infinite;
+}
+
+#execute-selected svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--black-absolute);
+}
+
+/* Status */
+.automation-status {
+    font-size: 14px;
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    background: var(--black-pearl);
+    border-radius: 8px;
+    box-shadow: 
+        0 4px 15px var(--shadow-dark),
+        0 2px 8px var(--shadow-subtle);
+    transition: all 0.3s ease;
+}
+
+.automation-status.success {
+    color: var(--success-green);
+    background: rgba(46, 125, 50, 0.2);
+    box-shadow: 
+        0 4px 15px rgba(46, 125, 50, 0.4),
+        0 2px 8px var(--shadow-dark);
+}
+
+.automation-status.error {
+    color: var(--error-red);
+    background: rgba(198, 40, 40, 0.2);
+    box-shadow: 
+        0 4px 15px rgba(198, 40, 40, 0.4),
+        0 2px 8px var(--shadow-dark);
+}
+
+/* Botões Orbitais - Container */
+.ansible-orbitals {
+    display: flex;
+    gap: 15px;
+    padding-bottom: 30px; /* Espaço extra para os rótulos */
+    min-height: 100px; /* Altura mínima para acomodar botões e rótulos */
+}
+
+/* Botões Orbitais */
+.ansible-orbital-btn {
+    width: 55px;
+    height: 55px;
+    background: var(--gray-dark);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 4px 15px var(--shadow-dark),
+        0 6px 20px var(--shadow-subtle),
+        inset 0 1px 2px rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.ansible-orbital-btn i {
+    font-size: 22px;
+}
+
+.ansible-orbital-btn .orbital-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0;
+    position: absolute;
+    bottom: -35px; /* Movido mais para baixo */
+    color: var(--accent-gold);
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Evita quebra de linha */
+}
+
+.ansible-orbital-btn:hover {
+    background: var(--ansible-gray);
+    transform: scale(1.05);
+    box-shadow: 
+        0 8px 25px var(--shadow-dark),
+        0 12px 35px var(--shadow-subtle),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.ansible-orbital-btn:hover .orbital-label {
+    opacity: 1;
+    bottom: -25px; /* Ajustado para ficar visível e fora do botão */
+}
+
+.ansible-orbital-btn:active {
+    transform: scale(0.95);
+    box-shadow: 
+        0 2px 10px var(--shadow-dark),
+        0 4px 15px var(--shadow-subtle);
+}
+
+#cancel-all {
+    background: var(--gray-dark);
+    color: var(--text-secondary);
+}
+
+#cancel-all:hover {
+    background: var(--error-red);
+    color: var(--ansible-white);
+    box-shadow: 
+        0 8px 25px rgba(198, 40, 40, 0.5),
+        0 12px 35px var(--shadow-dark),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+/* Animação de Pulsação */
+@keyframes pulse {
+    0% { 
+        box-shadow: 
+            0 6px 20px var(--shadow-dark),
+            0 10px 30px var(--shadow-subtle);
+    }
+    50% { 
+        box-shadow: 
+            0 10px 30px var(--shadow-dark),
+            0 15px 45px var(--shadow-subtle);
+    }
+    100% { 
+        box-shadow: 
+            0 6px 20px var(--shadow-dark),
+            0 10px 30px var(--shadow-subtle);
+    }
+}
+
+
+
+    .ansible-execution-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px; /* Espaço consistente com outros elementos */
+    }
+    .ansible-heading {
+        margin: 0; /* Alinha o título com o botão */
+        font-size: 1.2em;
+        color: var(--text-primary); /* Branco puro para consistência */
+    }
+    

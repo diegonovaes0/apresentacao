@@ -1,0 +1,34 @@
+- name: Coletar informações de rede e sistema operacional no Windows Server
+  hosts: windows
+  gather_facts: yes
+  tasks:
+    - name: Obter o IP privado
+      win_shell: |
+      win_shell: |
+        (Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notlike '*Loopback*' }).IPAddress
+      register: private_ip_result
+      ignore_errors: yes
+
+    - name: Extrair o IP privado
+      set_fact:
+        private_ip: "{{ private_ip_result.stdout_lines | first | default('Falha ao obter') }}"
+      when: private_ip_result.rc == 0
+
+    - name: Obter o IP público via icanhazip.com
+      win_shell: |
+        Invoke-WebRequest -Uri "https://icanhazip.com" -UseBasicParsing | Select-Object -ExpandProperty Content
+      register: public_ip_result
+      ignore_errors: yes
+
+    - name: Obter o hostname da máquina
+      win_shell: |
+        hostname
+      register: hostname_result
+      ignore_errors: yes
+
+    - name: Exibir as informações coletadas
+      debug:
+        msg:
+          - "Hostname: {{ hostname_result.stdout | trim | default('Falha ao obter') }}"
+          - "IP Privado: {{ private_ip | default('Falha ao obter') }}"
+          - "IP Público: {{ public_ip_result.stdout | trim | default('Falha ao obter') }}"

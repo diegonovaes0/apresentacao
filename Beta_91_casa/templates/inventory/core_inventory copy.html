@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+{% block title %}Inventário Ansible{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <div class="inventory-container">
+        <!-- Banner -->
+        <div class="header">
+            <div class="header-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                    <path d="M12 2a10 10 0 0 0-7.35 16.83l7.35-12.66 7.35 12.66A10 10 0 0 0 12 2z"/>
+                    <path d="M12 8v6"/>
+                    <circle cx="12" cy="18" r="1"/>
+                </svg>
+                Gerenciador de Inventário
+            </div>
+            <div class="header-subtitle">Gerencie seus servidores com eficiência</div>
+        </div>
+
+        <!-- Componente de gerenciamento do localhost -->
+        <div class="card localhost-card">
+            <div class="card-header">
+                <span class="card-title">
+                    <i class="fas fa-laptop"></i> Adicionar Localhost
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="localhost-config">
+                    <div class="form-group">
+                        <label for="localhost-connection" class="form-label">Tipo de Conexão</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-plug"></i></span>
+                            <select id="localhost-connection" class="form-select">
+                                <option value="local" selected>Local (ansible_connection=local)</option>
+                                <option value="ssh">SSH (ansible_connection=ssh)</option>
+                            </select>
+                        </div>
+                        <small class="form-text text-muted">Conexão local é recomendada para a maioria dos casos</small>
+                    </div>
+                    
+                    <div id="localhost-ssh-options" class="localhost-ssh-options" style="display: none;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="localhost-user" class="form-label">Usuário SSH</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" id="localhost-user" class="form-control" placeholder="Seu usuário">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="localhost-password" class="form-label">Senha SSH</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" id="localhost-password" class="form-control" placeholder="Sua senha">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="localhost-os" class="form-label">Sistema Operacional</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-desktop"></i></span>
+                            <select id="localhost-os" class="form-select">
+                                <option value="linux" selected>Linux</option>
+                                <option value="windows">Windows</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="test-localhost" class="btn secondary">
+                            <i class="fas fa-check-circle"></i> Verificar Conexão
+                        </button>
+                        <button id="add-localhost" class="btn">
+                            <i class="fas fa-plus"></i> Adicionar ao Inventário
+                        </button>
+                    </div>
+                    
+                    <div id="localhost-status" class="localhost-status" style="display: none;">
+                        <div class="localhost-badge"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário de servidores remotos -->
+        <div class="card form-card">
+            <div class="card-header">
+                <span class="card-title">
+                    <i class="fas fa-plus-circle"></i>
+                    <span id="form-title">Adicionar Novo Servidor</span>
+                </span>
+            </div>
+            <div class="card-body">
+                <form id="server-form">
+                    <input type="hidden" id="original-host" value="">
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="host" class="form-label">IP do Servidor <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-network-wired"></i></span>
+                                <input type="text" id="host" class="form-control" placeholder="192.168.1.1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="usuario" class="form-label">Usuário <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" id="usuario" class="form-control" placeholder="Nome do usuário" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="senha" class="form-label">Senha</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" id="senha" class="form-control" placeholder="Senha do servidor">
+                            </div>
+                            <small class="form-text">Opcional para chave SSH</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="os" class="form-label">Sistema Operacional <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-desktop"></i></span>
+                                <select id="os" class="form-select" required>
+                                    <option value="linux">Linux</option>
+                                    <option value="windows">Windows</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chave" class="form-label">Chave SSH <i class="fas fa-info-circle" title="Cole o conteúdo da chave PEM"></i></label>
+                        <textarea id="chave" class="form-control" placeholder="Cole sua chave SSH aqui (opcional)"></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" id="cancel-btn" class="btn secondary" style="display: none;">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" id="submit-btn" class="btn">
+                            <i class="fas fa-plus"></i> <span id="submit-text">Adicionar Servidor</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Ações de Inventário -->
+        <div class="inventory-controls">
+            <button id="import-inventory-btn" class="inventory-btn">
+                <i class="fas fa-upload"></i> Importar Inventário
+            </button>
+            <button id="export-inventory-btn" class="inventory-btn">
+                <i class="fas fa-download"></i> Exportar Inventário
+            </button>
+            <button id="export-template-btn" class="inventory-btn">
+                <i class="fas fa-file-download"></i> Exportar Template
+            </button>
+            <button id="refresh-inventory-btn" class="inventory-btn">
+                <i class="fas fa-sync"></i> Atualizar Inventário
+            </button>
+            <button id="show-inventory-btn" class="inventory-btn">
+                <i class="fas fa-eye"></i> Mostrar Inventário YAML
+            </button>
+            <input type="file" id="inventory-file-input" style="display: none;" accept=".json,.txt">
+        </div>
+
+        <!-- Tabela de Servidores -->
+        <div class="card table-card">
+            <div class="card-header">
+                <span class="card-title">
+                    <i class="fas fa-list"></i> Servidores Cadastrados
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Host/IP</th>
+                                <th>Usuário</th>
+                                <th>Autenticação</th>
+                                <th>Sistema</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="servers-list">
+                            <!-- Preenchido via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Container -->
+        <div id="feedback-container" class="feedback-container"></div>
+
+        <!-- Modal de Inventário -->
+        <div class="modal" id="inventory-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title">
+                        <i class="fas fa-list"></i> Inventário Completo
+                    </span>
+                    <button class="btn-close-modal" id="close-modal-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pre id="full-inventory"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn secondary" id="close-modal-btn-alt">Fechar</button>
+                    <button class="btn" id="copy-inventory-btn"><i class="fas fa-copy"></i> Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Template para linha da tabela -->
+<template id="server-row-template">
+    <tr>
+        <td class="host-cell"></td>
+        <td class="user-cell"></td>
+        <td class="auth-cell"></td>
+        <td class="os-cell"></td>
+        <td class="status-cell">
+            <span class="inventory-badge pending"><i class="fas fa-question-circle"></i> Pendente</span>
+        </td>
+        <td class="action-buttons">
+            <button class="btn-icon btn-update" title="Atualizar">
+                <i class="fas fa-sync"></i>
+            </button>
+            <button class="btn-icon btn-edit" title="Editar">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-icon btn-delete" title="Excluir">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </td>
+    </tr>
+</template>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/inventory/inventory.js') }}"></script>
+{% endblock %}

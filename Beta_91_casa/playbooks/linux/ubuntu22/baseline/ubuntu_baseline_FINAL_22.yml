@@ -1,0 +1,93 @@
+---
+- name: Configuração do sistema Ubuntu 22
+  hosts: all
+  become: yes
+
+  vars:
+    parceiro_password_hash: "$6$rounds=5000$salt12345$X5LKvp0BdQOmewKsKpoyq4O6zNtrQplPdsirOH4ORPSwX7hHYxDNIVoxY9sm92WezUqchCxV0KiYwIHg/UxZc."
+    log_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}"
+    ansible_python_interpreter: /usr/bin/python3
+
+ 
+
+  tasks:
+
+    
+
+
+    - name: Verificar se é Ubuntu 22.04
+      fail:
+        msg: "Este playbook é apenas para Ubuntu 22.04"
+      when: ansible_distribution != 'Ubuntu' or ansible_distribution_version != '22.04'
+
+
+    - name: Garantir que o diretório de logs exista no nó remoto
+      file:
+        path: /tmp/logs
+        state: directory
+        mode: '0777'
+      become: yes
+      failed_when: false
+
+    - name: Criar o usuário "parceiro" com senha
+      user:
+        name: parceiro
+        password: "{{ parceiro_password_hash }}"
+        shell: /bin/bash
+        groups: sudo
+        state: present
+      failed_when: false
+
+    - name: Mostrar a senha fixa para o usuário "parceiro"
+      debug:
+        msg: "A senha do usuário 'parceiro' é: [PTU7&OwM6K59qK30]"
+      failed_when: false
+
+    - name: Verificar IP público da máquina alvo
+      command: curl -s http://api.ipify.org
+      register: target_public_ip
+      changed_when: False
+
+    - name: Exportar informações para um arquivo de log no nó remoto
+      copy:
+        content: |
+          Timestamp: {{ log_timestamp }}
+          Hostname: {{ ansible_facts.hostname | default('Hostname not found') }}
+          IP Address: {{ ansible_facts['default_ipv4'].address | default('IP not found') }}
+          Public IP: {{ target_public_ip.stdout | default('Public IP not found') }}
+          Parceiro User: parceiro
+          Parceiro Password: PTU7&OwM6K59qK30
+        dest: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+      become: yes
+      failed_when: false
+
+    - name: Verificar se o arquivo de log foi criado no nó remoto
+      stat:
+        path: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+      register: log_file
+      failed_when: false
+
+    - name: Trazer o arquivo de log para o nó controlador
+      fetch:
+        src: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+        dest: "/home/ubuntu/logs/"
+        flat: yes
+      when: log_file.stat.exists
+      become: yes
+      failed_when: false
+
+    - name: Remover o arquivo de log do nó remoto
+      file:
+        path: "/tmp/logs/{{ ansible_facts.hostname }}_{{ ansible_facts['default_ipv4'].address }}.txt"
+        state: absent
+      when: log_file.stat.exists
+      become: yes
+      failed_when: false
+
+  handlers:
+    - name: Reiniciar SSH
+      service:
+        name: ssh
+        state: restarted
+      become: yes
+      failed_when: false

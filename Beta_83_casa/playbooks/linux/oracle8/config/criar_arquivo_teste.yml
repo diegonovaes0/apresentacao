@@ -1,0 +1,19 @@
+---
+- name: Playbook para criar um arquivo de texto
+  hosts: all
+
+  tasks:
+    - name: Cria um arquivo com uma mensagem
+      ansible.builtin.copy:
+        content: "Olá, este é um teste do Ansible!\n"
+        dest: /tmp/teste_ansible.txt
+        mode: '0644'
+
+    - name: Verifica o conteúdo do arquivo
+      ansible.builtin.command: "cat /tmp/teste_ansible.txt"
+      register: file_content
+      changed_when: false
+
+    - name: Exibe o conteúdo do arquivo
+      ansible.builtin.debug:
+        msg: "Conteúdo do arquivo: {{ file_content.stdout }}"

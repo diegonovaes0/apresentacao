@@ -1,0 +1,76 @@
+/* 
+MAIN.CSS
+Este arquivo funciona como o ponto de entrada principal para todos os estilos,
+importando cada arquivo de componente na ordem correta para garantir que
+as regras de especificidade CSS sejam aplicadas adequadamente.
+*/
+
+
+/* 
+MAIN.CSS
+Este arquivo funciona como o ponto de entrada principal para todos os estilos,
+importando cada arquivo de componente na ordem correta para garantir que
+as regras de especificidade CSS sejam aplicadas adequadamente.
+*/
+
+/* Variáveis e reset primeiro para estabelecer a base */
+@import 'variables.css';
+@import 'reset.css';
+
+/* Animações e utilitários gerais */
+@import 'animations.css';
+@import 'utilities.css';
+
+/* Layout e estruturas base */
+@import 'layout.css';
+@import 'headers.css';
+
+/* Componentes */
+@import 'cards.css';
+@import 'buttons.css';
+@import 'forms.css';
+@import 'tables.css';
+@import 'badges.css';
+@import 'pagination.css';
+@import 'feedback.css';
+@import 'modals.css';
+
+/* Componentes específicos */
+@import 'inventory.css';
+
+/* Responsividade e estabilidade são aplicadas por último */
+@import 'responsive.css';
+@import 'stability.css';
+
+
+/* Variáveis e reset primeiro para estabelecer a base */
+@import 'variables.css';
+@import 'reset.css';
+
+/* Animações e utilitários gerais */
+@import 'animations.css';
+@import 'utilities.css';
+
+/* Layout e estruturas base */
+@import 'layout.css';
+@import 'headers.css';
+
+/* Componentes */
+@import 'cards.css';
+@import 'buttons.css';
+@import 'forms.css';
+@import 'tables.css';
+@import 'badges.css';
+@import 'pagination.css';
+@import 'feedback.css';
+@import 'modals.css';
+
+/* Componentes específicos */
+@import 'inventory.css';
+
+/* Responsividade e estabilidade são aplicadas por último */
+@import 'responsive.css';
+@import 'stability.css';
+
+/* Adicione esta linha ao main.css onde estão os outros imports */
+@import 'icons.css';

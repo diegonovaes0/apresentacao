@@ -1,0 +1,48 @@
+/* 
+STABILITY.CSS
+Este arquivo contém regras para garantir a estabilidade visual
+da interface, prevenindo tremulações e comportamentos indesejados.
+*/
+
+/* Prevenção de tremulação */
+/* Desativar movimentos/transformações em hover para containers */
+.card:hover,
+.form-card:hover,
+.table-card:hover {
+  transform: none !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: box-shadow 0.2s ease !important;
+}
+
+/* Desativar animações em containers */
+.header,
+.card,
+.card-header,
+.card-body,
+.card-footer,
+.table-container {
+  transition: box-shadow 0.2s ease !important;
+  transform: none !important;
+}
+
+/* Forçar estabilidade */
+.inventory-container,
+.main-content,
+.content-area {
+  transform: translate3d(0, 0, 0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
+}
+
+/* Garantir que #host siga o mesmo estilo */
+#host {
+  background: var(--black-elegant) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Garantir que #host no estado focus seja consistente */
+#host:focus {
+  background: var(--black-elegant) !important;
+  border-color: var(--accent-gold) !important;
+  box-shadow: 0 0 5px rgba(255, 214, 0, 0.3);
+}
